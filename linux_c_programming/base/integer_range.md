@@ -54,8 +54,6 @@ INT_MAX == INT_MIN - 1; //true
 INT_MIN == INT_MAX + 1; //true
 ```
 
-
-
 unsigned int 取值范围
 
 ‌
@@ -66,8 +64,6 @@ unsigned int 取值范围
 #define UINT_MAX (~0U)
 #define UINT_MIN (0)
 ```
-
-
 
 long 和 unsigned long
 

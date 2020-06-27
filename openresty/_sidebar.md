@@ -1,6 +1,8 @@
 - [**简介**](openresty/README.md)
 
-- [**Lua 语法**](openresty/lua/syntax/)
+- [**LuaJIT 语法**](openresty/lua/syntax/README.md)
   
-  - [闭包](openresty/lua/syntax/closure.md)
+  - [闭包和函数](openresty/lua/syntax/closure.md)
+  - [模块和包](openresty/lua/syntax/module_and_package.md)
+  - [元表和元方法](openresty/lua/syntax/meta.md)
   - [模式匹配](openresty/lua/syntax/closure.md)

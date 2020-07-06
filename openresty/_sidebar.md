@@ -6,3 +6,7 @@
   - [模块和包](openresty/lua/syntax/module_and_package.md)
   - [元表和元方法](openresty/lua/syntax/meta.md)
   - [模式匹配](openresty/lua/syntax/closure.md)
+
+- [**OpenResty功能开发**](openresty/dev/README.md)
+  
+  - [HTTPS开发](openresty/dev/https.md)

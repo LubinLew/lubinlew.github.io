@@ -5,4 +5,6 @@
 * [Golang](golang/)
 * [Nginx](nginx/)
 * [OpenResty](openresty/)
+* [MySQL](mysql/)
+* [Python](python/)
 * [网络安全](network_security/)

@@ -6,10 +6,15 @@ Table of Contents
 =================
 
 * [Name](#name)
+
 * [Status](#status)
+
 * [Description](#description)
+
 * [Synopsis](#synopsis)
+
 * [Methods](#methods)
+  
   * [new](#new)
   * [connect](#connect)
   * [set_timeout](#set_timeout)
@@ -24,21 +29,36 @@ Table of Contents
   * [array_to_hash](#array_to_hash)
   * [read_reply](#read_reply)
   * [add_commands](#add_commands)
+
 * [Redis Authentication](#redis-authentication)
+
 * [Redis Transactions](#redis-transactions)
+
 * [Load Balancing and Failover](#load-balancing-and-failover)
+
 * [Debugging](#debugging)
+
 * [Automatic Error Logging](#automatic-error-logging)
+
 * [Check List for Issues](#check-list-for-issues)
+
 * [Limitations](#limitations)
+
 * [Installation](#installation)
+
 * [TODO](#todo)
+
 * [Community](#community)
+  
   * [English Mailing List](#english-mailing-list)
   * [Chinese Mailing List](#chinese-mailing-list)
+
 * [Bugs and Patches](#bugs-and-patches)
+
 * [Author](#author)
+
 * [Copyright and License](#copyright-and-license)
+
 * [See Also](#see-also)
   
   Status
@@ -486,10 +506,15 @@ Check List for Issues
 =====================
 
 1. Ensure you configure the connection pool size properly in the [set_keepalive](#set_keepalive) . Basically if your NGINX handle `n` concurrent requests and your NGINX has `m` workers, then the connection pool size should be configured as `n/m`. For example, if your NGINX usually handles 1000 concurrent requests and you have 10 NGINX workers, then the connection pool size should be 100.
+
 2. Ensure the backlog setting on the Redis side is large enough. For Redis 2.8+, you can directly tune the `tcp-backlog` parameter in the `redis.conf` file (and also tune the kernel parameter `SOMAXCONN` accordingly at least on Linux). You may also want to tune the `maxclients` parameter in `redis.conf`.
+
 3. Ensure you are not using too short timeout setting in the [set_timeout](#set_timeout) or [set_timeouts](#set_timeouts) methods. If you have to, try redoing the operation upon timeout and turning off [automatic error logging](#automatic-error-logging) (because you are already doing proper error handling in your own Lua code).
+
 4. If your NGINX worker processes' CPU usage is very high under load, then the NGINX event loop might be blocked by the CPU computation too much. Try sampling a [C-land on-CPU Flame Graph](https://github.com/agentzh/nginx-systemtap-toolkit#sample-bt) and [Lua-land on-CPU Flame Graph](https://github.com/agentzh/stapxx#ngx-lj-lua-stacks) for a typical NGINX worker process. You can optimize the CPU-bound things according to these Flame Graphs.
+
 5. If your NGINX worker processes' CPU usage is very low under load, then the NGINX event loop might be blocked by some blocking system calls (like file IO system calls). You can confirm the issue by running the [epoll-loop-blocking-distr](https://github.com/agentzh/stapxx#epoll-loop-blocking-distr) tool against a typical NGINX worker process. If it is indeed the case, then you can further sample a [C-land off-CPU Flame Graph](https://github.com/agentzh/nginx-systemtap-toolkit#sample-bt-off-cpu) for a NGINX worker process to analyze the actual blockers.
+
 6. If your `redis-server` process is running near 100% CPU usage, then you should consider scale your Redis backend by multiple nodes or use the [C-land on-CPU Flame Graph tool](https://github.com/agentzh/nginx-systemtap-toolkit#sample-bt) to analyze the internal bottlenecks within the Redis server process.
    [Back to TOC](#table-of-contents)
    
@@ -497,6 +522,7 @@ Check List for Issues
    ===========
 * This library cannot be used in code contexts like init_by_lua*, set_by_lua*, log_by_lua*, and
   header_filter_by_lua* where the ngx_lua cosocket API is not available.
+
 * The `resty.redis` object instance cannot be stored in a Lua variable at the Lua module level,
   because it will then be shared by all the concurrent requests handled by the same nginx
   worker process (see
@@ -563,6 +589,7 @@ Bugs and Patches
 Please report bugs or submit patches by
 
 1. creating a ticket on the [GitHub Issue Tracker](http://github.com/agentzh/lua-resty-redis/issues),
+
 2. or posting to the [OpenResty community](#community).
    [Back to TOC](#table-of-contents)
    
@@ -580,14 +607,19 @@ Please report bugs or submit patches by
    All rights reserved.
    Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
 * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [Back to TOC](#table-of-contents)
   
   See Also
   ========
+
 * the ngx_lua module: https://github.com/openresty/lua-nginx-module/#readme
+
 * the redis wired protocol specification: http://redis.io/topics/protocol
+
 * the [lua-resty-memcached](https://github.com/agentzh/lua-resty-memcached) library
+
 * the [lua-resty-mysql](https://github.com/agentzh/lua-resty-mysql) library
   [Back to TOC](#table-of-contents)

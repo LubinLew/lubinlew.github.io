@@ -14,8 +14,6 @@ Hyperscan 编译可以生成 3 种库 :
 
 可以通过宏配置,生成静态库和动态库
 
-
-
 ## 编译依赖
 
 编译依赖于 操作系统、硬件 、软件 三大块。
@@ -36,8 +34,6 @@ Hyperscan 编译可以生成 3 种库 :
 > 
 > Hyperscan 也许可以运行在其他平台上, 但是这是官方不能保证的.
 
-
-
 ### 硬件依赖
 
 Hyperscan 可以运行于x86 CPU上, IA-32(IA-32 Architecture)架构和 IA-64架构(Intel® 64 Architecture). Hyperscan 之所以性能高, 是因为它利用了因特尔架构的一些特性. CPU最低也需要支持SSSE3(Supplemental Streaming SIMD Extensions 3) 特性, 几乎所有的现代x86 CPU都支持SSSE3特性. 另外, Hyperscan 还可以利用一下特性, 提高性能:
@@ -50,43 +46,41 @@ Hyperscan 可以运行于x86 CPU上, IA-32(IA-32 Architecture)架构和 IA-64架
 > 
 > - Intel Advanced Vector Extensions 2 (Intel AVX2)
 
+在Linux下查看CPU支持的特性可以使用下面的命令:
+
+```bash
+cat /proc/cpuinfo | grep flags | uniq
+```
+
 These can be determined at library compile time, see [Target Architecture](http://intel.github.io/hyperscan/dev-reference/getting_started.html#target-arch).
 
 ### 软件依赖
 
-默认情况下, 编译 Hyperscan 需要以下库:
+默认情况下, 编译 Hyperscan 需要以下库, 如果需要编译 `libchimera` 则需要更多的库, 更高的cmake版本, 详细信息见 chimera 章节.
 
-| Dependency                                      | Version  |     | Notes                                                                                                  |
-| ----------------------------------------------- | -------- | --- | ------------------------------------------------------------------------------------------------------ |
-| [CMake](http://www.cmake.org/)                  | >=2.8.11 | 必须  | `yum install cmake` <br>`cmake --version` CentOS7默认满足                                                  |
-| [Ragel](http://www.colm.net/open-source/ragel/) | 6.9      | 必须  | `yum install ragel`  (下载的是7.0版本)                                                                       |
-| [Python](http://www.python.org/)                | 2.7      | 必须  | `python -V` CentOS7默认带python2.7                                                                        |
-| [Boost](http://boost.org/)                      | >=1.57   | 必须  | **只需要头文件**, CentOS7官方包只有1.53版本, 所以需要手动下载源码, 由于Boost编译费时费力,这里我们不编译Boost库, 只下载源码,通过宏`BOOST_ROOT`指定源码路径即可 |
-| [pcap](http://tcpdump.org)                      | >=0.8    | 可选  | `yum install libpcap-devel` <br>只是用来编译示例代码                                                             |
+| Dependency                                      | Version  |     | Notes                                                 |
+| ----------------------------------------------- | -------- | --- | ----------------------------------------------------- |
+| [CMake](http://www.cmake.org/)                  | >=2.8.11 | 必须  | `yum install cmake` <br>`cmake --version` CentOS7默认满足 |
+| [Ragel](http://www.colm.net/open-source/ragel/) | 6.9      | 必须  | `yum install ragel`  (下载的是7.0版本)                      |
+| [Python](http://www.python.org/)                | 2.7      | 必须  | `python -V` CentOS7默认带python2.7                       |
+| [Boost](http://boost.org/)                      | >=1.57   | 必须  | **只需要头文件**, CentOS7官方包只有1.53版本, 所以需要手动下载源码            |
+| [pcap](http://tcpdump.org)                      | >=0.8    | 可选  | `yum install libpcap-devel` <br>只是用来编译示例代码            |
 
 #### 关于 Boost Headers 的详细说明
 
-如果你的系统上安装了符合要求版本的Boost库, 那么cmake会找到他们, 编译时就无需其他操作了;如果你的系统上没有安装Boost库, 那么有两种方法指定Boost Headers 路径Compiling Hyperscan depends on a recent version of the Boost C++ header
-library. If the Boost libraries are installed on the build machine in the
-usual paths, CMake will find them. If the Boost libraries are not installed,
-the location of the Boost source tree can be specified during the CMake
-configuration step using the `BOOST_ROOT` variable (described below).
+如果你的系统上安装了符合要求版本的Boost库, 那么cmake会找到他们, 编译时就无需其他操作了; 由于Hyperscan只需要Boost库的头文件,所以不需要编译Boost库.如果你的系统上没有安装Boost库, 那么只需要下载Boost源码即可. 有3种方法指定Boost Headers 路径,
 
-Another alternative is to put a copy of (or a symlink to) the boost
-subdirectory in `<hyperscan-source-path>/include/boost`.
+- 第一种是利用Cmake `BOOST_ROOT` 变量指定Boost源码路径. 
 
-For example: for the Boost-1.59.0 release:
+- 第二种种是拷贝boost的头文件路径到`<hyperscan-source-path>/include/boost`的文件夹中
 
-ln -s boost_1_59_0/boost /include/boost
+- 第三种是创建一个连接到 `<hyperscan-source-path>/include/boost` 例如: `ln -s boost_1_59_0/boost /include/boost`
 
-As Hyperscan uses the header-only parts of Boost, it is not necessary to
-compile the Boost libraries.
-
-> 如果需要编译 `libchimera` 则需要更多的库, 更高的cmake版本, 详细信息见 chimera 章节.
-
-
+最好选择第一种, 简单方便.
 
 ## 开始编译
+
+hyperscan库如果带debug信息, 库文件大小接近170MB, 去掉debug信息只有8MB左右, 所以如何没有特别需求不要生成带debug信息的库.
 
 ### 下载 Hyperscan 代码
 
@@ -95,7 +89,6 @@ compile the Boost libraries.
 ```bash
 wget https://github.com/intel/hyperscan/archive/v5.3.0.tar.gz
 tar xf v5.3.0.tar.gz
-
 ```
 
 1. 配置 Hyperscan 编译选项
@@ -119,9 +112,6 @@ tar xf v5.3.0.tar.gz
    - `Visual Studio 15 2017` — Visual Studio projects
    
    Generators that might work include:
-
-
-
 - `Xcode` — OS X Xcode projects.
 3. 编译 Hyperscan
    
@@ -143,29 +133,23 @@ tar xf v5.3.0.tar.gz
    
    bin/unit-hyperscan
 
-
-
-
-
-
-
 ### CMake 选项配置
 
 When CMake is invoked, it generates build files using the given options.
 Options are passed to CMake in the form `-D<variable name>=<value>`.
 Common options for CMake include:
 
-| Variable                | Description                                                                                                                                                  |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| CMAKE_C_COMPILER        | C compiler to use. Default is /usr/bin/cc.                                                                                                                   |
-| CMAKE_CXX_COMPILER      | C++ compiler to use. Default is /usr/bin/c++.                                                                                                                |
-| CMAKE_INSTALL_PREFIX    | Install directory for `install` target                                                                                                                       |
-| CMAKE_BUILD_TYPE        | Define which kind of build to generate.<br>Valid options are Debug, Release, RelWithDebInfo,<br>and MinSizeRel. Default is RelWithDebInfo.                   |
-| BUILD_SHARED_LIBS       | Build Hyperscan as a shared library instead of<br>the default static library.                                                                                |
-| BUILD_STATIC_AND_SHARED | Build both static and shared Hyperscan libs.<br>Default off.                                                                                                 |
-| BOOST_ROOT              | Location of Boost source tree.                                                                                                                               |
-| DEBUG_OUTPUT            | Enable very verbose debug output. Default off.                                                                                                               |
-| FAT_RUNTIME             | Build the [fat runtime](http://intel.github.io/hyperscan/dev-reference/getting_started.html#fat-runtime). Default<br>true on Linux, not available elsewhere. |
+| Variable                | Description                                                                                                                                                  | Example                           |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------- |
+| CMAKE_C_COMPILER        | 指定C编译器. <br>Default is /usr/bin/cc.                                                                                                                          | -DCMAKE_C_COMPILER=/usr/bin/clang |
+| CMAKE_CXX_COMPILER      | 指定C++编译器. <br>Default is /usr/bin/c++.                                                                                                                       |                                   |
+| CMAKE_INSTALL_PREFIX    | Install directory for `install` target                                                                                                                       |                                   |
+| CMAKE_BUILD_TYPE        | 指定编译成果类型.<br>Valid options are Debug, Release, RelWithDebInfo,<br>and MinSizeRel. Default is RelWithDebInfo.                                                 | -DCMAKE_BUILD_TYPE=MinSizeRel     |
+| BUILD_SHARED_LIBS       | 这个选线默认是off,只会生成静态库, 将这个选择赋值为on 就可以生成动态库,而不生成静态库                                                                                                              | -DBUILD_SHARED_LIBS=on            |
+| BUILD_STATIC_AND_SHARED | Build both static and shared Hyperscan libs.<br>Default off.                                                                                                 | -DBUILD_STATIC_AND_SHARED=on      |
+| BOOST_ROOT              | Boost源码路径                                                                                                                                                    | -DBOOST_ROOT=/path/boost_1_73_0   |
+| DEBUG_OUTPUT            | Enable very verbose debug output. Default off.                                                                                                               | -DDEBUG_OUTPUT=on                 |
+| FAT_RUNTIME             | Build the [fat runtime](http://intel.github.io/hyperscan/dev-reference/getting_started.html#fat-runtime). Default<br>true on Linux, not available elsewhere. |                                   |
 
 For example, to generate a `Debug` build:
 

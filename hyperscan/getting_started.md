@@ -1,15 +1,104 @@
-# Getting Started
+# 代码编译
 
-## Very Quick Start
+声明:个人编译是在CentOS7下编译
 
-1. 下载 Hyperscan 代码
-   
-   ```bash
-   cd <where-you-want-hyperscan-source>
-   git clone git://github.com/intel/hyperscan
-   ```
+**编译成果物说明**
 
-2. 配置 Hyperscan 编译选项
+Hyperscan 编译可以生成 3 种库 :
+
+- `libhs`  主要的库, 包含 编译 和 扫描 两个部分
+
+- `libhs_runtime`  只包含 扫描 部分, 适用于嵌入式等环境
+
+- `libchimera`  完全支持PCRE语法, 编译比较复杂
+
+可以通过宏配置,生成静态库和动态库
+
+
+
+## 编译依赖
+
+编译依赖于 操作系统、硬件 、软件 三大块。
+
+### 操作系统
+
+下面是官方测试过的操作系统和编译器列表:
+
+| 操作系统          | 系统版本                | 编译器版本                        | 备注  |
+| ------------- | ------------------- | ---------------------------- | --- |
+| Ubuntu        | >= 14.04 LTS        | GCC >= v4.8.1, Clang >= v3.4 |     |
+| RedHat/CentOS | >= 7                | GCC >= v4.8.1, Clang >= v3.4 |     |
+| FreeBSD       | >= 10.0             | GCC >= v4.8.1, Clang >= v3.4 |     |
+| Mac OS X      | >=10.8(XCode/Clang) | Clang >= v3.4                |     |
+| Windows       | >= 8                | Visual C++ 2017 Build Tools  |     |
+
+> 编译器 Intel C++ Compiler >= v15 也可以, 但是过于小众
+> 
+> Hyperscan 也许可以运行在其他平台上, 但是这是官方不能保证的.
+
+
+
+### 硬件依赖
+
+Hyperscan 可以运行于x86 CPU上, IA-32(IA-32 Architecture)架构和 IA-64架构(Intel® 64 Architecture). Hyperscan 之所以性能高, 是因为它利用了因特尔架构的一些特性. CPU最低也需要支持SSSE3(Supplemental Streaming SIMD Extensions 3) 特性, 几乎所有的现代x86 CPU都支持SSSE3特性. 另外, Hyperscan 还可以利用一下特性, 提高性能:
+
+> - Intel Streaming SIMD Extensions 4.2 (SSE4.2)
+> 
+> - the POPCNT instruction
+> 
+> - Bit Manipulation Instructions (BMI, BMI2)
+> 
+> - Intel Advanced Vector Extensions 2 (Intel AVX2)
+
+These can be determined at library compile time, see [Target Architecture](http://intel.github.io/hyperscan/dev-reference/getting_started.html#target-arch).
+
+### 软件依赖
+
+默认情况下, 编译 Hyperscan 需要以下库:
+
+| Dependency                                      | Version  |     | Notes                                                                                                  |
+| ----------------------------------------------- | -------- | --- | ------------------------------------------------------------------------------------------------------ |
+| [CMake](http://www.cmake.org/)                  | >=2.8.11 | 必须  | `yum install cmake` <br>`cmake --version` CentOS7默认满足                                                  |
+| [Ragel](http://www.colm.net/open-source/ragel/) | 6.9      | 必须  | `yum install ragel`  (下载的是7.0版本)                                                                       |
+| [Python](http://www.python.org/)                | 2.7      | 必须  | `python -V` CentOS7默认带python2.7                                                                        |
+| [Boost](http://boost.org/)                      | >=1.57   | 必须  | **只需要头文件**, CentOS7官方包只有1.53版本, 所以需要手动下载源码, 由于Boost编译费时费力,这里我们不编译Boost库, 只下载源码,通过宏`BOOST_ROOT`指定源码路径即可 |
+| [pcap](http://tcpdump.org)                      | >=0.8    | 可选  | `yum install libpcap-devel` <br>只是用来编译示例代码                                                             |
+
+#### 关于 Boost Headers 的详细说明
+
+如果你的系统上安装了符合要求版本的Boost库, 那么cmake会找到他们, 编译时就无需其他操作了;如果你的系统上没有安装Boost库, 那么有两种方法指定Boost Headers 路径Compiling Hyperscan depends on a recent version of the Boost C++ header
+library. If the Boost libraries are installed on the build machine in the
+usual paths, CMake will find them. If the Boost libraries are not installed,
+the location of the Boost source tree can be specified during the CMake
+configuration step using the `BOOST_ROOT` variable (described below).
+
+Another alternative is to put a copy of (or a symlink to) the boost
+subdirectory in `<hyperscan-source-path>/include/boost`.
+
+For example: for the Boost-1.59.0 release:
+
+ln -s boost_1_59_0/boost /include/boost
+
+As Hyperscan uses the header-only parts of Boost, it is not necessary to
+compile the Boost libraries.
+
+> 如果需要编译 `libchimera` 则需要更多的库, 更高的cmake版本, 详细信息见 chimera 章节.
+
+
+
+## 开始编译
+
+### 下载 Hyperscan 代码
+
+去github的页面下载指定版本的代码 https://github.com/intel/hyperscan/releases
+
+```bash
+wget https://github.com/intel/hyperscan/archive/v5.3.0.tar.gz
+tar xf v5.3.0.tar.gz
+
+```
+
+1. 配置 Hyperscan 编译选项
    
    Ensure that you have the correct [dependencies](http://intel.github.io/hyperscan/dev-reference/getting_started.html#software) present,
    and then:
@@ -28,8 +117,10 @@
    - `Ninja` — [Ninja](http://martine.github.io/ninja/) build files.
    
    - `Visual Studio 15 2017` — Visual Studio projects
+   
+   Generators that might work include:
 
-  Generators that might work include:
+
 
 - `Xcode` — OS X Xcode projects.
 3. 编译 Hyperscan
@@ -52,103 +143,11 @@
    
    bin/unit-hyperscan
 
-## Requirements
 
-### 硬件
 
-Hyperscan will run on x86 processors in 64-bit (Intel® 64 Architecture) and
-32-bit (IA-32 Architecture) modes.
 
-Hyperscan is a high performance software library that takes advantage of recent
-Intel architecture advances. At a minimum, support for Supplemental Streaming
-SIMD Extensions 3 (SSSE3) is required, which should be available on any modern
-x86 processor.
 
-Additionally, Hyperscan can make use of:
 
-> - Intel Streaming SIMD Extensions 4.2 (SSE4.2)
-> 
-> - the POPCNT instruction
-> 
-> - Bit Manipulation Instructions (BMI, BMI2)
-> 
-> - Intel Advanced Vector Extensions 2 (Intel AVX2)
-
-if present.
-
-These can be determined at library compile time, see [Target Architecture](http://intel.github.io/hyperscan/dev-reference/getting_started.html#target-arch).
-
-### 软件
-
-As a software library, Hyperscan doesn’t impose any particular runtime
-software requirements, however to build the Hyperscan library we require a
-modern C and C++ compiler – in particular, Hyperscan requires C99 and C++11
-compiler support. The supported compilers are:
-
-> - GCC, v4.8.1 or higher
-> 
-> - Clang, v3.4 or higher (with libstdc++ or libc++)
-> 
-> - Intel C++ Compiler v15 or higher
-> 
-> - Visual C++ 2017 Build Tools
-
-Examples of operating systems that Hyperscan is known to work on include:
-
-Linux:
-
-- Ubuntu 14.04 LTS or newer
-
-- RedHat/CentOS 7 or newer
-
-FreeBSD:
-
-- 10.0 or newer
-
-Windows:
-
-- 8 or newer
-
-Mac OS X:
-
-- 10.8 or newer, using XCode/Clang
-
-Hyperscan *may* compile and run on other platforms, but there is no guarantee.
-We currently have experimental support for Windows using Intel C++ Compiler
-or Visual Studio 2017.
-
-In addition, the following software is required for compiling the Hyperscan library:
-
-| Dependency                                      | Version  | Notes             |
-| ----------------------------------------------- | -------- | ----------------- |
-| [CMake](http://www.cmake.org/)                  | >=2.8.11 |                   |
-| [Ragel](http://www.colm.net/open-source/ragel/) | 6.9      |                   |
-| [Python](http://www.python.org/)                | 2.7      |                   |
-| [Boost](http://boost.org/)                      | >=1.57   | 只需要头文件,不需要编译Boost |
-| [Pcap](http://tcpdump.org)                      | >=0.8    | 可选, 只用来编译示例代码     |
-
-Most of these dependencies can be provided by the package manager on the build
-system (e.g. Debian/Ubuntu/RedHat packages, FreeBSD ports, etc). However,
-ensure that the correct version is present. As for Windows, in order to have
-Ragel, you may use Cygwin to build it from source.
-
-#### Boost Headers
-
-Compiling Hyperscan depends on a recent version of the Boost C++ header
-library. If the Boost libraries are installed on the build machine in the
-usual paths, CMake will find them. If the Boost libraries are not installed,
-the location of the Boost source tree can be specified during the CMake
-configuration step using the `BOOST_ROOT` variable (described below).
-
-Another alternative is to put a copy of (or a symlink to) the boost
-subdirectory in `<hyperscan-source-path>/include/boost`.
-
-For example: for the Boost-1.59.0 release:
-
-ln -s boost_1_59_0/boost <hyperscan-source-path>/include/boost
-
-As Hyperscan uses the header-only parts of Boost, it is not necessary to
-compile the Boost libraries.
 
 ### CMake 选项配置
 

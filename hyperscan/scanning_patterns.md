@@ -1,26 +1,63 @@
-# Scanning for Patterns
+# 模式扫描(Scanning for Patterns)
 
-Hyperscan provides three different scanning modes, each with its own scan
-function beginning with `hs_scan`. In addition, streaming mode has a number
-of other API functions for managing stream state.
+Hyperscan 提供了三种不同的扫描模式。每种扫描模式都有各自的扫描函数。
 
-## Handling Matches
+## 处理扫描命中
 
-All of these functions will call a user-supplied callback function when a match
-is found. This function has the following signature:
+三种模式的扫描命中处理都是由用户自定义的回调函数处理。
 
-> *typedef* int`( * match_event_handler)`(unsigned int *id*, unsigned long long *from*, unsigned long long *to*, unsigned int *flags*, void **context*)
+```c
+/** 扫描命中的处理函数定义
+ *  这个类型的callback是向 hs_scan(), hs_scan_vector(), hs_scan_stream() 这三个函数注册的
+ * This callback function will be invoked whenever a match is located in the
+ * target data during the execution of a scan. The details of the match are
+ * passed in as parameters to the callback function, and the callback function
+ * should return a value indicating whether or not matching should continue on
+ * the target data. If no callbacks are desired from a scan call, NULL may be
+ * provided in order to suppress match production.
+ *
+ * 回调函数中,不能再调用其他 Hyperscan API functions on
+ * the same stream nor should it attempt to reuse the scratch space allocated
+ * for the API calls that caused it to be triggered. Making another call to the
+ * Hyperscan library with completely independent parameters should work (for
+ * example, scanning a different database in a new stream and with new scratch
+ * space), but reusing data structures like stream state and/or scratch space
+ * will produce undefined behavior.
+ *
+ * @param from
+ *      - If a start of match flag is enabled for the current pattern, this
+ *        argument will be set to the start of match for the pattern assuming
+ *        that that start of match value lies within the current 'start of match
+ *        horizon' chosen by one of the SOM_HORIZON mode flags.
+
+ *      - If the start of match value lies outside this horizon (possible only
+ *        when the SOM_HORIZON value is not @ref HS_MODE_SOM_HORIZON_LARGE),
+ *        the @p from value will be set to @ref HS_OFFSET_PAST_HORIZON.
+
+ *      - This argument will be set to zero if the Start of Match flag is not
+ *        enabled for the given pattern.
+ *
+ * @return
+ *      Non-zero if the matching should cease, else zero. If scanning is
+ *      performed in streaming mode and a non-zero value is returned, any
+ *      subsequent calls to @ref hs_scan_stream() for that stream will
+ *      immediately return with @ref HS_SCAN_TERMINATED.
+ */
+typedef int (*match_event_handler)(
+    unsigned int id,          /* 命中pattern的编号 */
+    unsigned long long from,
+    unsigned long long to,
+    unsigned int flags,       /* 未使用 */
+    void *context);           /* 注册callback时,用户指定的参数 */
+```
 
 The *id* argument will be set to the identifier for the matching expression
 provided at compile time, and the *to* argument will be set to the end-offset
 of the match. If SOM was requested for the pattern (see [Start of Match](http://intel.github.io/hyperscan/dev-reference/compilation.html#som)), the *from* argument will be set to the leftmost possible start-offset for the match.
 
-The match callback function has the capability to halt scanning
-by returning a non-zero value.
+The match callback function has the capability to halt scanning by returning a non-zero value.
 
-See [`match_event_handler`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.match_event_handler "match_event_handler") for more information.
-
-## Streaming Mode
+### 流模式(Streaming Mode)
 
 The core of the Hyperscan streaming runtime API consists of functions to open,
 scan, and close Hyperscan data streams:
@@ -59,7 +96,7 @@ write, with the exception of zero-width asserts, where constructs such as `\b` a
 stream write to be delayed until the next stream write or stream close
 operation.
 
-### Stream Management
+#### 流管理(Stream Management)
 
 In addition to [`hs_open_stream()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_open_stream "hs_open_stream"), [`hs_scan_stream()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_scan_stream "hs_scan_stream"), and [`hs_close_stream()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_close_stream "hs_close_stream"), the Hyperscan API provides a number of other
 functions for the management of streams:
@@ -75,7 +112,7 @@ functions for the management of streams:
   another, resetting the destination stream first. This call avoids the
   allocation done by [`hs_copy_stream()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_copy_stream "hs_copy_stream").
 
-### Stream Compression
+#### 流压缩(Stream Compression)
 
 A stream object is allocated as a fixed size region of memory which has been
 sized to ensure that no memory allocations are required during scan
@@ -106,7 +143,7 @@ Note: it is not recommended to use stream compression between every call to scan
 for performance reasons as it takes time to convert between the compressed
 representation and a standard stream.
 
-## Block Mode
+### 块模式(Block Mode)
 
 The block mode runtime API consists of a single function: [`hs_scan()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_scan "hs_scan"). Using
 the compiled patterns this function identifies matches in the target data,
@@ -116,7 +153,7 @@ This single [`hs_scan()`](http://intel.github.io/hyperscan/dev-reference/api_fil
 then [`hs_close_stream()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_close_stream "hs_close_stream"), except that block mode operation does not
 incur all the stream related overhead.
 
-## Vectored Mode
+### 向量模式(Vectored Mode)
 
 The vectored mode runtime API, like the block mode API, consists of a single
 function: [`hs_scan_vector()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_scan_vector "hs_scan_vector"). This function accepts an array of data
@@ -128,23 +165,17 @@ the set of data blocks were (a) scanned in sequence with a series of streaming
 mode scans, or (b) copied in sequence into a single block of memory and then
 scanned in block mode.
 
-## Scratch Space
+### Scratch Space
 
-While scanning data, Hyperscan needs a small amount of temporary memory to store
-on-the-fly internal data. This amount is unfortunately too large to fit on the
-stack, particularly for embedded applications, and allocating memory dynamically
-is too expensive, so a pre-allocated “scratch” space must be provided to the
-scanning functions.
+当扫描数据时，Hyperscan需要少量临时内存来存储即时数据。很不幸的是这个数据量对于栈来说还是太大，尤其是嵌入式系统。并且动态申请内存的操作消耗, 所以必须预申请一个 “scratch” 空间提供给扫描函数。
 
-The function [`hs_alloc_scratch()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_alloc_scratch "hs_alloc_scratch") allocates a large enough region of
-scratch space to support a given database. If the application uses multiple
-databases, only a single scratch region is necessary: in this case, calling [`hs_alloc_scratch()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_alloc_scratch "hs_alloc_scratch") on each database (with the same `scratch` pointer)
+函数 [`hs_alloc_scratch()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_alloc_scratch "hs_alloc_scratch") 申请一个给定数据库的 scratch space。如果一个应用使用多个数据库，只需要使用一个 scratch region，但是需要保证空间的大小能够扫描所有给定的数据库。这种情况侠, 调用 `hs_alloc_scratch()` on each database (with the same `scratch` pointer)
 will ensure that the scratch space is large enough to support scanning against
 any of the given databases.
 
 While the Hyperscan library is re-entrant, the use of scratch spaces is not.
-For example, if by design it is deemed necessary to run recursive or nested
-scanning (say, from the match callback function), then an additional scratch
+例如，如果设计有递归或者嵌套的需求，那么还需要一个额外的scratch
+space  (say, from the match callback function), then an additional scratch
 space is required for that context.
 
 In the absence of recursive scanning, only one such space is required per thread
@@ -163,8 +194,8 @@ hs_error_t err;
 hs_scratch_t *scratch_prototype = NULL;
 err = hs_alloc_scratch(db, &scratch_prototype);
 if (err != HS_SUCCESS) {
- printf("hs_alloc_scratch failed!");
- exit(1);
+    printf("hs_alloc_scratch failed!");
+    exit(1);
 }
 
 hs_scratch_t *scratch_thread1 = NULL;
@@ -172,43 +203,52 @@ hs_scratch_t *scratch_thread2 = NULL;
 
 err = hs_clone_scratch(scratch_prototype, &scratch_thread1);
 if (err != HS_SUCCESS) {
- printf("hs_clone_scratch failed!");
- exit(1);
+    printf("hs_clone_scratch failed!");
+    exit(1);
 }
 err = hs_clone_scratch(scratch_prototype, &scratch_thread2);
 if (err != HS_SUCCESS) {
- printf("hs_clone_scratch failed!");
- exit(1);
+    printf("hs_clone_scratch failed!");
+    exit(1);
 }
 
 hs_free_scratch(scratch_prototype);
 
-/* Now two threads can both scan against database db,
- each with its own scratch space. */
+/* 现在2个线程可以同时进行扫描， 每个扫描都有自已的 scratch space */
 ```
 
-## Custom Allocators
+### 用户自定义内存申请
 
-By default, structures used by Hyperscan at runtime (scratch space, stream
-state, etc) are allocated with the default system allocators, usually `malloc()` and `free()`.
+默认情况了，Hyperscan在运行时申请内存(scratch space, stream state 等) 都是使用系统默认的API，通常是 `malloc()` 和`free()`函数。Hyperscan提供了API支持用户自义定申请内存。
 
-The Hyperscan API provides a facility for changing this behaviour to support
-applications that use custom memory allocators.
+```c
+/* 申请内存函数原型定义 */
+typedef void *(HS_CDECL *hs_alloc_t)(size_t size);
 
-These functions are:
+/* 释放内存函数原型定义 */
+typedef void  (HS_CDECL *hs_free_t)(void *ptr);
 
-- [`hs_set_database_allocator()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_set_database_allocator "hs_set_database_allocator"), which sets the allocate and free functions
-  used for compiled pattern databases.
+/* 通用内存 申请/释放 注册接口 */
+hs_error_t HS_CDECL hs_set_allocator(
+        hs_alloc_t alloc_func,
+        hs_free_t free_func);
 
-- [`hs_set_scratch_allocator()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_set_scratch_allocator "hs_set_scratch_allocator"), which sets the allocate and free
-  functions used for scratch space.
+/* 编译数据库时 申请/释放 注册接口 */
+hs_error_t HS_CDECL hs_set_database_allocator(
+        hs_alloc_t alloc_func,
+        hs_free_t free_func);
 
-- [`hs_set_stream_allocator()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_set_stream_allocator "hs_set_stream_allocator"), which sets the allocate and free functions
-  used for stream state in streaming mode.
+/* scratch space 申请/释放 注册接口 */
+hs_error_t HS_CDECL hs_set_scratch_allocator(
+        hs_alloc_t alloc_func,
+        hs_free_t free_func);
 
-- [`hs_set_misc_allocator()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_set_misc_allocator "hs_set_misc_allocator"), which sets the allocate and free functions
-  used for miscellaneous data, such as compile error structures and
-  informational strings.
+/* * Set the allocate and free functions used by Hyperscan for allocating memory
+ * for items returned by the Hyperscan API such as @ref hs_compile_error_t, @ref
+ * hs_expr_info_t and serialized databases.*/
+hs_error_t HS_CDECL hs_set_misc_allocator(
+        hs_alloc_t alloc_func,
+        hs_free_t free_func);
 
-The [`hs_set_allocator()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_set_allocator "hs_set_allocator") function can be used to set all of the custom
-allocators to the same allocate/free pair.
+
+```

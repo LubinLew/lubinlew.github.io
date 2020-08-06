@@ -1,73 +1,39 @@
-# Introduction
+# 简介
 
-Hyperscan is a software regular expression matching engine designed with
-high performance and flexibility in mind. It is implemented as a library that
-exposes a straightforward C API.
+Hyperscan 是一个软件的正则表达式匹配引擎，特点是高性能和灵活性。用C语言实现，对外暴露C接口。接口主要分为 编译 和 扫面 两大部分。
 
-The Hyperscan API itself is composed of two major components:
+## 编译(Compilation)
 
-## Compilation
+Hyperscan可以将一组正则表达式编译成一个数据库。编译过程做了许多分析和优化工作，这样会使后续的扫描操作更加高效。
 
-These functions take a group of regular expressions, along with identifiers and
-option flags, and compile them into an immutable database that can be used by
-the Hyperscan scanning API. This compilation process performs considerable
-analysis and optimization work in order to build a database that will match the
-given expressions efficiently.
+如果一个 pattern 不能被编译到数据库中（例如不支持的正则语法，或者超过资源限制），pattern 编译器会返回错误。编译好的数据库可以被 serialized 和 relocated， 这样数据库可以存储在硬盘上，可以在多个机器上移动。 也可以指定特定CPU的指令集。
 
-If a pattern cannot be built into a database for any reason (such as the use of
-an unsupported expression construct, or the overflowing of a resource limit),
-an error will be returned by the pattern compiler.
+详细信息见 [模式编译(Compiling Patterns)](hyperscan/getting_started.md) 。
 
-Compiled databases can be serialized and relocated, so that they can be stored
-to disk or moved between hosts. They can also be targeted to particular
-platform features (for example, the use of Intel® Advanced Vector Extensions
-2 (Intel® AVX2) instructions).
+## 扫描(Scanning)
 
-See [Compiling Patterns](http://intel.github.io/hyperscan/dev-reference/compilation.html#compilation) for more detail.
+当编译好一个Hyperscan 数据库后，它就可以用来扫面内存中的数据了。Hyperscan 提供了三种扫描模式， 使用哪一种模式取决于数据存储的状态。具体介绍见[模式扫描](hyperscan/scanning_patterns.md)章节。
 
-## Scanning
+匹配的结果会通过用户自定义的回调函数（Callback）返回。如果一个数据能匹配数据库中的多个 pattern，是否返回多个结果的行为由回调函数的返回值决定。如果回调函数返回0 则意味着需要继续进行匹配，如果返回非零值，则意味着扫描结束，扫描函数会返回 `HS_SCAN_TERMINATED` 结束本次扫描。
 
-Once a Hyperscan database has been created, it can be used to scan data in
-memory. Hyperscan provides several scanning modes, depending on whether the
-data to be scanned is available as a single contiguous block, whether it is
-distributed amongst several blocks in memory at the same time, or whether it is
-to be scanned as a sequence of blocks in a stream.
+对于一个给定的数据库， Hyperscan 提供一下几个保证：
 
-Matches are delivered to the application via a user-supplied callback function
-that is called synchronously for each match.
-
-For a given database, Hyperscan provides several guarantees:
-
-- No memory allocations occur at runtime with the exception of two
-  fixed-size allocations, both of which should be done ahead of time for
-  performance-critical applications:
+- 运行时除了下面2个占用固定空间的结构外，没有任何的内存申请操作:
   
-  - **Scratch space**: temporary memory used for internal data at scan time.
-    Structures in scratch space do not persist beyond the end of a single scan
-    call.
+  - **Scratch space**: 用于扫描的临时内存，非持久化数据，每次扫描都可复用。
   
-  - **Stream state**: in streaming mode only, some state space is required to
-    store data that persists between scan calls for each stream. This allows
-    Hyperscan to track matches that span multiple blocks of data.
+  - **Stream state**: 流模式独有, 这段内存用于能够追踪多块数据的多次匹配。
 
-- The sizes of the scratch space and stream state (in streaming mode) required
-  for a given database are fixed and determined at database compile time. This
-  means that the memory requirements of the application are known ahead of
-  time, and these structures can be pre-allocated if required for performance
-  reasons.
+- 对于指定的数据库，scratch space 和 stream state (流模式) 需要的空间是固定的，并且在编译时确定的。应用程序对内存的需求可以提前知道。提前申请好这些内存可以提升性能。
 
-- Any pattern that has successfully been compiled by the Hyperscan compiler can
-  be scanned against any input. There are no internal resource limits or other
-  limitations at runtime that could cause a scan call to return an error.
+- 任何成功编译到数据库中的pattern都可以被任意数据扫描，内部没有任何限制会导致扫描发生错误。
 
-See [Scanning for Patterns](http://intel.github.io/hyperscan/dev-reference/runtime.html#runtime) for more detail.
+详细信息见 [模式扫描(Scanning for Patterns)](hyperscan/scanning_patterns.md) 章节。
 
-## Tools
+## 工具
 
-Some utilities for testing and benchmarking Hyperscan are included with the
-library. See [Tools](http://intel.github.io/hyperscan/dev-reference/tools.html#tools) for more information.
+Hyperscan库中还提供了一些用于性能测试的工具，详细信息见 [Tools](http://intel.github.io/hyperscan/dev-reference/tools.html#tools) 章节。
 
-## Example Code[¶](http://intel.github.io/hyperscan/dev-reference/intro.html#example-code "Permalink to this headline")
+## 示例代码
 
-Some simple example code demonstrating the use of the Hyperscan API is
-available in the `examples/` subdirectory of the Hyperscan distribution.
+ `examples/` 文件夹内有有一些简单的例子用于演示如何使用Hyperscan的API接口。

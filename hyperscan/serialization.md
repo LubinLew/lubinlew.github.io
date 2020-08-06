@@ -38,8 +38,6 @@ hs_error_t HS_CDECL hs_serialized_database_size(
 hs_error_t HS_CDECL hs_database_info(
         const hs_database_t *database,
         char **info);
-
-
 ```
 
 1. [`hs_serialize_database()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_serialize_database "hs_serialize_database"): serializes a pattern database into a
@@ -74,5 +72,3 @@ dependency on the C++ standard library.
 
 许多嵌入式应用只需要进行扫描的部分. 在这种情况下,模式编译通常在其他主机上进行, 嵌入式应用只是使用序列化的模式数据库.为了支持这种应用模式, `libhs_runtime`这个库就被发布了, 这个库不依赖C++标准库,这解决了应用对C++的依赖. and
 provides all Hyperscan functions other that those used to compile databases.
-
-

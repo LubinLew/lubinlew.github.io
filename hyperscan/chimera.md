@@ -4,8 +4,6 @@ This section describes Chimera library.
 
 ## Introduction
 
-
-
 Chimera 是一个软件的正则表达式匹配引擎, 他是Hyperscan和PCRE的混合体. Chimera 的设计目的是完全支持 PCRE 语法, 同时又能有 Hyperscan 的高性能.
 Chimera inherits the design guideline of Hyperscan with C APIs for compilation
 and scanning.

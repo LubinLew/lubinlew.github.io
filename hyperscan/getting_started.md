@@ -30,7 +30,7 @@ Hyperscan 编译可以生成 3 种库 :
 | Mac OS X      | >=10.8(XCode/Clang) | Clang >= v3.4                |     |
 | Windows       | >= 8                | Visual C++ 2017 Build Tools  |     |
 
-> 编译器 Intel C++ Compiler >= v15 也可以, 但是过于小众
+> 编译器 Intel C++ Compiler >= v15 也可以
 > 
 > Hyperscan 也许可以运行在其他平台上, 但是这是官方不能保证的.
 
@@ -46,25 +46,23 @@ Hyperscan 可以运行于x86 CPU上, IA-32(IA-32 Architecture)架构和 IA-64架
 > 
 > - Intel Advanced Vector Extensions 2 (Intel AVX2)
 
-在Linux下查看CPU支持的特性可以使用下面的命令:
+这些指令都是用于提升CPU性能。在Linux下查看CPU支持的特性可以使用下面的命令:
 
 ```bash
 cat /proc/cpuinfo | grep flags | uniq
 ```
 
-These can be determined at library compile time, see [Target Architecture](http://intel.github.io/hyperscan/dev-reference/getting_started.html#target-arch).
-
 ### 软件依赖
 
 默认情况下, 编译 Hyperscan 需要以下库, 如果需要编译 `libchimera` 则需要更多的库, 更高的cmake版本, 详细信息见 chimera 章节.
 
-| Dependency                                      | Version  |     | Notes                                                 |
-| ----------------------------------------------- | -------- | --- | ----------------------------------------------------- |
-| [CMake](http://www.cmake.org/)                  | >=2.8.11 | 必须  | `yum install cmake` <br>`cmake --version` CentOS7默认满足 |
-| [Ragel](http://www.colm.net/open-source/ragel/) | 6.9      | 必须  | `yum install ragel`  (下载的是7.0版本)                      |
-| [Python](http://www.python.org/)                | 2.7      | 必须  | `python -V` CentOS7默认带python2.7                       |
-| [Boost](http://boost.org/)                      | >=1.57   | 必须  | **只需要头文件**, CentOS7官方包只有1.53版本, 所以需要手动下载源码            |
-| [pcap](http://tcpdump.org)                      | >=0.8    | 可选  | `yum install libpcap-devel` <br>只是用来编译示例代码            |
+| 依赖软件                                            | 版本       | 是否必需 | 备注                                                    |
+| ----------------------------------------------- | -------- | ---- | ----------------------------------------------------- |
+| [CMake](http://www.cmake.org/)                  | >=2.8.11 | 必需   | `yum install cmake` <br>`cmake --version` CentOS7默认满足 |
+| [Ragel](http://www.colm.net/open-source/ragel/) | 6.9      | 必需   | `yum install ragel`  (下载的是7.0版本)                      |
+| [Python](http://www.python.org/)                | 2.7      | 必需   | `python -V` CentOS7默认带python2.7                       |
+| [Boost](http://boost.org/)                      | >=1.57   | 必需   | **只需要头文件**, CentOS7官方包只有1.53版本, 所以需要手动下载源码            |
+| [pcap](http://tcpdump.org)                      | >=0.8    | 可选   | `yum install libpcap-devel` <br>只是用来编译示例代码            |
 
 #### 关于 Boost Headers 的详细说明
 
@@ -78,9 +76,9 @@ These can be determined at library compile time, see [Target Architecture](http:
 
 最好选择第一种, 简单方便.
 
-## 开始编译
+## 编译准备
 
-hyperscan库如果带debug信息, 库文件大小接近170MB, 去掉debug信息只有8MB左右, 所以如何没有特别需求不要生成带debug信息的库.
+这里主要是介绍编译 Hyperscan 的一些选项配置。
 
 ### 下载 Hyperscan 代码
 
@@ -91,158 +89,97 @@ wget https://github.com/intel/hyperscan/archive/v5.3.0.tar.gz
 tar xf v5.3.0.tar.gz
 ```
 
-1. 配置 Hyperscan 编译选项
-   
-   Ensure that you have the correct [dependencies](http://intel.github.io/hyperscan/dev-reference/getting_started.html#software) present,
-   and then:
-   
-   ```bash
-   cd <where-you-want-to-build-hyperscan>
-   mkdir <build-dir>
-   cd <build-dir>
-   cmake [-G <generator>] [options] <hyperscan-source-path>
-   ```
-   
-   Known working generators:
-   
-   - `Unix Makefiles` — make-compatible makefiles (default on Linux/FreeBSD/Mac OS X)
-   
-   - `Ninja` — [Ninja](http://martine.github.io/ninja/) build files.
-   
-   - `Visual Studio 15 2017` — Visual Studio projects
-   
-   Generators that might work include:
-- `Xcode` — OS X Xcode projects.
-3. 编译 Hyperscan
-   
-   Depending on the generator used:
-   
-   - `cmake --build .` — will build everything
-   
-   - `make -j<jobs>` — use makefiles in parallel
-   
-   - `ninja` — use Ninja build
-   
-   - `MsBuild.exe` — use Visual Studio MsBuild
-   
-   - etc.
+下面是Hyperscan 的编译模板
 
-4. Check Hyperscan
-   
-   Run the Hyperscan unit tests:
-   
-   bin/unit-hyperscan
+```bash
+cd <where-you-want-to-build-hyperscan>
+mkdir <build-dir>
+cd <build-dir>
+cmake [-G <generator>] [options] <hyperscan-source-path>
+```
+
+| generators            | 说明                                                   | 备注                                |
+| --------------------- | ---------------------------------------------------- | --------------------------------- |
+| Unix Makefiles        | makefile                                             | default on Linux/FreeBSD/Mac OS X |
+| Ninja                 | [Ninja](http://martine.github.io/ninja/) build files |                                   |
+| Visual Studio 15 2017 | Visual Studio projects                               |                                   |
+| Xcode                 | OS X Xcode projects                                  | 可能正常工作                            |
 
 ### CMake 选项配置
 
-When CMake is invoked, it generates build files using the given options.
-Options are passed to CMake in the form `-D<variable name>=<value>`.
-Common options for CMake include:
+当CMake执行时，会根据给定的选项生成构建文件，这些选项以  `-D<variable name>=<value>`这种形式声明， 具体的选项和例子如下：
 
-| Variable                | Description                                                                                                                                                  | Example                           |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------- |
-| CMAKE_C_COMPILER        | 指定C编译器. <br>Default is /usr/bin/cc.                                                                                                                          | -DCMAKE_C_COMPILER=/usr/bin/clang |
-| CMAKE_CXX_COMPILER      | 指定C++编译器. <br>Default is /usr/bin/c++.                                                                                                                       |                                   |
-| CMAKE_INSTALL_PREFIX    | Install directory for `install` target                                                                                                                       |                                   |
-| CMAKE_BUILD_TYPE        | 指定编译成果类型.<br>Valid options are Debug, Release, RelWithDebInfo,<br>and MinSizeRel. Default is RelWithDebInfo.                                                 | -DCMAKE_BUILD_TYPE=MinSizeRel     |
-| BUILD_SHARED_LIBS       | 这个选线默认是off,只会生成静态库, 将这个选择赋值为on 就可以生成动态库,而不生成静态库                                                                                                              | -DBUILD_SHARED_LIBS=on            |
-| BUILD_STATIC_AND_SHARED | Build both static and shared Hyperscan libs.<br>Default off.                                                                                                 | -DBUILD_STATIC_AND_SHARED=on      |
-| BOOST_ROOT              | Boost源码路径                                                                                                                                                    | -DBOOST_ROOT=/path/boost_1_73_0   |
-| DEBUG_OUTPUT            | Enable very verbose debug output. Default off.                                                                                                               | -DDEBUG_OUTPUT=on                 |
-| FAT_RUNTIME             | Build the [fat runtime](http://intel.github.io/hyperscan/dev-reference/getting_started.html#fat-runtime). Default<br>true on Linux, not available elsewhere. |                                   |
+| 选项名称                    | 选项释义                                                                                                                             | 例子                                |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| CMAKE_C_COMPILER        | 指定C编译器. <br>Default is /usr/bin/cc.                                                                                              | -DCMAKE_C_COMPILER=/usr/bin/clang |
+| CMAKE_CXX_COMPILER      | 指定C++编译器. <br>Default is /usr/bin/c++.                                                                                           |                                   |
+| CMAKE_INSTALL_PREFIX    | Install directory for `install` target                                                                                           |                                   |
+| CMAKE_BUILD_TYPE        | 指定编译成果类型.取值有以下4个:<br> `Debug`, <br>`Release`, `RelWithDebInfo`(默认值),<br>`MinSizeRel`.<br>                                        | -DCMAKE_BUILD_TYPE=MinSizeRel     |
+| BUILD_SHARED_LIBS       | 这个选线默认是off,只会生成静态库, 将这个选择赋值为on 就可以生成动态库,而不生成静态库                                                                                  | -DBUILD_SHARED_LIBS=on            |
+| BUILD_STATIC_AND_SHARED | 编译生成静态库和动态库<br>默认值是 off.                                                                                                         | -DBUILD_STATIC_AND_SHARED=on      |
+| BOOST_ROOT              | Boost源码路径                                                                                                                        | -DBOOST_ROOT=/path/boost_1_73_0   |
+| DEBUG_OUTPUT            | 允许输出详细的debug信息<br>默认值是 off.                                                                                                      | -DDEBUG_OUTPUT=on                 |
+| FAT_RUNTIME             | Build the [fat runtime](http://intel.github.io/hyperscan/dev-reference/getting_started.html#fat-runtime).<br>该选项只在Linux下可用, 默认开启 |                                   |
 
-For example, to generate a `Debug` build:
+编译举例:
 
-cd <build-dir>
-cmake -DCMAKE_BUILD_TYPE=Debug <hyperscan-source-path>
+```bash
+## 编译 hyperscan v5.3.0 只生成动态库, 使用boost 1.73.0
+cmake -DCMAKE_BUILD_TYPE=MinSizeRel   \
+      -DBUILD_SHARED_LIBS=on          \
+      -DBOOST_ROOT=/root/boost_1_73_0 \
+   /path/to/hyperscan-5.3.0 
+```
 
-#### Build Type
+#### 编译类型(Build Type)
 
-CMake determines a number of features for a build based on the Build Type.
-Hyperscan defaults to `RelWithDebInfo`, i.e. “release with debugging
-information”. This is a performance optimized build without runtime assertions
-but with debug symbols enabled.
+Hyperscan 编译类型主要分为`RelWithDebInfo`/`Release`/`MinSizeRel`和 `Debug`两个大类。Release 版本是性能优化的版本，里面没有运行时断言(这些断言很影响性能)。相反 Debug 版带有运行时断言，Debug版本用于开发 Hyperscan，内部还集成了UT测试。
 
-The other types of builds are:
+默认编译类型是 `RelWithDebInfo`, 意思是Release版本带有debug信息。`Release`版本则是不带有debug信息，`MinSizeRel` 则是 strip(编译的可执行程序中含有多种symbols，debug是其中占比较大的,详细信息可以man strip查看)过后的 Release 版本，体积最小。hyperscan库如果带debug信息, 库文件大小接近170MB, 去掉debug信息只有8MB左右。
 
-> - `Release`: as above, but without debug symbols
+> 题外话：
 > 
-> - `MinSizeRel`: a stripped release build
-> 
-> - `Debug`: used when developing Hyperscan. Includes runtime assertions
->   (which has a large impact on runtime performance), and will also enable
->   some other build features like building internal unit
->   tests.
+> 通常像嵌入式等开发，通常会生成带有debug信息的可执行程序，然后通过 `strip -s` 删除其中的符号缩小体积，这样就就有了2个版本的可执行程序，strip的版本用于发布，当有coredump发生时，可以根据问题发生的位置在有debug信息的版本中追查到指定行的代码(借助`objdump`等命令)。
 
-#### Target Architecture
+#### 目标结构(Target Architecture)
 
-Unless using the [fat runtime](http://intel.github.io/hyperscan/dev-reference/getting_started.html#fat-runtime), by default Hyperscan will be
-compiled to target the instruction set of the processor of the machine that
-being used for compilation. This is done via the use of `-march=native`. The
-result of this means that a library built on one machine may not work on a
-different machine if they differ in supported instruction subsets.
+如果不使用 fat runtime 特性, Hyperscan 会默认使用编译Hyperscan代码的那台机器的CPU指令集去编译目标。这是通过编译器标志位 `-march=native`来实现的。但是这样做的结果是导致在一台机器上编译的库可能无法在另一台拥有不同CPU指令集的机器上运行。为了消除 `-march=native`的影响，可以在`CFLAGS` 和`CXXFLAGS` 中设置正确的编译器标志来指定指令集，这可以通过在cmake的变量 `CMAKE_C_FLAGS` 和 `CMAKE_CXX_FLAGS` 来完成。 例如使用 GCC 4.8 设置 `SSE4.2` 指令集使用下面的方法:
 
-To override the use of `-march=native`, set appropriate flags for the
-compiler in `CFLAGS` and `CXXFLAGS` environment variables before invoking
-CMake, or `CMAKE_C_FLAGS` and `CMAKE_CXX_FLAGS` on the CMake command line. For
-example, to set the instruction subsets up to `SSE4.2` using GCC 4.8:
+```bash
+cmake -DCMAKE_C_FLAGS="-march=corei7"   \
+      -DCMAKE_CXX_FLAGS="-march=corei7" \
+   /path/to/<hyperscan-source-path>
+```
 
-cmake -DCMAKE_C_FLAGS="-march=corei7" \
-  -DCMAKE_CXX_FLAGS="-march=corei7" <hyperscan-source-path>
-
-For more information, refer to [Instruction Set Specialization](http://intel.github.io/hyperscan/dev-reference/compilation.html#instr-specialization).
+更多信息，请参考 [Instruction Set Specialization](http://intel.github.io/hyperscan/dev-reference/compilation.html#instr-specialization).
 
 #### Fat Runtime
 
-A feature introduced in Hyperscan v4.4 is the ability for the Hyperscan
-library to dispatch the most appropriate runtime code for the host processor.
-This feature is called the “fat runtime”, as a single Hyperscan library
-contains multiple copies of the runtime code for different instruction sets.
+Hyperscan v4.4 版本引入一个新的特性，被称为 “fat runtime”, 即一个单独的 Hyperscan 库可以包含多种CPU指令集的运行时代码。这种特性是Linux独有的。当编译支持fat runtime的目标时，Hyperscan会为不同的指令集，进行多次的编译，并且多次的编译目标都会集成到一个库中。当应用程序执行时，Hyperscan会根据当前运行的CPU指令集自动选择适合的运行时代码。这是通过 `CPUID` 检查当前的CPU指令集, 然后一个间接函数就指向了正确版本的API，这对函数调用的性能（function call performance）没有多大影响，因为这是在二进制加载时，ELF loader时做的一次性工作。当 Hyperscan 库运行在没有 `SSSE3`的CPU上时，运行时API会返回 `HS_ARCH_ERROR` 错误。可以通过API `hs_valid_platform()` 验证Hyperscan是否支持当前的平台。
 
-Note
+本次的版本（v5.3.0）支持的运行时种类如下表：
 
-The fat runtime feature is only available on Linux. Release builds of
-Hyperscan will default to having the fat runtime enabled where supported.
+| 种类      | 必需的CPU特性                    | GCC标志                   | 指定Cmake变量         |
+| ------- | --------------------------- | ----------------------- | ----------------- |
+| Core 2  | `SSSE3`                     | `-march=core2`          |                   |
+| Core i7 | `SSE4_2` and `POPCNT`       | `-march=corei7`         |                   |
+| AVX 2   | `AVX2`                      | `-march=core-avx2`      |                   |
+| AVX 512 | `AVX512BW` (see note below) | `-march=skylake-avx512` | -DBUILD_AVX512=on |
 
-When building the library with the fat runtime, the Hyperscan runtime code
-will be compiled multiple times for these different instruction sets, and
-these compiled objects are combined into one library. There are no changes to
-how user applications are built against this library.
+Hyperscan v4.5 增加了 AVX-512 指令的支持。这个指令集成在 Intel “Skylake” Xeon 处理器上。默认情况下， AVX-512 指令没有包括在 fat runtime 中，这是因为不是所有的工具链（toolchains）都支持  AVX-512 指令。开启AVX-512指令需要定义Cmake变量 `-DBUILD_AVX512=on`。
 
-When applications are executed, the correct version of the runtime is selected
-for the machine that it is running on. This is done using a `CPUID` check
-for the presence of the instruction set, and then an indirect function is
-resolved so that the right version of each API function is used. There is no
-impact on function call performance, as this check and resolution is performed
-by the ELF loader once when the binary is loaded.
+由于 fat runtime 需要编译器、libc 、 binutils 的支持, 目前只有Linux的编译器支持 [indirect function “ifunc” function attribute](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-indirect-functions-3321). 这个特性在所有版本GCC上都支持，最新版本的Clang 和  ICC 也支持。其他非Linux操作系统上目前都不支持。
 
-If the Hyperscan library is used on x86 systems without `SSSE3`, the runtime
-API functions will resolve to functions that return [`HS_ARCH_ERROR`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.HS_ARCH_ERROR "HS_ARCH_ERROR") instead of potentially executing illegal instructions. The API function [`hs_valid_platform()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_valid_platform "hs_valid_platform") can be used by application writers to determine if
-the current platform is supported by Hyperscan.
+## 编译 Hyperscan
 
-As of this release, the variants of the runtime that are built, and the CPU
-capability that is required, are the following:
+Depending on the generator used:
 
-| Variant | CPU Feature Flag(s) Required | gcc arch flag           |
-| ------- | ---------------------------- | ----------------------- |
-| Core 2  | `SSSE3`                      | `-march=core2`          |
-| Core i7 | `SSE4_2` and `POPCNT`        | `-march=corei7`         |
-| AVX 2   | `AVX2`                       | `-march=core-avx2`      |
-| AVX 512 | `AVX512BW` (see note below)  | `-march=skylake-avx512` |
+- `cmake --build .` — will build everything
 
-Note
+- `make -j<jobs>` — use makefiles in parallel
 
-Hyperscan v4.5 adds support for AVX-512 instructions - in particular the `AVX-512BW` instruction set that was introduced on Intel “Skylake” Xeon
-processors - however the AVX-512 runtime variant is **not** enabled by
-default in fat runtime builds as not all toolchains support AVX-512
-instruction sets. To build an AVX-512 runtime, the CMake variable `BUILD_AVX512` must be enabled manually during configuration. For
-example:
+- `ninja` — use Ninja build
 
-cmake -DBUILD_AVX512=on <...>
+- `MsBuild.exe` — use Visual Studio MsBuild
 
-As the fat runtime requires compiler, libc, and binutils support, at this time
-it will only be enabled for Linux builds where the compiler supports the [indirect function “ifunc” function attribute](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-indirect-functions-3321).
-
-This attribute should be available on all supported versions of GCC, and
-recent versions of Clang and ICC. There is currently no operating system
-support for this feature on non-Linux systems.
+- etc.

@@ -21,5 +21,3 @@ DROP DATABASE <数据库名>;
 ```sql
 USE <数据库名>;
 ```
-
-

@@ -54,8 +54,6 @@ SELECT field1, field2,...fieldN FROM table_name1, table_name2...
 
 如果给定的条件在表中没有任何匹配的记录，那么查询不会返回任何数据。
 
-
-
 MySQL 的 WHERE 子句的字符串比较是不区分大小写的。 你可以使用 BINARY 关键字来设定 WHERE 子句的字符串比较是区分大小写的。
 
 如下实例: 

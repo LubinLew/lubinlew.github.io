@@ -96,3 +96,42 @@ VALUES ( value1, value2,...valueN );
 ```
 
 如果数据是字符型，必须使用单引号或者双引号，如："value"。
+
+----
+
+## MySQL 修改表中的数据
+
+如果我们需要修改或更新 MySQL 中的数据，我们可以使用 SQL `UPDATE` 命令来操作。
+
+### 语法
+
+以下是 `UPDATE` 命令修改 MySQL 数据表数据的通用 SQL 语法：
+
+```sql
+UPDATE table_name SET field1=new-value1, field2=new-value2 [WHERE Clause]
+```
+
+你可以同时更新一个或多个字段。
+
+- 你可以在 WHERE 子句中指定任何条件。
+- 你可以在一个单独表中同时更新数据。
+
+当你需要更新数据表中指定行的数据时 WHERE 子句是非常有用的。
+
+---
+
+## MySQL 从表中删除数据
+
+你可以使用 SQL 的 DELETE FROM 命令来删除 MySQL 数据表中的记录。
+
+### 语法
+
+以下是 SQL DELETE 语句从 MySQL 数据表中删除数据的通用语法：
+
+DELETE FROM table_name [WHERE Clause]
+
+- 如果没有指定 WHERE 子句，MySQL 表中的所有记录将被删除。
+- 你可以在 WHERE 子句中指定任何条件
+- 您可以在单个表中一次性删除记录。
+
+当你想删除数据表中指定的记录时 WHERE 子句是非常有用的。

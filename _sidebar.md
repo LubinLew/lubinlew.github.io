@@ -8,5 +8,5 @@
 * [MySQL](mysql/)
 * [Python](python/)
 * [HyperScan](hyperscan/)
-* [网络](network)
+* [网络](network/)
 * [网络安全](network_security/)

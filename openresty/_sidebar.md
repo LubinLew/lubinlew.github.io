@@ -11,5 +11,5 @@
   - [FFI库](openresty/lua/library/ffi.md)
 
 - [**OpenResty功能开发**](openresty/dev/README.md)
-  
+  - [正则表达式](openresty/dev/re/re.md)
   - [HTTPS开发](openresty/dev/https.md)

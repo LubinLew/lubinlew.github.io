@@ -3,6 +3,7 @@
 * [k8s](k8s/)
 * [C++](cpp/)
 * [Golang](golang/)
+* [HTTP](http/)
 * [Nginx](nginx/)
 * [OpenResty](openresty/)
 * [MySQL](mysql/)

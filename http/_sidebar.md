@@ -1,5 +1,8 @@
 - [**简介**](http/README.md)
 
+- [**基础知识**](http/common/README.md)
+  - [URI和URL](http/common/uri_and_url.md)
+
 - [**请求头**](http/req_header/README.md)
   - [真实客户端IP地址](http/req_header/client_ip.md)
 

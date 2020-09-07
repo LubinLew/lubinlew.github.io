@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
     if (pid < 0) {/* 异常 */
         perror("fork error:");
         exit(EXIT_FAILURE);
-    }else if (pid == 0) {/* 子进程 */
+    } else if (pid == 0) {/* 子进程 */
         printf("I am the child process.\n");
         /*输出进程ID和父进程ID */
         printf("pid: %d\tppid:%d\n",getpid(),getppid());
@@ -77,10 +77,6 @@ int main(int argc, char* argv[])
     return 0;
 }
 ```
-
-测试结果如下：
-
-![](https://images0.cnblogs.com/blog/305504/201308/21000845-620318dcd34249d28a73cb3872591461.png)
 
 僵尸进程测试程序如下所示：
 
@@ -113,11 +109,7 @@ int main(int argc, char* argv[])
 }
 ```
 
-测试结果如下所示：
-
-![](https://images0.cnblogs.com/blog/305504/201308/21001428-8f9e134ec7dc44c49521cf3b16ceb418.png)
-
-    杀死父进程, 僵尸进程会被init进程收养, 从而解决僵尸进程.
+>     杀死父进程, 僵尸进程会被init进程收养, 从而解决僵尸进程.
 
 ## 僵尸进程解决办法
 
@@ -171,9 +163,7 @@ static void sig_child(int signo)
 }
 ```
 
-测试结果如下所示：
 
-![](https://images0.cnblogs.com/blog/305504/201308/21003933-6ef6e04c09f24830a36c8ea288ea8d35.png)
 
 ### fork两次
 
@@ -222,13 +212,3 @@ int main(int argc, char* argv[])
     exit(EXIT_SUCCESS);
 }
 ```
-
-测试结果如下图所示：
-
-![](https://images0.cnblogs.com/blog/305504/201308/21005536-5a5c2ab4e536470696f864df58ac13e7.png)
-
-
-
-
-
-

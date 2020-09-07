@@ -6,7 +6,7 @@
   - [锁](linux_c_programming/base/lock.md)
 
 - **进程、线程、携程**
-  -[孤儿进程和僵尸进程](linux_c_programming/process/zombie.md)
+  - [孤儿进程和僵尸进程](linux_c_programming/process/zombie.md)
 
 - **网络编程**
   - [null](linux_c_programming/network/)

@@ -1,1 +1,2 @@
+- [git命令](others/git.md)
 - [InfluxDB](others/influxdb.md)

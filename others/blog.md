@@ -12,7 +12,8 @@
 
 ### 购买域名并设置CNAME
 
-首先在服务提供商处购买一个域名， 比如我在godaddy上花15块大洋购买的 `lubinlew.site`。然后在这个域名的DNS设置处，增加一个指向github域名的CNAME。![avatar](_sources/images/others/godaddy_cname_config.png)
+首先在服务提供商处购买一个域名， 比如我在godaddy上花15块大洋购买的 `lubinlew.site`。然后在这个域名的DNS设置处，增加一个指向github域名的CNAME。
+![avatar](_sources/images/others/blog/godaddy_cname_config.png)
 
 配置github个人域名
 

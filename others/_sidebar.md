@@ -1,3 +1,3 @@
 - [git命令](others/git.md)
 - [InfluxDB](others/influxdb.md)
-- [使用github搭建个人博客](other/blog.md)
+- [使用github搭建个人博客](others/blog.md)

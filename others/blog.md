@@ -20,4 +20,4 @@
 
 在仓库的设置中配置 Github Pages 选项
 
-![page-config]((http://lubinlew.github.io/_sources/images/others/blog/github_pages_custom_domain.png)
+![page-config](http://lubinlew.github.io/_sources/images/others/blog/github_pages_custom_domain.png)

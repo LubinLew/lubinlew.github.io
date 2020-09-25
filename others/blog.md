@@ -16,7 +16,7 @@
 
 ![cname-config](http://lubinlew.github.io/_sources/images/others/blog/godaddy_cname_config.png)
 
-配置github个人域名
+### 配置github个人域名
 
 在仓库的设置中配置 Github Pages 选项
 

@@ -9,8 +9,6 @@ external tools.
 
 This chapter introduces the `Test::Nginx` test scaffold that has been widely used to organize test suites for almost all the OpenResty components, including the `ngx_http_lua` module, most of the `lua-resty-*` Lua libraries, as well as full-blown business applications like CloudFlare’s Lua CDN and Lua SSL.
 
-
-
 ## Introduction
 
 OpenResty itself has been relying on automated testing to remain high quality
@@ -30,8 +28,6 @@ also supported to extend the test specification language to add custom
 abstractions for advanced testing needs, usually found in application-level
 regression testing.
 
-
-
 ## Test::Nginx
 
 [Test::Nginx](https://metacpan.org/pod/Test::Nginx) 是一个Nginx的测试框架，使用Perl语言编写，它不需要使用者熟悉Perl语言，因为`Test::Nginx`提供了一个简单的规则来编写测试case。它基于[Test::Base]([Test::Base - A Data Driven Testing Framework - metacpan.org](https://metacpan.org/pod/distribution/Test-Base/lib/Test/Base.pod) 模块，是其子集，所以`Test::Base`提供的特性， `Test::Nginx`都支持。
@@ -39,8 +35,10 @@ regression testing.
 `Test::Nginx` 通过 [CPAN](http://www.cpan.org/)（the Comprehensive Perl Archive Network）发布, 使用下面的命令安装:
 
 ```bash
-yum install -y cpan
+yum install -y cpan perl-Digest-MD5 perl-HTTP-*
+cpan Test::Base
 cpan Test::Nginx
+cpan Test::Nginx::Socket
 ```
 
 For the first time that the `cpan` utility is run, you may be prompted
@@ -57,8 +55,6 @@ unless otherwise specified.
 
 | Note | There is actually another different testing scaffold called `Test::Nginx`,<br>created by Maxim Dounin and maintained by the official NGINX team. That<br>testing module is shipped with the [official<br>NGINX test suite](http://hg.nginx.org/nginx-tests/file/tip) and has no<br>relationship with our `Test::Nginx` except that both of these are meant<br>to test NGINX related code. The NGINX team’s `Test::Nginx` requires the<br>user to directly code in Perl to convey all the test cases, which means<br>that tests written for their `Test::Nginx` are not data driven and requires<br>decent knowledge about Perl programming. |
 | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-
-
 
 ## Test Suite Layout
 
@@ -101,8 +97,6 @@ formatted "data" in these `.t` files.
 
 | Note | The test suite layout convention we use here has also been used by the<br>Perl community for many years. Because `Test::Nginx` is written in Perl<br>and reuses Perl’s testing toolchain, it makes sense for us to simply follow<br>that convention in the NGINX and OpenResty world as well. |
 | ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-
-
 
 ## Test File Layout
 
@@ -391,8 +385,6 @@ We will see how to actually run such test files in the next section.
 
 | Note | The test file layout described in this section is exactly the same<br>as the test files based on other test frameworks derived from `Test::Base`,<br>the superclass of `Test::Nginx::Socket`, except those specialized test<br>sections and specialized Perl functions defined only in `Test::Nginx::Socket`.<br>All the `Test::Base` derivatives share the same basic layout and syntax.<br>They proudly inherit the same veins of blood |
 | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-
-
 
 ## Running Tests
 
@@ -720,8 +712,6 @@ __DATA__
 
 With the `no_shuffle()` call in place, the test blocks are run in the exact
 same order as their appearance in the test file.
-
-
 
 ## Preparing Tests
 

@@ -16,3 +16,7 @@
 
 - [**测试**](openresty/test/README.md)
   - [Test::Nginx工具](openresty/test/test_nginx.md)
+
+- [**编码规范**](openresty/code_style/README.md)
+  - [C 编码规范](openresty/code_style/code_style_c.md)
+  - [Lua 编码规范](openresty/code_style/code_style_lua.md)

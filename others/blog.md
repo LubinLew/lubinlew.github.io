@@ -10,9 +10,11 @@
 
 ### 购买域名并设置CNAME
 
-首先在服务提供商处购买一个域名， 比如我在godaddy上花15块大洋购买的 `lubinlew.site`。然后在这个域名的DNS设置处，增加一个指向github域名的CNAME。
+首先在服务提供商处购买一个域名， 比如我在godaddy上花15块大洋购买的 `lubinlew.site`。然后在这个域名的DNS设置处，增加一个指向github域名的CNAME。下面要做的是将 `blog.lubinlew.site` 映射到 `lubinlew.github.io`
 
 ![cname-config](http://lubinlew.github.io/_sources/images/others/blog/godaddy_cname_config.png)
+
+PS:如果你想要将 `lubinlew.site` 这样的一级域名映射到 `lubinlew.github.io`, 增加`CNAME`时, 将`blog`换成 `www`即可.
 
 ### 配置github个人域名
 
@@ -22,7 +24,7 @@
 
 ### 其他repo对应CNAME
 
-其他仓库发布git pages时, 默认就是 blog.lubinlew.site/`REPO-NAME`，当我们想要单独给其一个二级域名时， 配置方法与上面相同。例如我们有一个[GitHub - LubinLew/WEB-CVE: http/https CVE](https://github.com/LubinLew/WEB-CVE) 库, 想将其发布到 cve.lubinlew.site，按照下面的方法配置：
+其他仓库发布git pages时, 默认就是 blog.lubinlew.site/`REPO-NAME`，当我们想要单独给其一个二级域名时， 配置方法与上面相同。例如我们有一个[GitHub - LubinLew/WEB-CVE: http/https CVE](https://github.com/LubinLew/WEB-CVE) 库, 想将其发布到 `cve.lubinlew.site`，按照下面的方法配置：
 
 #### 配置CNAME
 

@@ -38,8 +38,6 @@ git config --global color.ui false
 
 详细配置见 [Git - git-config Documentation](https://git-scm.com/docs/git-config#_values)
 
-
-
 ## 基本操作
 
 ### Branch操作
@@ -61,33 +59,33 @@ git checkout <name>
 
 #### 增加Branch
 
-
-
 #### 删除Branch
 
 ```bash
 # 删除本地分支
 git branch -d <name>
 # 删除远程分支
-
 ```
 
 ### Tag 操作
 
+查看tag
 
+#### 删除所有tag/release
 
-
-
-
+```bash
+# tag 列表
+export TAGLIST=`git tag -l`
+# 删除本地所有 tag
+git tag -d $TAGLIST
+# 删除 远端 所有 tag
+echo $TAGLIST | xargs git push origin --delete
+# 提交
+git push origin --tags
+```
 
 ## 进阶操作
-
-
 
 ### 删除提交记录
 
 提交错误(包含敏感信息)等时候, 就需要清除提交日志
-
-
-
-

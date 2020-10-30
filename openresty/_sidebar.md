@@ -1,7 +1,6 @@
 - [**简介**](openresty/README.md)
 
 - [**LuaJIT 语法**](openresty/lua/syntax/README.md)
-  
   - [闭包和函数](openresty/lua/syntax/closure.md)
   - [模块和包](openresty/lua/syntax/module_and_package.md)
   - [元表和元方法](openresty/lua/syntax/meta.md)
@@ -15,7 +14,13 @@
   - [HTTPS开发](openresty/dev/https.md)
 
 - [**测试**](openresty/test/README.md)
-  - [Test::Nginx工具](openresty/test/test_nginx.md)
+  - [Test::Nginx工具](openresty/test/TestNginx/README.md)
+    - [元分段(meta section)](openresty/test/TestNginx/README.md)
+    - [Perl函数(Exported Perl Functions)](openresty/test/TestNginx/perl_functions.md)
+    - [支持的分段(Sections supported)](openresty/test/TestNginx/section_support.md)
+    - [环境变量(Environment variables)](openresty/test/TestNginx/environment_variable.md)
+
+
 
 - [**编码规范**](openresty/code_style/README.md)
   - [C 编码规范](openresty/code_style/code_style_c.md)

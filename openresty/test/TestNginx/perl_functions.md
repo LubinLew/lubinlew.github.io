@@ -2,27 +2,27 @@
 
 The following Perl functions are exported by default:
 
-## [run_tests](https://metacpan.org/pod/Test::Nginx::Socket#run_tests)
+[run_tests](https://metacpan.org/pod/Test::Nginx::Socket#run_tests)
 
 **测试框架的入口点**. 在 `__DATA__` 前调用该函数就会开启测试。其他配置类的Perl函数必须在这个函数之前调用。
 
-## [no_shuffle](https://metacpan.org/pod/Test::Nginx::Socket#no_shuffle)
+[no_shuffle](https://metacpan.org/pod/Test::Nginx::Socket#no_shuffle)
 
 默认情况下，测试框架会自动打乱测试case的执行顺序。在 `run_tests` 之前调用该函数则不会打乱测试case的执行程序。
 
-## [use_hup](https://metacpan.org/pod/Test::Nginx::Socket#use_hup)
+[use_hup](https://metacpan.org/pod/Test::Nginx::Socket#use_hup)
 
 Calling this function before calling `run_tests` will make the current test scaffold behave as if `TEST_NGINX_USE_HUP` was set to 1.
 
-## [no_long_string](https://metacpan.org/pod/Test::Nginx::Socket#no_long_string)
+[no_long_string](https://metacpan.org/pod/Test::Nginx::Socket#no_long_string)
 
 By default, failed string equality test will use the [Test::LongString](https://metacpan.org/pod/Test::LongString) module to generate the error message. Calling this function before calling `run_tests` will turn this off.
 
-## [no_diff](https://metacpan.org/pod/Test::Nginx::Socket#no_diff)
+[no_diff](https://metacpan.org/pod/Test::Nginx::Socket#no_diff)
 
 When the `no_long_string` function is called, the `Text::Diff` module will be used to generate a diff for failed string equality test. Calling this `no_diff` function before calling `run_tests` will turn this diff output format off and just generate the raw "got" text and "expected" text.
 
-## [worker_connections](https://metacpan.org/pod/Test::Nginx::Socket#worker_connections)
+[worker_connections](https://metacpan.org/pod/Test::Nginx::Socket#worker_connections)
 
 设置Nginx的 `worker_connections` 配置，例子如下：
 
@@ -33,13 +33,13 @@ run_tests();
 
 默认值是 64，`run_tests()`前调用。
 
-## [repeat_each](https://metacpan.org/pod/Test::Nginx::Socket#repeat_each)
+[repeat_each](https://metacpan.org/pod/Test::Nginx::Socket#repeat_each)
 
 调用该函数带一个整型参数，这个整型参数是要求测试框架对当前测试文件中的每一个测试case重复测试的次数。当不带参数调用这个函数时， 返回当前设定的值。
 
 默认值是 1，`run_tests()`前调用。
 
-## [shutdown_error_log](https://metacpan.org/pod/Test::Nginx::Socket#shutdown_error_log)
+[shutdown_error_log](https://metacpan.org/pod/Test::Nginx::Socket#shutdown_error_log)
 
 You can use this section to check the error log generated during nginx exit.
 
@@ -57,7 +57,7 @@ or an example for using an array value,
 
 **WARNING:** skip the shutdown_error_log tests under the HUP reload mode.
 
-## [no_shutdown_error_log](https://metacpan.org/pod/Test::Nginx::Socket#no_shutdown_error_log)
+[no_shutdown_error_log](https://metacpan.org/pod/Test::Nginx::Socket#no_shutdown_error_log)
 
 Very much like the `--- shutdown_error_log` section, but does the opposite test, i.e., pass only when the specified patterns of lines do not appear in the *error.log* file at all.
 
@@ -69,7 +69,7 @@ Here is an example:
 
 This test will fail when any of the line in the *error.log* file contains the string `"[error]"`.
 
-## [env_to_nginx](https://metacpan.org/pod/Test::Nginx::Socket#env_to_nginx)
+[env_to_nginx](https://metacpan.org/pod/Test::Nginx::Socket#env_to_nginx)
 
 Specify additional system environmnt variables to be passed into the nginx server.
 
@@ -127,7 +127,7 @@ By default, only the following environments are passed:
 
 - MOCKNOEAGAIN
 
-## [workers](https://metacpan.org/pod/Test::Nginx::Socket#workers)
+[workers](https://metacpan.org/pod/Test::Nginx::Socket#workers)
 
 Call this function before `run_tests()` to configure Nginx's `worker_processes` directive's value. For example,
 
@@ -135,13 +135,13 @@ Call this function before `run_tests()` to configure Nginx's `worker_processe
 
 Default to 1.
 
-## [master_on](https://metacpan.org/pod/Test::Nginx::Socket#master_on)
+[master_on](https://metacpan.org/pod/Test::Nginx::Socket#master_on)
 
 Call this function before `run_tests()` to turn on the Nginx master process.
 
 By default, the master process is not enabled unless in the "HUP reload" testing mode.
 
-## [log_level](https://metacpan.org/pod/Test::Nginx::Socket#log_level)
+[log_level](https://metacpan.org/pod/Test::Nginx::Socket#log_level)
 
 Call this function before `run_tests()` to set the default error log filtering level in Nginx.
 
@@ -149,15 +149,15 @@ This global setting can be overridden by the per-test-block `--- log_level` se
 
 默认值是  `debug`，`run_tests()`前调用。
 
-## [check_accum_error_log](https://metacpan.org/pod/Test::Nginx::Socket#check_accum_error_log)
+[check_accum_error_log](https://metacpan.org/pod/Test::Nginx::Socket#check_accum_error_log)
 
 Make `--- error_log` and `--- no_error_log` check accumulated error log across duplicate requests controlled by `repeat_each`. By default, only the error logs belonging to the individual `repeat_each` request is tested.
 
-## [no_root_location](https://metacpan.org/pod/Test::Nginx::Socket#no_root_location)
+[no_root_location](https://metacpan.org/pod/Test::Nginx::Socket#no_root_location)
 
 By default, the Nginx configuration file generated by the test scaffold automatically emits a `location /`. Calling this function before `run_tests()` disables this behavior such that the test blocks can have their own root locations.
 
-## [bail_out](https://metacpan.org/pod/Test::Nginx::Socket#bail_out)
+[bail_out](https://metacpan.org/pod/Test::Nginx::Socket#bail_out)
 
 Aborting the whole test session (not just the current test file) with a specified message.
 
@@ -167,7 +167,7 @@ For example,
 
 `bail_out(``"something bad happened!"``);`
 
-## [add_cleanup_handler](https://metacpan.org/pod/Test::Nginx::Socket#add_cleanup_handler)
+[add_cleanup_handler](https://metacpan.org/pod/Test::Nginx::Socket#add_cleanup_handler)
 
 Rigister custom cleanup handler for the current perl/prove process by specifying a Perl subroutine object as the argument.
 
@@ -181,7 +181,7 @@ For example,
 
 `});`
 
-## [add_block_preprocessor](https://metacpan.org/pod/Test::Nginx::Socket#add_block_preprocessor)
+[add_block_preprocessor](https://metacpan.org/pod/Test::Nginx::Socket#add_block_preprocessor)
 
 Add a custom Perl preprocessor to each test block by specifying a Perl subroutine object as the argument.
 
@@ -329,7 +329,7 @@ Save this as file *t/MyTester.pm*. And then in one of your test file:
 
 You can do the same with the `--- http_config` section, or even inventing your own new sections. This is very powerful.
 
-## [add_response_body_check](https://metacpan.org/pod/Test::Nginx::Socket#add_response_body_check)
+[add_response_body_check](https://metacpan.org/pod/Test::Nginx::Socket#add_response_body_check)
 
 Add custom checks for testing response bodies by specifying a Perl subroutine object as the argument.
 
@@ -375,6 +375,6 @@ Below is an example for doing HTML title checks:
 
  `});`
 
-## [is_str](https://metacpan.org/pod/Test::Nginx::Socket#is_str)
+[is_str](https://metacpan.org/pod/Test::Nginx::Socket#is_str)
 
 Performs intelligent string comparison subtests which honors both `no_long_string` and regular expression references in the "expected" argument.

@@ -1,6 +1,6 @@
 # Meta sections
 
-## [`--- ONLY`](https://metacpan.org/pod/Test::Nginx::Socket#-ONLY)
+## `--- ONLY`
 
 只运行指定的测试case。 
 
@@ -8,10 +8,8 @@ It is also very intuitive for the developer's workflow. One does not have to spe
 
 This is definitely one of the most useful and frequently used features.
 
-## [`--- SKIP`](https://metacpan.org/pod/Test::Nginx::Socket#-SKIP)
+## `--- SKIP`
 
 无条件的跳过指定测试case。
 
 You can use `--- skip_nginx` and `--- skip_nginx2` providied by this module (see their documentation below) to conditionally skip tests according to the current NGINX server versions. You can also use `--- skip_openssl` (see its documentation below) to conditionally skip tests according to the current OpenSSL version.
-
-

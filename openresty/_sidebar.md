@@ -15,7 +15,7 @@
 
 - [**测试**](openresty/test/README.md)
   - [Test::Nginx工具](openresty/test/TestNginx/README.md)
-    - [元分段(meta section)](openresty/test/TestNginx/README.md)
+    - [元分段(meta section)](openresty/test/TestNginx/meta_section.md)
     - [Perl函数(Exported Perl Functions)](openresty/test/TestNginx/perl_functions.md)
     - [支持的分段(Sections supported)](openresty/test/TestNginx/section_support.md)
     - [环境变量(Environment variables)](openresty/test/TestNginx/environment_variable.md)

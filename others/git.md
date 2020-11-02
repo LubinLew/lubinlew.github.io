@@ -65,11 +65,18 @@ git checkout <name>
 # 删除本地分支
 git branch -d <name>
 # 删除远程分支
+git push origin --delete <name>
 ```
 
 ### Tag 操作
 
-查看tag
+#### 查看tag
+
+```bash
+git tag -l
+```
+
+
 
 #### 删除所有tag/release
 
@@ -86,6 +93,26 @@ git push origin --tags
 
 ## 进阶操作
 
-### 删除提交记录
+### 删除所有提交记录
 
 提交错误(包含敏感信息)等时候, 就需要清除提交日志
+
+```bash
+#切换分支
+git checkout --orphan latest_branch
+
+#添加所有文件
+git add -A
+
+#提交更改
+git commit -am "no message"
+
+#删除分支
+git branch -D master
+
+#重命名分支
+git branch -m master
+
+#强制更新
+git push -f origin master
+```

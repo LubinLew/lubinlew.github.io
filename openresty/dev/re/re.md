@@ -4,7 +4,7 @@
 
 openresty中正则表达式
 
-### ngx.re.match
+## ngx.re.match
 
 **syntax:** *captures, err = ngx.re.match(subject, regex, options?, ctx?, res_table?)*
 

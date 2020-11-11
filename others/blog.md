@@ -12,7 +12,7 @@
 
 首先在服务提供商处购买一个域名， 比如我在godaddy上花15块大洋购买的 `lubinlew.site`。然后在这个域名的DNS设置处，增加一个指向github域名的CNAME。下面要做的是将 `blog.lubinlew.site` 映射到 `lubinlew.github.io`
 
-![cname-config](http://lubinlew.github.io/_sources/images/others/blog/godaddy_cname_config.png)
+![cname-config](_sources/blog/godaddy_cname_config.png)
 
 PS:如果你想要将 `lubinlew.site` 这样的一级域名映射到 `lubinlew.github.io`, 增加`CNAME`时, 将`blog`换成 `www`即可.
 
@@ -20,7 +20,7 @@ PS:如果你想要将 `lubinlew.site` 这样的一级域名映射到 `lubinlew.g
 
 在仓库的设置中配置 Github Pages 选项
 
-![page-config](http://lubinlew.github.io/_sources/images/others/blog/github_pages_custom_domain.png)
+![page-config](_sources/blog/github_pages_custom_domain.png)
 
 ### 其他repo对应CNAME
 
@@ -28,8 +28,8 @@ PS:如果你想要将 `lubinlew.site` 这样的一级域名映射到 `lubinlew.g
 
 #### 配置CNAME
 
-![cname-add](http://lubinlew.github.io/_sources/images/others/blog/godaddy_add_cname.png)
+![cname-add](_sources/blog/godaddy_add_cname.png)
 
 #### 配置github个人域名
 
-![page-config2](http://lubinlew.github.io/_sources/images/others/blog/github_pages_custom_domain2.png)
+![page-config2](_sources/blog/github_pages_custom_domain2.png)

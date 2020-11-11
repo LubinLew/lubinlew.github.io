@@ -2,4 +2,4 @@
 
 
 
-![page-config](http://lubinlew.github.io/_sources/images/others/blog/github_pages_custom_domain.png)
+![license list](_sources/images/others/license/license_list.png)

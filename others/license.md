@@ -1,10 +1,12 @@
 # 各种开源协议
 
+github 建立仓库时可以选择license种类
+
 ![license list](_sources/license/license_list.png)
 
+## License 列表
 
-
-|         |                                         |     |     |
+| 协议简称    | 协议全称                                    |     |     |
 | ------- | --------------------------------------- | --- | --- |
 | MIT     | MIT License                             |     |     |
 | Apache  | Apache License 2.0                      |     |     |
@@ -18,5 +20,6 @@
 |         | Boost Software License 1.0              |     |     |
 |         | Creative Commons Zero v1.0 Universal    |     |     |
 
+## 如何选择License
 
 ![license diff](_sources/license/license_diff.png)

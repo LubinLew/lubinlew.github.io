@@ -1,6 +1,6 @@
 # 各种开源协议
 
-![license list](_sources/images/others/license/license_list.png)
+![license list](_sources/license_list.png)
 
 
 
@@ -19,4 +19,4 @@
 |         | Creative Commons Zero v1.0 Universal    |     |     |
 
 
-![license diff](_sources/images/others/license/license_diff.png)
+![license diff](_sources/license_diff.png)

@@ -2,3 +2,4 @@
 - [InfluxDB](others/influxdb.md)
 - [使用github搭建个人博客](others/blog.md)
 - [各种开源协议](others/license.md)
+- [Linux共享](others/sshfs.md)

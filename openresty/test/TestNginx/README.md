@@ -35,10 +35,8 @@ regression testing.
 `Test::Nginx` 通过 [CPAN](http://www.cpan.org/)（the Comprehensive Perl Archive Network）发布, 使用下面的命令安装:
 
 ```bash
-yum install -y cpan perl-Digest-MD5 perl-HTTP-*
-cpan Test::Base
-cpan Test::Nginx
-cpan Test::Nginx::Socket
+yum install -y cpanminus
+cpanm Test::Nginx
 ```
 
 For the first time that the `cpan` utility is run, you may be prompted

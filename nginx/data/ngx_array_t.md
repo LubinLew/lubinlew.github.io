@@ -46,11 +46,9 @@ ngx_array_init(ngx_array_t *array, ngx_pool_t *pool, ngx_uint_t n, size_t size)
 
     return NGX_OK;
 }
-
-
 ```
 
-### 动态数组- ngx_array_create
+### 动态数组创建 - ngx_array_create
 
 ```c
 /* 创建并初始化动态数组
@@ -72,17 +70,14 @@ ngx_array_create(ngx_pool_t *p, ngx_uint_t n, size_t size)
         return NULL;
     }
 
-	/* 为数组元素申请内存,并初始化 ngx_array_t 结构  */
+    /* 为数组元素申请内存,并初始化 ngx_array_t 结构  */
     if (ngx_array_init(a, p, n, size) != NGX_OK) {
         return NULL;
     }
 
     return a;
 }
-
 ```
-
-
 
 ### 释放动态数组 - ngx_array_destroy
 
@@ -110,11 +105,7 @@ ngx_array_destroy(ngx_array_t *a)
         p->d.last = (u_char *) a;
     }
 }
-
-
 ```
-
-
 
 ### 获取动态数组一个新元素的地址 - ngx_array_push
 
@@ -159,11 +150,7 @@ ngx_array_push(ngx_array_t *a)
 
     return elt;
 }
-
-
 ```
-
-
 
 ### 获取动态数组n个新元素的地址 - ngx_array_push_n
 
@@ -207,8 +194,4 @@ ngx_array_push_n(ngx_array_t *a, ngx_uint_t n)
 
     return elt;
 }
-
-
 ```
-
-

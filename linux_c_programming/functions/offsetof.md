@@ -58,3 +58,7 @@ main(void)
     exit(EXIT_SUCCESS);
 }
 ```
+
+## REMARK
+
+在C++中,需要特别小心, 只有符合[POD](https://en.wikipedia.org/wiki/Passive_data_structure)(Plain Old Data)的结构体才能使用`offsetof()`,否则会得到错误的结果。

@@ -127,19 +127,32 @@ struct ngx_queue_s {
     (n)->next->prev = (h)->prev;    \
     (h)->prev = (n)->prev;          \
     (h)->prev->next = h;
+```
 
-/* 获取链表节点q所在的数据结构(结构体)的地址
- * q 为链表的一个元素,type为一个结构体类型, 该结构中必须有ngx_queue_t 类型成员,
- * link为type类型中 ngx_queue_t成员的名字.
- * offsetof(type, link) 就是 ngx_queue_t成员相对于这个结构的偏移量,
- * q为链表元素的指针,即内存位置,该内存位置减去偏移量即为该结构体的最开始位置,即该结构体的指针.
- */
+### ngx_queue_data
+
+获取链表节点q所在的数据结构(结构体)的地址
+`q` 为链表的一个元素,
+`type` 为一个结构体类型, 该结构中必须有ngx_queue_t 类型成员,
+`link` 为 `type` 类型中 `ngx_queue_t` 成员的名字.
+[offsetof](linux_c_programming/functions/offsetof.md)(type, link) 就是 `ngx_queue_t` 成员相对于这个结构的偏移量,
+`q` 为链表元素的指针,即内存位置,该内存位置减去偏移量即为该结构体的最开始位置,即该结构体的指针。
+
+```c
 #define ngx_queue_data(q, type, link)  \
     (type *) ((u_char *) q - offsetof(type, link))
+```
 
+### ngx_queue_middle
+
+```c
 /* 返回链表中心元素, 返回第N/2+1个元素 */
 ngx_queue_t *ngx_queue_middle(ngx_queue_t *queue);
+```
 
+### ngx_queue_sort
+
+```c
 /* 使用插入排序法对链表进行排序,排序方法由用户定义的回调函数决定 */
 void ngx_queue_sort(ngx_queue_t *queue,
     ngx_int_t (*cmp)(const ngx_queue_t *, const ngx_queue_t *));

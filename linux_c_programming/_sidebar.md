@@ -4,6 +4,9 @@
   - [内存对齐](linux_c_programming/base/memory_alignment.md)
   - [整形范围](linux_c_programming/base/integer_range.md)
   - [锁](linux_c_programming/base/lock.md)
+  
+- **常用函数**
+  - [offsetof](linux_c_programming/functions/offsetof.md)
 
 - **进程、线程、携程**
   - [孤儿进程和僵尸进程](linux_c_programming/process/zombie.md)

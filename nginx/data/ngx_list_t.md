@@ -1,5 +1,3 @@
-### 向单向链表中添加元素 - ngx_list_push
-
 # 单向链表 - ngx_list_t
 
 nginx的单向链表设计和[ngx_array_t](nginx/data/ngx_array_t.md)很相似。链表由多个节点组成, 每个节点其实是一个数组。所以nginx的单向链表其实就是一个更高级的动态数组。数组中的元素由不同的节点管理，与 [ngx_array_t](nginx/data/ngx_array_t.md) 相比，不需要保证数组中元素在内存中连续性。适用于那些数组元素数量不确定的场合。

@@ -122,7 +122,7 @@ ngx_array_push(ngx_array_t *a)
         size = a->size * a->nalloc;
         p = a->pool;
 
-        /* 动态数组的使用的内存的最后位置与     内存池未分配内存的位置相同,
+        /* 动态数组的使用的内存的最后位置与内存池未分配内存的位置相同,
          * 即该内存池上分配了动态数组后,没有再分配其他内存,
          * 这样, 内存池就可以继续为动态数组分配内存
          */
@@ -155,6 +155,7 @@ ngx_array_push(ngx_array_t *a)
 ### 获取动态数组n个新元素的地址 - ngx_array_push_n
 
 ```c
+/* 原理同 ngx_array_push 相同 */
 void *
 ngx_array_push_n(ngx_array_t *a, ngx_uint_t n)
 {

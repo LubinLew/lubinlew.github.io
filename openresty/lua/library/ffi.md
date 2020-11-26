@@ -1,12 +1,12 @@
 # LuaJIT 的 FFI 库
 
+> 翻译自 [FFI Tutorial](https://luajit.org/ext_ffi_tutorial.html)
+
 ## 简介
 
 FFI库允许在纯Lua代码中调用外部的C函数 和 使用C的数据结构。标准的Lua调用C函数需要编写额外的绑定函数，使用FFI就可以省略这个复杂的步骤，因为FFI可以解析C语言的声明。
 
-FFI库与LuaJIT是一体的，不能分离成一个单独的模块。JIT编译器对访问C数据结构生成的代码与C编译器生成的代码 性能相差无几，性能远高于使用绑定函数的方式。
-
-
+FFI库与LuaJIT是一体的，不能分离成一个单独的模块。JIT编译器对访问C数据结构生成的代码与C编译器生成的代码性能相差无几，性能远高于使用绑定函数的方式。
 
 ## 使用说明
 
@@ -82,10 +82,10 @@ ffi.cdef[[
 unsigned long compressBound(unsigned long sourceLen);
 
 int compress2(uint8_t *dest, unsigned long *destLen,
-	      const uint8_t *source, unsigned long sourceLen, int level);
+          const uint8_t *source, unsigned long sourceLen, int level);
 
 int uncompress(uint8_t *dest, unsigned long *destLen,
-	      const uint8_t *source, unsigned long sourceLen);
+          const uint8_t *source, unsigned long sourceLen);
 ]]
 
 --[[ 加载zlib的动态库,在Posix标准的系统中,zlib库都是默认安装的.
@@ -129,101 +129,121 @@ assert(txt2 == txt)
 
 ### 为C类型定义元方法
 
-The following code explains how to define metamethods for a C type.
-We define a simple point type and add some operations to it:
+下面的代码展示了如何为一个C类型定义元方法。我们定义一个简单的 point 类型(坐标)和一些其相关的操作函数。
 
 ```lua
 local ffi = require("ffi")
+
+-- 声明 point_t(坐标) 结构体
 ffi.cdef[[
-   typedef struct { double x, y; } point_t;
+   typedef struct { 
+       double x;
+       double y; 
+   } point_t;
 ]]
 
+-- We have to declare the variable holding the point constructor first, because it's used inside of a metamethod.
+-- 必需先定义point变量, 因为下面的元方法中会使用它
 local point
+
+-- metatable 定义
 local mt = {
+  --[[元方法 + 
+    将2个坐标相加, 返回一个新的坐标对象
+    这里假定 相加的2个对象都是 point_t 类型的, 但是其实可以是任何类型,
+    当然需要保证其中一个是 point_t 类型， 例如 point_t 类型加一个数字， 或者 数字加point_t类型。
+  --]]
   __add = function(a, b) return point(a.x+b.x, a.y+b.y) end,
+
+  --[[ 元方法 #
+    计算该点到原点(0,0)的距离(原理:勾股定理,长方形求对角线长度)
+  --]]
   __len = function(a)    return math.sqrt(a.x*a.x + a.y*a.y) end,
+
+  --[[ 自定义名称的元方法 area
+    上面的元方法 和C++运算符重载相似,
+    当然我们可以定义 自己命名的元方法,
+    注意 __index 与 __newindex 的区别
+  --]]
   __index = {
     area = function(a)   return a.x*a.x + a.y*a.y end,
   },
 }
 
+--[[将元表 与 C类型 绑定, 这个只需要做一次
+  注意: 这个绑定是永久的(permanent), 之后不允许修改 这个原表 和 __index 表
+For convenience, a constructor is returned by ffi.metatype().
+We're not required to use it, though. The original C type can still
+be used e.g. to create an array of points. The metamethods automatically
+apply to any and all uses of this type.
+--]]
 point = ffi.metatype("point_t", mt)
 
+
+--测试
 local a = point(3, 4)
 print(a.x, a.y)  --> 3  4
+
+-- 元方法: __len
 print(#a)        --> 5
+
+-- 元方法: area
+-- 注意调用的方式是a:area() 而不是 a.area()
 print(a:area())  --> 25
+
+-- 元方法: __add
 local b = a + point(0.5, 8)
 print(#b)        --> 12.5
 ```
 
-Here's the step-by-step explanation:
+The C type metamethod mechanism is most useful when used in conjunction with C libraries that are written in an object-oriented style. Creators return a pointer to a new instance and methods take an instance pointer as the first argument. Sometimes you can just point __index to the library namespace and __gc to the destructor and you're done. But often enough you'll want to add convenience wrappers, e.g. to return actual Lua strings or when returning multiple values.
 
-① This defines the C type for a
-two-dimensional point object.
+一些C库仅声明了实例指针是 `void *` 类型（或者是调用者不需要通过实例指针访问内部成员)。这种情况下你可以使用一个假的类型声明。例如下面这样：
 
-② We have to declare the variable
-holding the point constructor first, because it's used inside of a
-metamethod.
+```c
+// 不完整结构的指针
+typedef struct foo_type *foo_handle;
+```
 
-③ Let's define an __add metamethod which adds the coordinates of two points and creates a new
-point object. For simplicity, this function assumes that both arguments
-are points. But it could be any mix of objects, if at least one operand
-is of the required type (e.g. adding a point plus a number or vice
-versa). Our __len metamethod returns the distance of a point to
-the origin.
+C 库并不知道你在FFI中做了什么样的声明, 只要你传递的实例指针是对的，那么完全没有任何问题。其实，熟悉C的话就知道，这是C语言中一个惯用的技巧。例如你想给其他人提供一套接口函数实现某些功能， 但是具体实现是保密的，不想对外泄露。创建功能返回的实例是一个结构体，但是你不想让调用者知道这个结构体的具体实现。你就可以使用上面这种方式，给调用者提供的接口函数声明如下：
 
-④ If we run out of operators, we can
-define named methods, too. Here the __index table defines an area function. For custom indexing needs, one might want to
-define __index and __newindex *functions* instead.
+```c
+/*  ---给调用者提供的API接口声明---- */
 
-⑤ This associates the metamethods with
-our C type. This only needs to be done once. For convenience, a
-constructor is returned by [ffi.metatype()](http://luajit.org/ext_ffi_api.html#ffi_metatype).
-We're not required to use it, though. The original C type can still
-be used e.g. to create an array of points. The metamethods automatically
-apply to any and all uses of this type.
+//这样声明就隐藏了结构体的具体定义,即使gdb调试也看不到内部结构
+typedef struct instance_s instance_t;
 
-Please note that the association with a metatable is permanent and **the metatable must not be modified afterwards!** Ditto for the __index table.
+//创建实例
+instance_t* create_instance(void);
+//销毁实例
+void destory_instance(instance_t* ins);
+//实例功能
+int some_method(instance_t* ins);
+```
 
-⑥ Here are some simple usage examples
-for the point type and their expected results. The pre-defined
-operations (such as a.x) can be freely mixed with the newly
-defined metamethods. Note that area is a method and must be
-called with the Lua syntax for methods: a:area(), not a.area().
+`struct instance_s` 的定义放到自己内部的头文件中即可。
 
-The C type metamethod mechanism is most useful when used in
-conjunction with C libraries that are written in an object-oriented
-style. Creators return a pointer to a new instance and methods take an
-instance pointer as the first argument. Sometimes you can just point __index to the library namespace and __gc to the
-destructor and you're done. But often enough you'll want to add
-convenience wrappers, e.g. to return actual Lua strings or when
-returning multiple values.
 
-Some C libraries only declare instance pointers as an opaque void * type. In this case you can use a fake type for all
-declarations, e.g. a pointer to a named (incomplete) struct will do: typedef struct foo_type *foo_handle. The C side doesn't
-know what you declare with the LuaJIT FFI, but as long as the underlying
-types are compatible, everything still works.
 
 ### 翻译C原型(Translating C Idioms)
 
 这是常用的Here's a list of common C idioms and their translation to the LuaJIT FFI:
 
-| Idiom                                                                                                        | C code                                     | Lua code                                                            |
-| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------ | ------------------------------------------------------------------- |
-| Pointer dereference<br>int *p;                                                                               | x = *p;<br>*p = y;                         | x = **p[0]**<br>**p[0]** = y                                        |
-| Pointer indexing<br>int i, *p;                                                                               | x = p[i];<br>p[i+1] = y;                   | x = p[i]<br>p[i+1] = y                                              |
-| Array indexing<br>int i, a[];                                                                                | x = a[i];<br>a[i+1] = y;                   | x = a[i]<br>a[i+1] = y                                              |
-| struct/union dereference<br>struct foo s;                                                                    | x = s.field;<br>s.field = y;               | x = s.field<br>s.field = y                                          |
-| struct/union pointer deref.<br>struct foo *sp;                                                               | x = sp->field;<br>sp->field = y;           | x = **s.field**<br>**s.field** = y                                  |
-| Pointer arithmetic<br>int i, *p;                                                                             | x = p + i;<br>y = p - i;                   | x = p + i<br>y = p - i                                              |
-| Pointer difference<br>int *p1, *p2;                                                                          | x = p1 - p2;                               | x = p1 - p2                                                         |
-| Array element pointer<br>int i, a[];                                                                         | x = &a[i];                                 | x = **a+i**                                                         |
-| Cast pointer to address<br>int *p;                                                                           | x = (intptr_t)p;                           | x = **tonumber(<br> ffi.cast("intptr_t",<br>          p))**         |
-| Functions with outargs<br>void foo(int *inoutlen);                                                           | int len = x;<br>foo(&len);<br>y = len;     | **local len =<br>  ffi.new("int[1]", x)<br>foo(len)<br>y = len[0]** |
-| [Vararg conversions](http://luajit.org/ext_ffi_semantics.html#convert_vararg)<br>int printf(char *fmt, ...); | printf("%g", 1.0);<br>printf("%d", 1);<br> | printf("%g", 1);<br>printf("%d",<br>  **ffi.new("int", 1)**)        |
+| 类型                                                              | 声明                          | C 代码                                       | Lua 代码                                                      | 备注         |
+| --------------------------------------------------------------- | --------------------------- | ------------------------------------------ | ----------------------------------------------------------- | ---------- |
+| 指针引用                                                            | int *p;                     | x = *p;<br>*p = y;                         | x = **p[0]**<br>**p[0]** = y                                | *p => p[0] |
+| 指针索引                                                            | int i, *p;                  | x = p[i];<br>p[i+1] = y;                   | x = p[i]<br>p[i+1] = y                                      |            |
+| 数组索引                                                            | int i, a[];                 | x = a[i];<br>a[i+1] = y;                   | x = a[i]<br>a[i+1] = y                                      |            |
+| 访问`结构体/联合`体成员1                                                  | struct foo s;               | x = s.field;<br>s.field = y;               | x = s.field<br>s.field = y                                  |            |
+| 访问`结构体/联合`体成员2                                                  | struct foo *sp;             | x = sp->field;<br>sp->field = y;           | x = **s.field**<br>**s.field** = y                          |            |
+| 指针运算1                                                           | int i, *p;                  | x = p + i;<br>y = p - i;                   | x = p + i<br>y = p - i                                      |            |
+| 指针运算2                                                           | int *p1, *p2;               | x = p1 - p2;                               | x = p1 - p2                                                 |            |
+| 获取数组元素地址                                                        | int i, a[];                 | x = &a[i];                                 | x = **a+i**                                                 |            |
+| 指针类型转换                                                          | int *p;                     | x = (intptr_t)p;                           | x = tonumber( ffi.cast("intptr_t", p) )                     |            |
+| 有出参数的函数                                                         | void foo(int *inoutlen);    | int len = x;<br>foo(&len);<br>y = len;     | local len =  ffi.new("int[1]", x)<br>foo(len)<br>y = len[0] |            |
+| [可变参数](http://luajit.org/ext_ffi_semantics.html#convert_vararg) | int printf(char *fmt, ...); | printf("%g", 1.0);<br>printf("%d", 1);<br> | printf("%g", 1);<br>printf("%d",  ffi.new("int", 1))        |            |
 
-### 到底缓存库函数
+### 是否需要缓存库函数
 
 缓存库函数到局部变量或者upvalues中, 是Lua的惯例, 看下面的例子:
 
@@ -234,7 +254,7 @@ local function foo(x)
 end
 ```
 
-这样会节省多次的hash表查找。但是这对LuaJIT来说其实并不是太重要，因为JIT编译器对hash表查找做了大量的优化，甚至能够将大部分优化拓展(hoist)到内部循环之外。那为什还要使用上面这种缓存式的写法呢？这是<u>因为JIT编译器并不能够消除所有的hash表查找，并且还能少敲一点键盘</u>(saves some typing for often-used functions)。
+这样会节省多次的hash表查找。但是这对LuaJIT来说其实并不是太重要，因为JIT编译器对hash表查找做了大量的优化，甚至能够将大部分优化拓展(hoist)到内部循环之外。那为什还要使用上面这种缓存式的写法呢？这是<u>因为JIT编译器并不能够消除所有的hash表查找，并且还能少敲一点键盘。
 
 **但是通过FFI库调用C函数时，情况就有些不同了**。JIT编译器有特殊的逻辑来消除所有的C库命名空间中函数的查找，所以缓存C命名空间中的函数，是反向优化：
 
@@ -260,9 +280,7 @@ end
 local lib = ffi.load(...)
 ```
 
-这时把它拷贝到一个函数作用域中的局部变量，是没有必要的.
-
-
+这时把它拷贝到一个函数作用域中的局部变量，是没有必要的。
 
 ## FFI库的API介绍
 
@@ -414,10 +432,12 @@ This function allows safe integration of unmanaged resources into the
 automatic memory management of the LuaJIT garbage collector. Typical
 usage:
 
+```lua
 local p = ffi.gc(ffi.C.malloc(n), ffi.C.free)
 ...
 p = nil -- Last reference to p is gone.
--- GC will eventually run finalizer: ffi.C.free(p)
+-- GC 会自动执行 ffi.C.free(p) 释放内存
+```
 
 A cdata finalizer works like the __gc metamethod for userdata
 objects: when the last reference to a cdata object is gone, the

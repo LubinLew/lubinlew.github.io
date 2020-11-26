@@ -196,7 +196,7 @@ local b = a + point(0.5, 8)
 print(#b)        --> 12.5
 ```
 
-The C type metamethod mechanism is most useful when used in conjunction with C libraries that are written in an object-oriented style. Creators return a pointer to a new instance and methods take an instance pointer as the first argument. Sometimes you can just point __index to the library namespace and __gc to the destructor and you're done. But often enough you'll want to add convenience wrappers, e.g. to return actual Lua strings or when returning multiple values.
+当C库以面向对象的方式编写，那么C类型元方法的机制会变得非常有用。所谓面向对象的方式就是：Creators 返回一个实例的指针，所以实例方法函数的第一个参数都是这个实例指针。有时你仅需要将  `__index` 指向库的命令空间(namespace) 并且 `__gc` 指向析构函数就足够了。 但是通常你会想要封装成更便捷的接口, 例如需要返回Lua 类型字符串 或者 返回多个值的时候。
 
 一些C库仅声明了实例指针是 `void *` 类型（或者是调用者不需要通过实例指针访问内部成员)。这种情况下你可以使用一个假的类型声明。例如下面这样：
 
@@ -223,9 +223,9 @@ int some_method(instance_t* ins);
 
 `struct instance_s` 的定义放到自己内部的头文件中即可。
 
+### 
 
-
-### 翻译C原型(Translating C Idioms)
+### 翻译C语法
 
 这是常用的Here's a list of common C idioms and their translation to the LuaJIT FFI:
 
@@ -254,7 +254,7 @@ local function foo(x)
 end
 ```
 
-这样会节省多次的hash表查找。但是这对LuaJIT来说其实并不是太重要，因为JIT编译器对hash表查找做了大量的优化，甚至能够将大部分优化拓展(hoist)到内部循环之外。那为什还要使用上面这种缓存式的写法呢？这是<u>因为JIT编译器并不能够消除所有的hash表查找，并且还能少敲一点键盘。
+这样会节省多次的hash表查找。但是这对LuaJIT来说其实并不是太重要，因为JIT编译器对hash表查找做了大量的优化，甚至能够将大部分优化拓展(hoist)到内部循环之外。那为什还要使用上面这种缓存式的写法呢？这是因为JIT编译器并不能够消除所有的hash表查找。
 
 **但是通过FFI库调用C函数时，情况就有些不同了**。JIT编译器有特殊的逻辑来消除所有的C库命名空间中函数的查找，所以缓存C命名空间中的函数，是反向优化：
 
@@ -330,16 +330,8 @@ redundant declarations from unrelated header files.
 
 #### ffi.C
 
-This is the default C library namespace — note the
-uppercase 'C'. It binds to the default set of symbols or
-libraries on the target system. These are more or less the same as a
-C compiler would offer by default, without specifying extra link
-libraries.
-
-On POSIX systems, this binds to symbols in the default or global
-namespace. This includes all exported symbols from the executable and
-any libraries loaded into the global namespace. This includes at least libc, libm, libdl (on Linux), libgcc (if compiled with GCC), as well as any exported
-symbols from the Lua/C API provided by LuaJIT itself.
+这是C库默认的命名空间(C要大写)，它会绑定(bind)目标系统的默认符号(symbol) 或者库，这和C编译器提供默认库有些相似。在 POSIX 系统上, this binds to symbols in the default or global namespace. This includes all exported symbols from the executable and
+any libraries loaded into the global namespace. 最少会包含 libc, libm, libdl (on Linux), libgcc (if compiled with GCC), as well as any exported symbols from the Lua/C API provided by LuaJIT itself.
 
 On Windows systems, this binds to symbols exported from the *.exe, the lua51.dll (i.e. the Lua/C API
 provided by LuaJIT itself), the C runtime library LuaJIT was linked

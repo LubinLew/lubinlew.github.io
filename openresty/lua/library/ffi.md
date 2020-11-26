@@ -287,17 +287,14 @@ local lib = ffi.load(...)
 ### 词汇表
 
 - **cdecl** — 抽象的C类型声明 (a Lua string).
-- **ctype** — C类型对象. 这时一种特殊的  **cdata** ，returned by ffi.typeof(). It serves as a **cdata** [constructor](http://luajit.org/ext_ffi_api.html#ffi_new) when called.
+- **ctype** — C类型对象. 这是一种特殊的  **cdata** ，returned by ffi.typeof(). It serves as a **cdata** [constructor](http://luajit.org/ext_ffi_api.html#ffi_new) when called.
 - **cdata** — C数据对象. 他持有相对应 **ctype** 的值
 - **ct** — A C type specification which can be used for
   most of the API functions. Either a **cdecl**, a **ctype** or a **cdata** serving as a template type.
 - **cb** — 回调对象. C数据对象中持有一个特殊的函数指针. Calling this function from
   C code runs an associated Lua function.
-- **VLA** — A variable-length array is declared with a ? instead of the number of elements, e.g. "int[?]".
-  The number of elements (nelem) must be given when it's [created](http://luajit.org/ext_ffi_api.html#ffi_new).
-- **VLS** — 可变长结构体(A variable-length struct) is a struct C
-  type where the last element is a **VLA**. The same rules for
-  declaration and creation apply.
+- **VLA** — 可变长数组。使用 `?` 代替数组元素个数, 例如 `int[?]`。数组元素的个数必须在 [创建](http://luajit.org/ext_ffi_api.html#ffi_new) 的时候指定
+- **VLS** — 可变长结构体(C结构体的最后一个成员是 VLA)
 
 ### 声明和访问外部符号
 
@@ -339,12 +336,8 @@ with (msvcrt*.dll), kernel32.dll, user32.dll and gdi32.dll.
 
 #### clib = ffi.load(name [,global])
 
-This loads the dynamic library given by name and returns
-a new C library namespace which binds to its symbols. On POSIX
-systems, if global is true, the library symbols are
-loaded into the global namespace, too.
-
-If name is a path, the library is loaded from this path.
+通过`name`加载指定的动态库, 返回一个新的C库命令空间,这个空间绑定了这个库里的符号(symbol). On POSIX
+systems, if global is true, the library symbols are loaded into the global namespace, too. If name is a path, the library is loaded from this path.
 Otherwise name is canonicalized in a system-dependent way and
 searched in the default search path for dynamic libraries:
 

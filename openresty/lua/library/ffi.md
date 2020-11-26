@@ -300,30 +300,41 @@ local lib = ffi.load(...)
 
 #### ffi.cdef(def)
 
-Adds multiple C declarations for types or external symbols (named
-variables or functions). def must be a Lua string. It's
-recommended to use the syntactic sugar for string arguments as
-follows:
+该函数用来声明外部的符号(named variables or functions).  参数 `def` 必须使用Lua string。建议使用下面语法糖的形式：
 
-ffi.cdef[[
-typedef struct foo { int a, b; } foo_t;  // Declare a struct and typedef.
-int dofoo(foo_t *f, int n);  /* Declare an external C function. */
+```lua
+ffi.cdef [[
+// 声明一个结构体定义
+typedef struct foo { 
+    int a;
+    int b; 
+} foo_t; 
+
+/* 声明一个外部的C函数 */
+int dofoo(foo_t *f, int n); 
 ]]
+```
 
-The contents of the string (the part in green above) must be a
-sequence of [C declarations](http://luajit.org/ext_ffi_semantics.html#clang),
-separated by semicolons. The trailing semicolon for a single
-declaration may be omitted.
+参数 `def` 包含的内容必须是 [C声明](http://luajit.org/ext_ffi_semantics.html#clang)(多个声明使用分号分隔，与C头文件一致)。注意这里外部符号仅仅是声明，还没有与任何地址绑定，绑定是在C库命名空间里实现的。
 
-Please note that external symbols are only *declared*, but they
-are *not bound* to any specific address, yet. Binding is
-achieved with C library namespaces (see below).
+目前不支持C预处理(宏定义展开等)，所以C声明中不能有预处理的内容(如 `#define`等)，`#pragma pack`  例外。将C的头文件中的`#define`定义替换成  `enum`, `static const` 或者`typedef`，最好使用C预处理器处理一下。 
 
-C declarations are not passed through a C pre-processor,
-yet. No pre-processor tokens are allowed, except for #pragma pack. Replace #define in existing
-C header files with enum, static const or typedef and/or pass the files through an external
-C pre-processor (once). Be careful not to include unneeded or
-redundant declarations from unrelated header files.
+> C语言预处理要做的工作：
+> 
+> - 将所有的#define删除，并且展开所有的宏定义 
+> - 处理所有的条件预编译指令，比如#if #ifdef #elif #else #endif等 
+> - 处理#include 预编译指令，将被包含的文件插入到该预编译指令的位置。 
+> - 删除所有注释 “//”和”/* */”. 
+> - 添加行号和文件标识，以便编译时产生调试用的行号及编译错误警告行号。 
+> - 保留所有的#pragma编译器指令，因为编译器需要使用它们
+> 
+> Linux下预处理命令：
+> 
+> ```bash
+> gcc -E test.c > test.i    //等价于 cpp test.c >test.i 
+> ```
+
+
 
 #### ffi.C
 

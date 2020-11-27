@@ -1,6 +1,6 @@
 # 字符串处理 - string
 
-Lua的字符串下标从1开始。 Indices are allowed to be negative and are interpreted as indexing backwards, from the end of the string. Thus, the last character is at position -1, and so on.
+Lua的字符串下标从1开始。 下标可以是负数,表示逆序, 例如 -1 表示倒数第一个字符, -2表示倒数第二个字符,以此类推。
 
 The string library provides all its functions inside the table `string`. It also sets a metatable for strings where the `__index` field points to the `string` table. Therefore, you can use the string functions in object-oriented style. For instance, `string.byte(s, i)` can be written as `s:byte(i)`.
 
@@ -8,7 +8,9 @@ The string library assumes one-byte character encodings.
 
 ### `string.byte (s [, i [, j]])`
 
-Returns the internal numerical codes of the characters `s[i]`, `s[i+1]`, ···, `s[j]`. The default value for `i` is 1; the default value for `j` is `i`.
+Returns the internal numerical codes of the characters `s[i]`, `s[i+1]`, ···, `s[j]`. The 参数 `i` 的默认值是 1; 参数 `j` 的默认值等于参数 `i`.
+
+
 
 Note that numerical codes are not necessarily portable across platforms.
 

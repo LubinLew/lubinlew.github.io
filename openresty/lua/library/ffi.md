@@ -556,7 +556,7 @@ Returns true if obj has the C type given by ct. Returns false otherwise.
 
 C type qualifiers (const etc.) are ignored. Pointers are checked with the standard pointer compatibility rules, but without any special treatment for void *. If ct specifies a struct/union, then a pointer to this type is accepted, too. Otherwise the types must match exactly.
 
-Note: this function accepts all kinds of Lua objects for the obj argument, but always returns false for non-cdata objects.
+Note: 这个函数可以接受任意类型的Lua对象，但是对于非 cdata 对象总是返回 false。
 
 ### Utility Functions
 
@@ -566,16 +566,27 @@ Note: this function accepts all kinds of Lua objects for the obj argument, but a
 err = ffi.errno([newerr])
 ```
 
-Returns the error number set by the last C function call which
-indicated an error condition. If the optional newerr argument
-is present, the error number is set to the new value and the previous
-value is returned.
+返回上一个C函数设置的 `errno` (Linux中`errno`是一个线程特定数据，每个线程都有自己的`errno`相互不影响)。 如果指定了可选参数 `newerr`，那么 `errno` 会被设置成 `newerr`，但是返回值是 `errno` 之前的值。建立在 C 函数失败后, 尽早调用该函数，防止被其他函数失败后覆盖`errno`。`errno`里保存的The errno value is preserved across hooks, memory allocations, invocations of the JIT compiler and other internal VM activity. 在Windows系统上需要你手动调用 `GetLastError()` 来达到相同的目的。
 
-This function offers a portable and OS-independent way to get and set the
-error number. Note that only *some* C functions set the error number. And it's only significant if the function actually indicated an error condition (e.g. with a return value of -1 or NULL). Otherwise, it may or may not contain any previously set value.
+```lua
+local ffi = require('ffi')
 
-You're advised to call this function only when needed and as close as possible after the return of the related C function. The errno value is preserved across hooks, memory allocations, invocations of the JIT compiler and other internal VM activity. The same
-applies to the value returned by GetLastError() on Windows, but you need to declare and call it yourself.
+ffi.cdef [[
+    int open(const char *pathname, int flags);
+    char *strerror(int errnum);
+]]
+
+-- open() return -1 if an error occurred(in which case, errno is set appropriately)
+local ret = ffi.C.open('/non/exist/file', 0)
+if ret == -1 then
+    errno = ffi.errno()
+    local err_str = ffi.C.strerror(errno);
+    local lua_str = ffi.string(err_str)
+    print("open faild: ", lua_str) --->open faild: 	No such file or directory
+end
+```
+
+
 
 #### ffi.string
 

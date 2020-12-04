@@ -285,10 +285,9 @@ local lib = ffi.load(...)
 ### 词汇表
 
 - **cdecl** — 抽象的C类型声明 (a Lua string).
-- **ctype** — C类型对象. 这是一种特殊的  **cdata** ，returned by ffi.typeof(). It serves as a **cdata** [constructor](http://luajit.org/ext_ffi_api.html#ffi_new) when called.
-- **cdata** — C数据对象. 他持有相对应 **ctype** 的值
-- **ct** — A C type specification which can be used for
-  most of the API functions. Either a **cdecl**, a **ctype** or a **cdata** serving as a template type.
+- **ctype** — C 类型对象. 这是一种特殊的  **cdata** ，returned by ffi.typeof(). 它相当于 **cdata** 的构造函数。
+- **cdata** — C 数据对象. 他持有相对应 **ctype** 的值。
+- **ct** — C 类型声明，可以大部分API使用。Either a **cdecl**, a **ctype** or a **cdata** 扮演一个模板类型。
 - **cb** — 回调对象. C数据对象中持有一个特殊的函数指针. Calling this function from
   C code runs an associated Lua function.
 - **VLA** — 可变长数组。使用 `?` 代替数组元素个数, 例如 `int[?]`。数组元素的个数必须在 [创建](http://luajit.org/ext_ffi_api.html#ffi_new) 的时候指定
@@ -329,7 +328,7 @@ int dofoo(foo_t *f, int n);
 > Linux下预处理命令：
 > 
 > ```bash
-> gcc -E test.c > test.i    //等价于 cpp test.c >test.i 
+> gcc -E test.c > test.i    # 等价于 cpp test.c >test.i 
 > ```
 
 #### ffi.C
@@ -359,11 +358,13 @@ The following API functions create cdata objects (type() returns "cdata"). All c
 
 #### cdata = ffi.new(ct [,nelem] [,init...])
 
-cdata = *ctype*([nelem,] [init...])
+根据参数 `ct` 指定的类型创建一个 `cdata` 对象。 如果 `ct` 声明的是 VLA 或者 VLS 类型，那么需要设置参数 `nelem` 来指定数组的长度 。
 
-Creates a cdata object for the given ct. VLA/VLS types
-require the nelem argument. The second syntax uses a ctype as
-a constructor and is otherwise fully equivalent.
+#### cdata = *ctype*([nelem,] [init...])
+
+这种方式使用 cypte 作为构造函数，其他方面与上面的方式完全等效。
+
+这两个函数都有用来初始化的 `init`  参数。
 
 The cdata object is initialized according to the [rules for initializers](http://luajit.org/ext_ffi_semantics.html#init),
 using the optional init arguments. Excess initializers cause
@@ -382,7 +383,7 @@ a named struct or typedef with ffi.cdef() or to create a single ctype object for
 
 #### ctype = ffi.typeof(ct)
 
-Creates a ctype object for the given ct.
+根据参数 `ct` 指定的类型创建一个 C 类型对象。
 
 This function is especially useful to parse a cdecl only once and then
 use the resulting ctype object as a [constructor](http://luajit.org/ext_ffi_api.html#ffi_new).
@@ -391,8 +392,7 @@ use the resulting ctype object as a [constructor](http://luajit.org/ext_ffi_api.
 
 Creates a scalar cdata object for the given ct. The cdata
 object is initialized with init using the "cast" variant of
-the [C type conversion
-rules](http://luajit.org/ext_ffi_semantics.html#convert).
+the [C type conversion rules](http://luajit.org/ext_ffi_semantics.html#convert).
 
 This functions is mainly useful to override the pointer compatibility
 checks or to convert pointers to addresses or vice versa.
@@ -439,42 +439,132 @@ pointer. An existing finalizer can be removed by setting a nil finalizer, e.g. r
 
 ffi.C.free(ffi.gc(p, nil)) -- Manually free the memory.
 
-### C Type Information
+### C 类型信息
 
-The following API functions return information about C types.
-They are most useful for inspecting cdata objects.
+下面的API用来返回 C 类型的信息。主要用来检测 `cdata` 对象。
 
-#### size = ffi.sizeof(ct [,nelem])
+#### ffi.sizeof
 
-Returns the size of ct in bytes. Returns nil if
-the size is not known (e.g. for "void" or function types).
-Requires nelem for VLA/VLS types, except for cdata objects.
+```lua
+size = ffi.sizeof(ct [,nelem])
+```
 
-#### align = ffi.alignof(ct)
+返回参数 `ct` 指向类型的字节数。如果大小未知，则返回`nil`(例如 `void` 或者 函数类型)。对于 VLA / VLS 类型，除了**cdata** 对象，都需要指定参数`nelem`。
 
-Returns the minimum required alignment for ct in bytes.
+```lua
+local ffi = require('ffi')
 
-#### ofs [,bpos,bsize] = ffi.offsetof(ct, field)
+ffi.cdef [[
+    typedef struct {
+        int a;
+        int b;
+    }data_t;
+
+    // VLS 结构体
+    typedef struct { 
+        int data;
+        char vla[?]; // VLA
+    } vls_t;
+]]
+
+local size
+
+size = ffi.sizeof('data_t')
+print('size = ', size)  ---> size = 8
+
+size = ffi.sizeof('data_t[5]')
+print('size = ', size) ---> size = 40
+
+-- 计算 VLA 的大小
+size = ffi.sizeof('data_t[?]', 5)
+print('size = ', size) ---> size = 40
+
+-- 计算 cdata 的大小
+local array = ffi.new('data_t[?]', 5)
+size = ffi.sizeof(array)
+print('size = ', size) ---> size = 40
+
+-- 计算 VLS 的大小
+size = ffi.sizeof('vls_t', 4)
+print('size = ', size)  ---> size = 8
+```
+
+
+
+#### ffi.alignof
+
+```lua
+align = ffi.alignof(ct)
+```
+
+返回参数 `ct` 指向类型需要对齐的字节数。`alignof` 是C++11的一个关键字，整体来说就是C语言的结构体对齐问题(不同编译器对结构体对齐要求略有差异，C++的类也有结构体对齐的要求)。通常来说返回值就是结构体中占用字节数最多的那个类型的长度。这个函数对于只关注上层编程的人，基本没有什么用处。
+
+看下面的例子，环境是Linux x64，不同环境类型占用的字节数是有差异的，一些单片机中int只占2个字节。
+
+```lua
+local ffi = require('ffi')
+
+ffi.cdef [[
+    typedef struct {
+        char   a;
+        signed b;
+        int    c;
+        long   d;
+        float  e;
+        double f;
+    }data1_t;
+
+    typedef struct {
+        char a;
+        int b[10];
+    }data2_t;
+]]
+
+local size
+
+size = ffi.alignof('data1_t')
+print('data1_t align = ', size)  ---> 8
+
+size = ffi.sizeof('data1_t')
+print('data1_t size  = ', size) ---> 40
+
+
+size = ffi.alignof('data2_t')
+print('data2_t align = ', size)  ---> 4
+
+size = ffi.sizeof('data2_t')
+print('data2_t size  = ', size)  ---> 44
+```
+
+#### ffi.offsetof
+
+```lua
+ofs [,bpos,bsize] = ffi.offsetof(ct, field)
+```
 
 Returns the offset (in bytes) of field relative to the start
 of ct, which must be a struct. Additionally returns
 the position and the field size (in bits) for bit fields.
 
-#### status = ffi.istype(ct, obj)
+#### ffi.istype
+
+```lua
+status = ffi.istype(ct, obj)
+```
 
 Returns true if obj has the C type given by ct. Returns false otherwise.
 
-C type qualifiers (const etc.) are ignored. Pointers are
-checked with the standard pointer compatibility rules, but without any
-special treatment for void *. If ct specifies a struct/union, then a pointer to this type is accepted,
-too. Otherwise the types must match exactly.
+C type qualifiers (const etc.) are ignored. Pointers are checked with the standard pointer compatibility rules, but without any special treatment for void *. If ct specifies a struct/union, then a pointer to this type is accepted, too. Otherwise the types must match exactly.
 
-Note: this function accepts all kinds of Lua objects for the obj argument, but always returns false for non-cdata
-objects.
+Note: this function accepts all kinds of Lua objects for the obj argument, but always returns false for non-cdata objects.
 
 ### Utility Functions
 
-#### err = ffi.errno([newerr])
+#### ffi.errno
+
+```lua
+err = ffi.errno([newerr])
+```
 
 Returns the error number set by the last C function call which
 indicated an error condition. If the optional newerr argument
@@ -482,64 +572,111 @@ is present, the error number is set to the new value and the previous
 value is returned.
 
 This function offers a portable and OS-independent way to get and set the
-error number. Note that only *some* C functions set the error
-number. And it's only significant if the function actually indicated an
-error condition (e.g. with a return value of -1 or NULL). Otherwise, it may or may not contain any previously set
-value.
+error number. Note that only *some* C functions set the error number. And it's only significant if the function actually indicated an error condition (e.g. with a return value of -1 or NULL). Otherwise, it may or may not contain any previously set value.
 
-You're advised to call this function only when needed and as close as
-possible after the return of the related C function. The errno value is preserved across hooks, memory allocations,
-invocations of the JIT compiler and other internal VM activity. The same
-applies to the value returned by GetLastError() on Windows, but
-you need to declare and call it yourself.
+You're advised to call this function only when needed and as close as possible after the return of the related C function. The errno value is preserved across hooks, memory allocations, invocations of the JIT compiler and other internal VM activity. The same
+applies to the value returned by GetLastError() on Windows, but you need to declare and call it yourself.
 
-#### str = ffi.string(ptr [,len])
+#### ffi.string
 
-Creates an interned Lua string from the data pointed to by ptr.
+```lua
+str = ffi.string(ptr [,len])
+```
 
-If the optional argument len is missing, ptr is
-converted to a "char *" and the data is assumed to be
-zero-terminated. The length of the string is computed with strlen().
+根据指针指向的数据，创建一个Lua 字符串。
 
-Otherwise ptr is converted to a "void *" and len gives the length of the data. The data may contain
-embedded zeros and need not be byte-oriented (though this may cause
-endianess issues).
+- 如果省略参数 `len` ，那么 `ptr` 会转换成 `char *` 类型，并且假定 `ptr`指向的数据是 NULL 结尾的，字符串的长度使用`strlen()` 计算。
 
-This function is mainly useful to convert (temporary) "const char *" pointers returned by
-C functions to Lua strings and store them or pass them to other
-functions expecting a Lua string. The Lua string is an (interned) copy
-of the data and bears no relation to the original data area anymore.
-Lua strings are 8 bit clean and may be used to hold arbitrary,
-non-character data.
+- 否则，`ptr` 会被转换成 `void *` 类型，使用给定参数 `len`  获取数据，数据中可能内嵌NULL并且不需要面向字节(可能会引起大小端问题)。
 
-Performance notice: it's faster to pass the length of the string, if
-it's known. E.g. when the length is returned by a C call like sprintf().
+这个函数的主要作用是将 C 函数返回的 `const char *` 类型转换成 Lua 字符串。来达到存储或者传递给其他需要Lua字符串参数的函数。 转换后的Lua字符串是原始数据的拷贝，之后与原始数据就没有任何关系了。
 
-#### ffi.copy(dst, src, len)
+性能提示：如果已知字符串的长度，那么声明参数 `len` 会使函数运行更快。
 
+
+
+#### ffi.copy
+
+```lua
+ffi.copy(dst, src, len)
 ffi.copy(dst, str)
+```
 
-Copies the data pointed to by src to dst. dst is converted to a "void *" and src is converted to a "const void *".
+将数据从 `src` 拷贝到 `dst`。`dst` 被转换成 `void *` 类型，`src` 会被转换成 `const void *` 类型。
 
-In the first syntax, len gives the number of bytes to copy.
-Caveat: if src is a Lua string, then len must not
-exceed #src+1.
+第一种方式，参数 `len` 会指定拷贝的字节数量，如果参数 `src` 是一个Lua字符串，那么`len` 的长度不能超过 `#src+1`。
 
-In the second syntax, the source of the copy must be a Lua string. All
-bytes of the string *plus a zero-terminator* are copied to dst (i.e. #src+1 bytes).
+```c
+local ffi = require('ffi')
 
-Performance notice: ffi.copy() may be used as a faster
-(inlinable) replacement for the C library functions memcpy(), strcpy() and strncpy().
+ffi.cdef [[
+    void *malloc(size_t size);
+    void free(void *ptr);
+    int printf(const char *format, ...);
+]]
 
-#### ffi.fill(dst, len [,c])
+local c_buf = ffi.C.malloc(12)
 
-Fills the data pointed to by dst with len constant
-bytes, given by c. If c is omitted, the data is
-zero-filled.
+local lua_str = 'hello world'
+ffi.copy(c_buf, lua_str, #lua_str + 1)
+ffi.C.printf("%s\n", c_buf)
+ffi.C.free(c_buf)
+```
 
-Performance notice: ffi.fill() may be used as a faster
-(inlinable) replacement for the C library function memset(dst, c, len). Please note the different
-order of arguments!
+第二种方式，`src` 必须是一个Lua字符串。所有Lua字符串的字节加上一个NULL(`#src+1`个字节)被拷贝到 `dst` 。
+
+```c
+local ffi = require('ffi')
+
+ffi.cdef [[
+    void *malloc(size_t size);
+    void free(void *ptr);
+    int  printf(const char *format, ...);
+]]
+
+local c_buf = ffi.C.malloc(12)
+
+local lua_str = 'hello world'
+ffi.copy(c_buf, lua_str)
+ffi.C.printf("%s\n", c_buf)
+ffi.C.free(c_buf)
+```
+
+性能提示：`ffi.copy()` 可以用作C 函数 `memcpy()`, `strcpy()` ,`strncpy()`性能更好的替代。
+
+#### ffi.fill
+
+```lua
+ffi.fill(dst, len [,c])
+```
+
+填充函数，功能同 C 语言的 `memset()` 函数功能完全相同。使用参数 `c` 的值填充参数`dst`指向的位置 `len` 长度的数据。参数 `c` 默认值为0。该函数可用作 `memset(dst，c，le)`的替代，因为其性能更好。另外请注意参数的顺序不同！
+
+```lua
+
+ffi.cdef [[
+   typedef struct {
+	   int a;
+	   int b;
+   } data_t;
+]]
+
+local array_ptr  = ffi.new('data_t[10]')
+
+--计算数组长度(字节数)
+local array_size = ffi.sizeof('data_t[10]')
+print('array size: ', array_size)   --> 80
+
+--使用 1 填充结构体数组,四字节的int型被填充为 0x01010101
+ffi.fill(array_ptr, array_size, 1)
+
+print(0x01010101)
+for i=0,9 do
+	print('array[',i,'] = ', array_ptr[i].a)
+end
+```
+
+
 
 ### Target-specific Information
 
@@ -562,11 +699,45 @@ target ABI (Application Binary Interface). Returns false otherwise. The followin
 
 ### ffi.os
 
-Contains the target OS name. Same contents as [jit.os](http://luajit.org/ext_jit.html#jit_os).
+[变量非函数]当前操作系统的名称(字符串), 取值范围如下 :
+
+- "Windows",
+
+- "Linux", 
+
+- "OSX", 
+
+- "BSD", 
+
+- "POSIX" 
+
+- "Other"
+
+```lua
+local ffi=require('ffi')
+print(ffi.os)  --> Linux
+```
 
 ### ffi.arch
 
-Contains the target architecture name. Same contents as [jit.arch](http://luajit.org/ext_jit.html#jit_arch).
+[变量非函数]当前操作系统架构的名称(字符串), 取值范围如下:
+
+- "x86"
+
+- "x64"
+
+- "arm"
+
+- "ppc"
+
+- "ppcspe"
+
+- "mips"
+
+```lua
+local ffi=require('ffi')
+print(ffi.arch)  --> x64
+```
 
 ## Methods for Callbacks
 
@@ -588,10 +759,9 @@ This method is useful to dynamically switch the receiver of callbacks
 without creating a new callback each time and registering it again (e.g.
 with a GUI library).
 
-## Extended Standard Library Functions
+## 对标准库函数的扩展
 
-The following standard library functions have been extended to work
-with cdata objects:
+针对于FFI的功能，对标准的Lua库函数进行了扩展，使其能支持cdata对象的操作。
 
 ### n = tonumber(cdata)
 
@@ -616,16 +786,11 @@ iter, obj, start = ipairs(cdata)
 Calls the __pairs or __ipairs metamethod of the
 corresponding ctype.
 
-## Extensions to the Lua Parser
+## 对Lua解释器的扩展
 
 The parser for Lua source code treats numeric literals with the
-suffixes LL or ULL as signed or unsigned 64 bit
-integers. Case doesn't matter, but uppercase is recommended for
-readability. It handles both decimal (42LL) and hexadecimal
-(0x2aLL) literals.
+suffixes LL or ULL as signed or unsigned 64 bit integers. Case doesn't matter, but uppercase is recommended for readability. It handles both decimal (42LL) and hexadecimal(0x2aLL) literals.
 
 The imaginary part of complex numbers can be specified by suffixing
 number literals with i or I, e.g. 12.5i.
-Caveat: you'll need to use 1i to get an imaginary part with
-the value one, since i itself still refers to a variable
-named i.
+Caveat: you'll need to use 1i to get an imaginary part with the value one, since i itself still refers to a variable named i.

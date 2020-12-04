@@ -12,13 +12,15 @@ FFI 库允许在纯 Lua 代码中调用外部的 `C 函数` 和 使用 `C 的数
 
 ### 加载FFI库
 
-FFI库是内建的LuaJIT中的， 但是默认不会加载和初始化。所以使用之前需要加载它
+FFI库是内建于LuaJIT中的， 但是默认不会加载和初始化。所以使用之前需要手动加载它
 
 ```lua
 local ffi = require("ffi")
 ```
 
-需要注意的是，这行代码并不是在全局 table 中定义了一个名为`ffi`的变量。你需要local化使用`ffi`变量，`require`函数的作用只是防止重复加载。如果你想要在交互式命令行中尝试使用FFI，那么你需要省略 local 限定，因为在命令行中不会跨行保存局部变量。
+需要注意的是，这行代码并不是在全局 table 中定义了一个名为`ffi`的变量。你需要`local`化使用`ffi`变量，`require`函数的作用只是防止重复加载。
+
+如果你想要在交互式命令行中尝试使用FFI，那么你需要省略 `local` 限定，因为在命令行中不会跨行保存局部变量。
 
 ### 访问标准系统函数
 
@@ -489,8 +491,6 @@ size = ffi.sizeof('vls_t', 4)
 print('size = ', size)  ---> size = 8
 ```
 
-
-
 #### ffi.alignof
 
 ```lua
@@ -593,8 +593,6 @@ str = ffi.string(ptr [,len])
 
 性能提示：如果已知字符串的长度，那么声明参数 `len` 会使函数运行更快。
 
-
-
 #### ffi.copy
 
 ```lua
@@ -653,11 +651,10 @@ ffi.fill(dst, len [,c])
 填充函数，功能同 C 语言的 `memset()` 函数功能完全相同。使用参数 `c` 的值填充参数`dst`指向的位置 `len` 长度的数据。参数 `c` 默认值为0。该函数可用作 `memset(dst，c，le)`的替代，因为其性能更好。另外请注意参数的顺序不同！
 
 ```lua
-
 ffi.cdef [[
    typedef struct {
-	   int a;
-	   int b;
+       int a;
+       int b;
    } data_t;
 ]]
 
@@ -672,11 +669,9 @@ ffi.fill(array_ptr, array_size, 1)
 
 print(0x01010101)
 for i=0,9 do
-	print('array[',i,'] = ', array_ptr[i].a)
+    print('array[',i,'] = ', array_ptr[i].a)
 end
 ```
-
-
 
 ### Target-specific Information
 

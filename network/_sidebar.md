@@ -1,3 +1,7 @@
 - **基础知识**
    - [正向代理](network/proxy.md)
-  
+   - [负载均衡算法](network/load_balance/)
+      - [轮询](network/load_balance/round_robin.md)
+      - [随机](network/load_balance/random.md)
+      - [源IP-HASH](network/load_balance/ip_hash.md)
+      - [最少连接数](network/load_balance/least_connect.md)

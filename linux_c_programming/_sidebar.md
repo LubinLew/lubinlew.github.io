@@ -4,6 +4,7 @@
   - [内存对齐](linux_c_programming/base/memory_alignment.md)
   - [整形范围](linux_c_programming/base/integer_range.md)
   - [锁](linux_c_programming/base/lock.md)
+  - [存储指针的类型](linux_c_programming/base/int_store_pointer.md)
   
 - **常用函数**
   - [offsetof](linux_c_programming/functions/offsetof.md)

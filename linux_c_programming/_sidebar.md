@@ -15,8 +15,8 @@
 - **网络编程**
   - [简介](linux_c_programming/network/)
   - [套接字](linux_c_programming/network/socket/)
-     - [惊群效应](linux_c_programming/network/socket/thundering_herd.md)
-     - [SO_REUSEPORT](linux_c_programming/network/socket/reuseport.md)
+  - [惊群效应](linux_c_programming/network/thundering_herd.md)
+  - [SO_REUSEPORT](linux_c_programming/network/reuseport.md)
 
 - **数据结构和算法**
   - [null](linux_c_programming/algorithm/)

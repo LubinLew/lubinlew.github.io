@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cn">
+<html>
 <head>
   <meta charset="UTF-8">
   <title>学习笔记</title>
@@ -7,7 +7,7 @@
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
    <link rel="stylesheet" href="_sources/js/themes/vue.css">
-   <link rel="stylesheet" type="text/css" href="_sources/live2d/assets/waifu.min.css?v=1.4.2"/>
+   <link rel="stylesheet" type="text/css" href="_sources/live2d/assets/waifu.min.css"/>
 </head>
 <body>
   <div id="app"></div>
@@ -30,8 +30,8 @@
   <script src="_sources/js/prism/prism-go.js"></script>
   <script src="_sources/js/prism/prism-ini.js"></script>
   
-  <script src="_sources/live2d/assets/jquery.min.js?v=3.3.1"></script>
-  <script src="_sources/live2d/assets/jquery-ui.min.js?v=1.12.1"></script>
+  <script src="_sources/live2d/assets/jquery.min.js"></script>
+  <script src="_sources/live2d/assets/jquery-ui.min.js"></script>
   <div class="waifu">
       <div class="waifu-tips"></div>
       <canvas id="live2d" class="live2d"></canvas>
@@ -45,8 +45,8 @@
           <span class="fui-cross"></span>
       </div>
   </div>
-  <script src="_sources/live2d/assets/waifu-tips.min.js?v=1.4.2"></script>
-  <script src="_sources/live2d/assets/live2d.min.js?v=1.0.5"></script>
+  <script src="_sources/live2d/assets/waifu-tips.min.js"></script>
+  <script src="_sources/live2d/assets/live2d.min.js"></script>
   <script type="text/javascript">
         /* 可直接修改部分参数 */
         live2d_settings['modelId'] = 1;                  // 默认模型 ID
@@ -54,17 +54,17 @@
         live2d_settings['modelStorage'] = false;         // 不储存模型 ID
         live2d_settings['canCloseLive2d'] = false;       // 隐藏 关闭看板娘 按钮
         live2d_settings['canTurnToHomePage'] = false;    // 隐藏 返回首页 按钮
-        live2d_settings['waifuSize'] = '300x150';        // 看板娘大小
-        live2d_settings['waifuTipsSize'] = '200x100';    // 提示框大小
-        live2d_settings['waifuFontSize'] = '20px';       // 提示框字体
-        live2d_settings['waifuToolFont'] = '16px';       // 工具栏字体
-        live2d_settings['waifuToolLine'] = '30px';       // 工具栏行高
-        live2d_settings['waifuToolTop'] = '-60px';       // 工具栏顶部边距
+        live2d_settings['waifuSize']            = '280x250';    // 看板娘大小，例如 '280x250', '600x535'
+	 live2d_settings['waifuTipsSize']        = '250x70';     // 提示框大小，例如 '250x70', '570x150'
+	 live2d_settings['waifuFontSize']        = '12px';       // 提示框字体，例如 '12px', '30px'
+	 live2d_settings['waifuToolFont']        = '14px';       // 工具栏字体，例如 '14px', '36px'
+	 live2d_settings['waifuToolLine']        = '20px';       // 工具栏行高，例如 '20px', '36px'
+	 live2d_settings['waifuToolTop']         = '0px'         // 工具栏顶部边距，例如 '0px', '-60px'
         live2d_settings['waifuDraggable'] = 'unlimited';    // 拖拽样式
-        live2d_settings['waifuDraggableRevert'] = false; //松开鼠标还原拖拽位置
-        live2d_settings['waifuEdgeSide'] = 'right:0'; //看板娘贴边方向
+        live2d_settings['waifuDraggableRevert'] = false;  //松开鼠标还原拖拽位置
+        live2d_settings['waifuEdgeSide'] = 'right:0';         //看板娘贴边方向
         /* 在 initModel 前添加 */
-        initModel("_sources/live2d/assets/waifu-tips.json?v=1.4.2")
+        initModel("_sources/live2d/assets/waifu-tips.json")
     </script>
 </body>
 </html>

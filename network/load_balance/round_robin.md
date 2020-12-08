@@ -1,6 +1,7 @@
 # 轮询算法(Round-Robin)
 
 > [负载均衡之加权轮询算法](https://blog.csdn.net/larry_zeng1/article/details/80407745)
+> [Nginx加权轮询算法](https://www.cnblogs.com/tenny-peng/p/11532019.html)
 
 ## 普通轮询
 
@@ -75,6 +76,65 @@ int main(void)
 "192.168.1.30"
 ```
 
-这种方式的缺点的是生成的序列不均匀。"192.168.1.30"处理4个请求的时候，其他2台服务器处于空闲状态，没有合理的利用服务器的整体资源。一种叫做`平滑的加权轮询`方法就用来解决这个问题。其原理就是生成序列更加均匀的数组。
+这种方式的缺点的是生成的序列不均匀。"192.168.1.30"处理4个请求的时候，其他2台服务器处于空闲状态，没有合理的利用服务器的整体资源。一种叫做 `平滑的加权轮询` 方法就用来解决这个问题。其原理就是生成序列更加均匀的数组。
+```c
+#include <stdio.h>
+
+#define N (3)
+
+typedef struct {
+    char *server;
+    int   weight;
+    int   current_weight;
+} server_t;
+
+server_t server_group[N] = {
+    {"192.168.1.10", 4, 4},
+    {"192.168.1.20", 2, 2},
+    {"192.168.1.30", 1, 1}
+};
+
+
+
+static server_t *
+weighted_round_robin(void)
+{
+    unsigned int  i, n, total = 0;
+    server_t *peer, *best = NULL;
+
+    for (i = 0; i < N; i++) {
+        peer = &server_group[i];
+       peer->current_weight += peer->weight;
+        total += peer->weight;
+
+        if (best == NULL || peer->current_weight > best->current_weight) {
+            best = peer;
+        }
+    }
+
+    if (best == NULL) {
+        return NULL;
+    }
+
+    best->current_weight -= total;
+
+    printf("%s\n", best->server);
+
+    return best;
+}
+
+
+
+int main(void)
+{
+    int i;
+
+    for (i = 0; i < 7; i++) {
+        weighted_round_robin();
+    }
+
+    return 0;
+}
+```
 
 

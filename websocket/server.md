@@ -18,11 +18,16 @@ python3 setup.py install
 pydoc mod_pywebsocket.standalone
 ```
 
-| 参数          | 说明        |     |
-| ----------- | --------- | --- |
-| -p          | 端口        |     |
-| -d          | web服务的根目录 |     |
-| --log-level | 日志级别      |     |
+下面是常用的参数:
+
+| 参数          | 说明                    |
+| ----------- | --------------------- |
+| -p          | 端口                    |
+| -d          | web服务的根目录             |
+| -t          | 使用TLS加密，协议变为 `wss://` |
+| -c          | 证书路径                  |
+| -k          | 秘钥路径                  |
+| --log-level | 日志级别                  |
 
 ## 启动服务
 
@@ -42,4 +47,4 @@ python3 mod_pywebsocket/standalone.py -p 8080 -d example
 
 ![](_sources/protocol.png)
 
-
+之后 send data 就使用 websocket 协议了。

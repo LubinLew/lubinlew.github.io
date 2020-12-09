@@ -1,2 +1,3 @@
 - [简介](websocket/README.md)
+- [握手规则](websocket/handshake.md)
 - [服务搭建](websocket/server.md)

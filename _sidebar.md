@@ -4,6 +4,7 @@
 * [C++](cpp/)
 * [Golang](golang/)
 * [HTTP](http/)
+* [WebSocket](websocket/)
 * [Nginx](nginx/)
 * [OpenResty](openresty/)
 * [MySQL](mysql/)

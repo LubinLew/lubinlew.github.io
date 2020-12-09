@@ -1,3 +1,4 @@
 - [简介](websocket/README.md)
 - [握手规则](websocket/handshake.md)
 - [服务搭建](websocket/server.md)
+- [Nginx反向代理WebSocket](websocket/ngx_proxy.md)

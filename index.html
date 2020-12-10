@@ -15,12 +15,26 @@
     window.$docsify = {
       name: 'Lubin的学习笔记',
       repo: 'https://github.com/LubinLew/lubinlew.github.io',
-	    loadSidebar: true,
-	    subMaxLevel: 3,
-      auto2top: true
+	  loadSidebar: true,
+	  subMaxLevel: 3,
+      auto2top: true,
+	  search: {
+        noData: {
+          '/': '没有结果!'
+        },
+        paths: 'auto',
+        placeholder: {
+          '/': '搜索'
+        },
+        pathNamespaces: ['/']
+      }
     }
   </script>
+
   <script src="_sources/js/prism/docsify.min.js"></script>
+  <script src="_sources/js/plugins/search.js"></script>
+  <script src="_sources/js/plugins/emoji.js"></script>
+  <script src="_sources/js/plugins/front-matter.js"></script>
   <script src="_sources/js/prism/prism-bash.js"></script>
   <script src="_sources/js/prism/prism-c.js"></script>
   <script src="_sources/js/prism/prism-cpp.js"></script>

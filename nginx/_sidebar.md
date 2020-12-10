@@ -6,3 +6,8 @@
   - [动态数组(ngx_array_t)](nginx/data/ngx_array_t.md)
   - [单向链表(ngx_list_t)](nginx/data/ngx_list_t.md)
   - [双向链表(ngx_queue_t)](nginx/data/ngx_queue_t.md)
+
+- [**部署模式**](nginx/mode/README.md)
+  - [Web服务器](nginx/mode/web_server.md)
+  - [镜像模式](nginx/mode/mirror.md)
+  - [反向代理](nginx/mode/reverse_proxy.md)

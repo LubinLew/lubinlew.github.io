@@ -15,6 +15,7 @@
 - **网络编程**
   - [简介](linux_c_programming/network/)
   - [套接字](linux_c_programming/network/socket/)
+    - [getsockname](linux_c_programming/network/socket/getsockname.md)
   - [惊群效应](linux_c_programming/network/thundering_herd.md)
   - [SO_REUSEPORT](linux_c_programming/network/reuseport.md)
 

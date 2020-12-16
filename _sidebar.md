@@ -12,4 +12,5 @@
 * [HyperScan](hyperscan/)
 * [网络](network/)
 * [网络安全](network_security/)
+* [GeoIP2](geoip/)
 * [其他](others/)

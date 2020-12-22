@@ -12,5 +12,6 @@
 * [HyperScan](hyperscan/)
 * [网络](network/)
 * [网络安全](network_security/)
+* [虚拟化](virtualization/)
 * [GeoIP2](geoip/)
 * [其他](others/)

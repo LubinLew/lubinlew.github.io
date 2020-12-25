@@ -1,4 +1,4 @@
-# IPVSADM
+# ipvsadm 命令
 
 > [ipvsadm工具介绍](https://blog.csdn.net/developerof/article/details/90214977)
 
@@ -23,23 +23,23 @@
 
 ## 命令
 
-| 短选项               | 长选项           | 参数 | 说明                                       | 例子                                                                                            |
-| -------------------- | ---------------- | ---  | ------------------------------------------ | ----------------------------------------------------------------------------------------------- |
-| -A                   | --add-service    | 无   | 添加一个虚拟服务(with options)             | `ipvsadm -A -t 192.168.1.100:80 -s rr`<br>添加一个TCP虚拟服务192.168.1.100:80，使用轮询算法     |
-| -E                   | --edit-service   | 有   | 编辑一个虚拟服务(with options)             | `ipvsadm -E -t 192.168.1.100:80 -s wrr`<br>修改虚拟服务的算法为加权轮询                         |
-| -D                   | --delete-service | 有   | 删除虚拟服务                               | `ipvsadm -D -t 192.168.1.100:80`<br>删除虚拟服务                                                |
-| -C                   | --clear          | 无   | clear the whole table                      |                                                                                                 |
-| -R                   | --restore        | 无   | restore rules from stdin                   |                                                                                                 |
-| -S                   | --save           | 无   | save rules to stdout                       |                                                                                                 |
-| -a                   | --add-server     |      | add real server with options               | `ipvsadm -a -t 192.168.1.100:80 -r 192.168.1.123 -g -w 2`<br>添加一个真实服务器192.168.1.123，使用DR模式，权重2 |
-| -e                   | --edit-server    |      | edit real server with options              | `ipvsadm -a -t 192.168.1.100:80 -r 192.168.1.123 -g -w 5`<br>修改真实服务器的权重               |
-| -d                   | --delete-server  |      | delete real server                         | `ipvsadm -d -t 192.168.1.100:80 -r 192.168.1.123`<br>删除真实服务器                             |
-| -L  or   -l          | --list           | 无   | list the table                             |                                                                                                 |
-| -Z                   | --zero           |      | zero counters in a service or all services |                                                                                                 |
-| --set tcp tcpfin udp |                  |      | set connection timeout values              |                                                                                                 |
-|                      | --start-daemon   |      | start connection sync daemon               |                                                                                                 |
-|                      | --stop-daemon    |      | stop connection sync daemon                |                                                                                                 |
-| -h                   | --help           | 无   | display this help message                  |                                                                                                 |
+| 短选项                  | 长选项              | 参数  | 说明                                         | 例子                                                                                             |
+| -------------------- | ---------------- | --- | ------------------------------------------ | ---------------------------------------------------------------------------------------------- |
+| -A                   | --add-service    | 无   | 添加一个虚拟服务(with options)                     | `ipvsadm -A -t 192.168.1.100:80 -s rr`<br>添加一个TCP虚拟服务192.168.1.100:80，使用轮询算法                   |
+| -E                   | --edit-service   | 有   | 编辑一个虚拟服务(with options)                     | `ipvsadm -E -t 192.168.1.100:80 -s wrr`<br>修改虚拟服务的算法为加权轮询                                      |
+| -D                   | --delete-service | 有   | 删除虚拟服务                                     | `ipvsadm -D -t 192.168.1.100:80`<br>删除虚拟服务                                                     |
+| -C                   | --clear          | 无   | clear the whole table                      |                                                                                                |
+| -R                   | --restore        | 无   | restore rules from stdin                   |                                                                                                |
+| -S                   | --save           | 无   | save rules to stdout                       |                                                                                                |
+| -a                   | --add-server     |     | add real server with options               | `ipvsadm -a -t 192.168.1.100:80 -r 192.168.1.123 -g -w 2`<br>添加一个真实服务器192.168.1.123，使用DR模式，权重2 |
+| -e                   | --edit-server    |     | edit real server with options              | `ipvsadm -a -t 192.168.1.100:80 -r 192.168.1.123 -g -w 5`<br>修改真实服务器的权重                        |
+| -d                   | --delete-server  |     | delete real server                         | `ipvsadm -d -t 192.168.1.100:80 -r 192.168.1.123`<br>删除真实服务器                                   |
+| -L  or   -l          | --list           | 无   | list the table                             |                                                                                                |
+| -Z                   | --zero           |     | zero counters in a service or all services |                                                                                                |
+| --set tcp tcpfin udp |                  |     | set connection timeout values              |                                                                                                |
+|                      | --start-daemon   |     | start connection sync daemon               |                                                                                                |
+|                      | --stop-daemon    |     | stop connection sync daemon                |                                                                                                |
+| -h                   | --help           | 无   | display this help message                  |                                                                                                |
 
 ## 
 
@@ -56,41 +56,61 @@
 
 ## 选项
 
-| 短选项               | 长选项               | 参数  | 说明                                                                                           | 例子  |
-| ----------------- | ----------------- | --- | -------------------------------------------------------------------------------------------- | --- |
-| -6                | --ipv6            | 无   | fwmark entry uses IPv6                                                                       |     |
-| -s scheduler      | --scheduler       | 有   | 配置负载均衡算法, 算法列表如下, `rr\|wrr\|lc\|wlc\|lblc\|lblcr\|dh\|sh\|sed\|nq\|fo\|ovf\|mh`, 默认算法是 `wlc` |     |
-|                   | --pe  engine      | 有   | alternate persistence engine may be sip, not set by default.                                 |     |
-| -p [timeout]      | --persistent      | 可选  | persistent service                                                                           |     |
-| -M netmask        | --netmask         | 有   | persistent granularity mask                                                                  |     |
-| -r server-address | --real-server     | 有   | server-address is host (and port)                                                            |     |
-| -g                | --gatewaying      |     | gatewaying (direct routing) (default)                                                        |     |
-| -i                | --ipip            |     | ipip encapsulation (tunneling)                                                               |     |
-| -m                | --masquerading    |     | masquerading (NAT)                                                                           |     |
-| type              | --tun-type        |     | one of `ipip\|gue\|gre`, the default tunnel type is ipip.                                    |     |
-| port              | --tun-port        |     | tunnel destination port                                                                      |     |
-|                   | --tun-nocsum      |     | tunnel encapsulation without checksum                                                        |     |
-|                   | --tun-csum        |     | tunnel encapsulation with checksum                                                           |     |
-|                   | --tun-remcsum     |     | tunnel encapsulation with remote checksum                                                    |     |
-| -w weight         | --weight          |     | capacity of real server                                                                      |     |
-| -x uthreshold     | --u-threshold     |     | upper threshold of connections                                                               |     |
-| -y lthreshold     | --l-threshold     |     | lower threshold of connections                                                               |     |
-| -c                | --connection      |     | output of current IPVS connections                                                           |     |
-|                   | --timeout         |     | output of timeout (tcp tcpfin udp)                                                           |     |
-|                   | --daemon          |     | output of daemon information                                                                 |     |
-|                   | --stats           |     | output of statistics information                                                             |     |
-|                   | --rate            |     | output of rate information                                                                   |     |
-|                   | --exact           |     | expand numbers (display exact values)                                                        |     |
-|                   | --thresholds      |     | output of thresholds information                                                             |     |
-|                   | --persistent-conn |     | output of persistent connection info                                                         |     |
-|                   | --tun-info        |     | output of tunnel information                                                                 |     |
-|                   | --nosort          |     | disable sorting output of service/server entries                                             |     |
-|                   | --sort            |     | does nothing, for backwards compatibility                                                    |     |
-| -o                | --ops             |     | one-packet scheduling                                                                        |     |
-| -n                | --numeric         |     | 数字化显示IP地址和端口(不做解析)                                                                           |     |
-| -b                | --sched-flags     | 有   | 调度 scheduler flags (comma-separated)                                                         |     |
+| 短选项               | 长选项               | 参数  | 说明                                                                                           | 例子             |
+| ----------------- | ----------------- | --- | -------------------------------------------------------------------------------------------- | -------------- |
+| -6                | --ipv6            | 无   | fwmark entry uses IPv6                                                                       |                |
+| -s scheduler      | --scheduler       | 有   | 配置负载均衡算法, 算法列表如下, `rr\|wrr\|lc\|wlc\|lblc\|lblcr\|dh\|sh\|sed\|nq\|fo\|ovf\|mh`, 默认算法是 `wlc` |                |
+|                   | --pe  engine      | 有   | alternate persistence engine may be sip, not set by default.                                 |                |
+| -p [timeout]      | --persistent      | 可选  | persistent service                                                                           |                |
+| -M netmask        | --netmask         | 有   | persistent granularity mask                                                                  |                |
+| -r server-address | --real-server     | 有   | server-address is host (and port)                                                            |                |
+| -g                | --gatewaying      |     | gatewaying (direct routing) (default)                                                        |                |
+| -i                | --ipip            |     | ipip encapsulation (tunneling)                                                               |                |
+| -m                | --masquerading    |     | masquerading (NAT)                                                                           |                |
+| type              | --tun-type        |     | one of `ipip\|gue\|gre`, the default tunnel type is ipip.                                    |                |
+| port              | --tun-port        |     | tunnel destination port                                                                      |                |
+|                   | --tun-nocsum      |     | tunnel encapsulation without checksum                                                        |                |
+|                   | --tun-csum        |     | tunnel encapsulation with checksum                                                           |                |
+|                   | --tun-remcsum     |     | tunnel encapsulation with remote checksum                                                    |                |
+| -w weight         | --weight          |     | capacity of real server                                                                      |                |
+| -x uthreshold     | --u-threshold     |     | upper threshold of connections                                                               |                |
+| -y lthreshold     | --l-threshold     |     | lower threshold of connections                                                               |                |
+| -c                | --connection      |     | output of current IPVS connections                                                           |                |
+|                   | --timeout         |     | output of timeout (tcp tcpfin udp)                                                           | `ipvsadm -lnc` |
+|                   | --daemon          |     | output of daemon information                                                                 |                |
+|                   | --stats           |     | output of statistics information                                                             |                |
+|                   | --rate            |     | output of rate information                                                                   |                |
+|                   | --exact           |     | expand numbers (display exact values)                                                        |                |
+|                   | --thresholds      |     | output of thresholds information                                                             |                |
+|                   | --persistent-conn |     | output of persistent connection info                                                         |                |
+|                   | --tun-info        |     | output of tunnel information                                                                 |                |
+|                   | --nosort          |     | disable sorting output of service/server entries                                             |                |
+|                   | --sort            |     | does nothing, for backwards compatibility                                                    |                |
+| -o                | --ops             |     | one-packet scheduling                                                                        |                |
+| -n                | --numeric         |     | 数字化显示IP地址和端口(不做解析)                                                                           |                |
+| -b                | --sched-flags     | 有   | 调度 scheduler flags (comma-separated)                                                         |                |
 
-## 
+## 调度算法
+
+> [IPVS的调度算法](https://www.cnblogs.com/feisky/archive/2012/09/05/2672496.html)
+
+每种调度算法均被实现为一个内核模块，在需要时加载
+
+| 调度算法  | 英文名                                                          | 中文名           |
+| ----- | ------------------------------------------------------------ | ------------- |
+| rr    | Round-Robin Scheduling                                       | 轮询            |
+| wrr   | Weighted Round-Robin Scheduling                              | 加权轮询          |
+| lc    | Least-Connection Scheduling                                  | 最小连接          |
+| wlc   | Weighted Least-Connection Scheduling                         | 加权最小连接        |
+| lblc  | Locality-Based Least Connections Scheduling                  | 基于局部性的最少链接    |
+| lblcr | Locality-Based Least Connections with Replication Scheduling | 带复制的基于局部性最少链接 |
+| dh    | Destination Hashing Scheduling                               | 目标地址散列调度      |
+| sh    | Source Hashing Scheduling                                    | 源地址散列调度       |
+| sed   | Shortest Expected Delay Scheduling                           | 最短预期延时调度      |
+| nq    | Never Queue Scheduling                                       | 不排队调度         |
+| fo    |                                                              |               |
+| ovf   |                                                              |               |
+| mh    |                                                              |               |
 
 ## 守护进程选项
 

@@ -23,23 +23,23 @@
 
 ## 命令
 
-| 短选项                  | 长选项              | 参数  | 说明                                         | 例子                                                                                          |
-| -------------------- | ---------------- | --- | ------------------------------------------ | ------------------------------------------------------------------------------------------- |
-| -A                   | --add-service    | 无   | 添加一个虚拟服务(with options)                     | `ipvsadm -A -t 192.168.1.100:80 -s rr` 添加一个TCP虚拟服务192.168.1.100:80，使用轮询算法                   |
-| -E                   | --edit-service   | 有   | 编辑一个虚拟服务(with options)                     | `ipvsadm -E -t 192.168.1.100:80 -s wrr` 修改虚拟服务的算法为加权轮询                                      |
-| -D                   | --delete-service | 有   | 删除虚拟服务                                     | `ipvsadm -D -t 192.168.1.100:80` 删除虚拟服务                                                     |
-| -C                   | --clear          | 无   | clear the whole table                      |                                                                                             |
-| -R                   | --restore        | 无   | restore rules from stdin                   |                                                                                             |
-| -S                   | --save           | 无   | save rules to stdout                       |                                                                                             |
-| -a                   | --add-server     |     | add real server with options               | `ipvsadm -a -t 192.168.1.100:80 -r 192.168.1.123 -g -w 2` 添加一个真实服务器192.168.1.123，使用DR模式，权重2 |
-| -e                   | --edit-server    |     | edit real server with options              | `ipvsadm -a -t 192.168.1.100:80 -r 192.168.1.123 -g -w 5` 修改真实服务器的权重                        |
-| -d                   | --delete-server  |     | delete real server                         | `ipvsadm -d -t 192.168.1.100:80 -r 192.168.1.123` 删除真实服务器                                   |
-| -L  or   -l          | --list           | 无   | list the table                             |                                                                                             |
-| -Z                   | --zero           |     | zero counters in a service or all services |                                                                                             |
-| --set tcp tcpfin udp |                  |     | set connection timeout values              |                                                                                             |
-|                      | --start-daemon   |     | start connection sync daemon               |                                                                                             |
-|                      | --stop-daemon    |     | stop connection sync daemon                |                                                                                             |
-| -h                   | --help           | 无   | display this help message                  |                                                                                             |
+| 短选项               | 长选项           | 参数 | 说明                                       | 例子                                                                                            |
+| -------------------- | ---------------- | ---  | ------------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| -A                   | --add-service    | 无   | 添加一个虚拟服务(with options)             | `ipvsadm -A -t 192.168.1.100:80 -s rr`<br>添加一个TCP虚拟服务192.168.1.100:80，使用轮询算法     |
+| -E                   | --edit-service   | 有   | 编辑一个虚拟服务(with options)             | `ipvsadm -E -t 192.168.1.100:80 -s wrr`<br>修改虚拟服务的算法为加权轮询                         |
+| -D                   | --delete-service | 有   | 删除虚拟服务                               | `ipvsadm -D -t 192.168.1.100:80`<br>删除虚拟服务                                                |
+| -C                   | --clear          | 无   | clear the whole table                      |                                                                                                 |
+| -R                   | --restore        | 无   | restore rules from stdin                   |                                                                                                 |
+| -S                   | --save           | 无   | save rules to stdout                       |                                                                                                 |
+| -a                   | --add-server     |      | add real server with options               | `ipvsadm -a -t 192.168.1.100:80 -r 192.168.1.123 -g -w 2`<br>添加一个真实服务器192.168.1.123，使用DR模式，权重2 |
+| -e                   | --edit-server    |      | edit real server with options              | `ipvsadm -a -t 192.168.1.100:80 -r 192.168.1.123 -g -w 5`<br>修改真实服务器的权重               |
+| -d                   | --delete-server  |      | delete real server                         | `ipvsadm -d -t 192.168.1.100:80 -r 192.168.1.123`<br>删除真实服务器                             |
+| -L  or   -l          | --list           | 无   | list the table                             |                                                                                                 |
+| -Z                   | --zero           |      | zero counters in a service or all services |                                                                                                 |
+| --set tcp tcpfin udp |                  |      | set connection timeout values              |                                                                                                 |
+|                      | --start-daemon   |      | start connection sync daemon               |                                                                                                 |
+|                      | --stop-daemon    |      | stop connection sync daemon                |                                                                                                 |
+| -h                   | --help           | 无   | display this help message                  |                                                                                                 |
 
 ## 
 

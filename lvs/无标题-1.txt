@@ -1,0 +1,27 @@
+VIP: 10.130.12.102
+
+ipvsadm -A -t 10.130.12.102:80 -s sh
+ipvsadm -a -t 10.130.12.102:80 -r 10.130.12.139 -m -w 100
+ipvsadm -a -t 10.130.12.102:80 -r 10.130.12.193 -m -w 100
+
+ipvsadm -e -t 10.130.12.102:80 -r 10.130.12.193 -m -w 0
+ipvsadm -d -t 10.130.12.102:80 -r 10.130.12.193
+
+ip route add default via 10.130.12.102
+
+rr|wrr|lc|wlc|lblc|lblcr|dh|sh|sed|nq|fo|ovf|mh
+
+
+rr    轮询调度（Round-Robin Scheduling）
+wrr    加权轮询调度（Weighted Round-Robin Scheduling）
+lc    最小连接调度（Least-Connection Scheduling）
+wlc    加权最小连接调度（Weighted Least-Connection Scheduling）
+lblc    基于局部性的最少链接（Locality-Based Least Connections Scheduling）
+lblcr    带复制的基于局部性最少链接（Locality-Based Least Connections with Replication Scheduling）
+dh    目标地址散列调度（Destination Hashing Scheduling）
+sh    源地址散列调度（Source Hashing Scheduling）
+sed    最短预期延时调度（Shortest Expected Delay Scheduling）
+nq    不排队调度（Never Queue Scheduling）
+fo
+ovf
+mh

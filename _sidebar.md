@@ -7,6 +7,7 @@
 * [WebSocket](websocket/)
 * [Nginx](nginx/)
 * [OpenResty](openresty/)
+* [Vue](vue/)
 * [MySQL](mysql/)
 * [Python](python/)
 * [HyperScan](hyperscan/)

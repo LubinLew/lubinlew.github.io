@@ -35,8 +35,6 @@ When a match is found, a Lua table `captures` is returned, where `captures[0]
 
 Named captures are also supported since the `v0.7.14` release and are returned in the same Lua table as key-value pairs as the numbered captures.
 
-
-
 ```lua
  local m, err = ngx.re.match("hello, 1234", "([0-9])(?<remaining>[0-9]+)") -- m[0] == "1234"
  -- m[1] == "1"
@@ -56,21 +54,20 @@ Unmatched subpatterns will have `false` values in their `captures` table fie
 
 Specify `options` to control how the match operation will be performed. The following option characters are supported:
 
-| Lua Flag | PCRE C Library                           | Perl Flag |                                                                                             |
-| -------- | ---------------------------------------- | --------- | ------------------------------------------------------------------------------------------- |
-| a        | PCRE_ANCHORED                            |           | anchored mode (only match from the beginning)                                               |
-| d        | `pcre_dfa_exec()`                        |           | enable the DFA mode (or the longest token match semantics)                                  |
-| D        | PCRE_DUPNAMES                            |           | enable duplicate named pattern support                                                      |
-| i        | PCRE_CASELESS                            | /i        | 忽略大小写                                                                                       |
-| j        | `pcre_study()`<br>PCRE_STUDY_JIT_COMPILE |           | enable PCRE JIT compilation                                                                 |
-| J        | PCRE_JAVASCRIPT_COMPAT                   |           | enable the PCRE Javascript compatible mode                                                  |
-| m        | PCRE_MULTILINE                           | /m        | multi-line mode                                                                             |
-| o        | -                                        | /o        | compile-once mode, to enable the worker-process-level compiled-regex cache                  |
-| s        | PCRE_DOTALL                              | /s        | single-line mode                                                                            |
-| u        | PCRE_UTF8                                |           | UTF-8 mode                                                                                  |
-| U        | PCRE_UTF8\|PCRE_NO_UTF8_CHECK            |           | similar to "u" but disables PCRE's UTF-8 validity check on
-              the subject string |
-| x        | PCRE_EXTENDED                            | /x        | 扩展模式,模式中的空白字符, 和“#”到换行符之间的字符都被忽略                                                            |
+| Lua Flag | PCRE C Library                           |                                                                               |
+| -------- | ---------------------------------------- | ----------------------------------------------------------------------------- |
+| a        | PCRE_ANCHORED                            | anchored mode (only match from the beginning)                                 |
+| d        | `pcre_dfa_exec()`                        | enable the DFA mode (or the longest token match semantics)                    |
+| D        | PCRE_DUPNAMES                            | enable duplicate named pattern support                                        |
+| i        | PCRE_CASELESS                            | 忽略大小写                                                                         |
+| j        | `pcre_study()`<br>PCRE_STUDY_JIT_COMPILE | enable PCRE JIT compilation                                                   |
+| J        | PCRE_JAVASCRIPT_COMPAT                   | enable the PCRE Javascript compatible mode                                    |
+| m        | PCRE_MULTILINE                           | 多行模式，`^` 和 `$`  能够匹配数据中的换行符,注意只支持LF的换行,不支持CR或者LFCR换行                          |
+| o        | -                                        | 只编译一次模式，worker级别的正则缓存                                                         |
+| s        | PCRE_DOTALL                              | 单行模式， `.`会匹配换行符(`\r`和`\n`)                                                    |
+| u        | PCRE_UTF8                                | UTF-8模式                                                                       |
+| U        | PCRE_UTF8\|PCRE_NO_UTF8_CHECK            | similar to "u" but disables PCRE's UTF-8 validity check on the subject string |
+| x        | PCRE_EXTENDED                            | 扩展模式,模式中的空白字符, 和“#”到换行符之间的字符都被忽略                                              |
 
 
 

@@ -35,6 +35,8 @@ When a match is found, a Lua table `captures` is returned, where `captures[0]
 
 Named captures are also supported since the `v0.7.14` release and are returned in the same Lua table as key-value pairs as the numbered captures.
 
+
+
 ```lua
  local m, err = ngx.re.match("hello, 1234", "([0-9])(?<remaining>[0-9]+)") -- m[0] == "1234"
  -- m[1] == "1"
@@ -54,51 +56,27 @@ Unmatched subpatterns will have `false` values in their `captures` table fie
 
 Specify `options` to control how the match operation will be performed. The following option characters are supported:
 
-```
-a             anchored mode (only match from the beginning)
+| Lua Flag | PCRE C Library                           | Perl Flag |                                                                                             |
+| -------- | ---------------------------------------- | --------- | ------------------------------------------------------------------------------------------- |
+| a        | PCRE_ANCHORED                            |           | anchored mode (only match from the beginning)                                               |
+| d        | `pcre_dfa_exec()`                        |           | enable the DFA mode (or the longest token match semantics)                                  |
+| D        | PCRE_DUPNAMES                            |           | enable duplicate named pattern support                                                      |
+| i        | PCRE_CASELESS                            | /i        | 忽略大小写                                                                                       |
+| j        | `pcre_study()`<br>PCRE_STUDY_JIT_COMPILE |           | enable PCRE JIT compilation                                                                 |
+| J        | PCRE_JAVASCRIPT_COMPAT                   |           | enable the PCRE Javascript compatible mode                                                  |
+| m        | PCRE_MULTILINE                           | /m        | multi-line mode                                                                             |
+| o        | -                                        | /o        | compile-once mode, to enable the worker-process-level compiled-regex cache                  |
+| s        | PCRE_DOTALL                              | /s        | single-line mode                                                                            |
+| u        | PCRE_UTF8                                |           | UTF-8 mode                                                                                  |
+| U        | PCRE_UTF8\|PCRE_NO_UTF8_CHECK            |           | similar to "u" but disables PCRE's UTF-8 validity check on
+              the subject string |
+| x        | PCRE_EXTENDED                            | /x        | 扩展模式,模式中的空白字符, 和“#”到换行符之间的字符都被忽略                                                            |
 
-d             enable the DFA mode (or the longest token match semantics).
-              this requires PCRE 6.0+ or else a Lua exception will be thrown.
-              first introduced in ngx_lua v0.3.1rc30.
 
-D             enable duplicate named pattern support. This allows named
-              subpattern names to be repeated, returning the captures in
-              an array-like Lua table. for example,
-                local m = ngx.re.match("hello, world",
-                                       "(?<named>\w+), (?<named>\w+)",
-                                       "D")
-                -- m["named"] == {"hello", "world"}
-              this option was first introduced in the v0.7.14 release.
-              this option requires at least PCRE 8.12.
 
-i             case insensitive mode (similar to Perl's /i modifier)
+扩展模式
 
-j             enable PCRE JIT compilation, this requires PCRE 8.21+ which
-              must be built with the --enable-jit option. for optimum performance,
-              this option should always be used together with the 'o' option.
-              first introduced in ngx_lua v0.3.1rc30.
-
-J             enable the PCRE Javascript compatible mode. this option was
-              first introduced in the v0.7.14 release. this option requires
-              at least PCRE 8.12.
-
-m             multi-line mode (similar to Perl's /m modifier)
-
-o             compile-once mode (similar to Perl's /o modifier),
-              to enable the worker-process-level compiled-regex cache
-
-s             single-line mode (similar to Perl's /s modifier)
-
-u             UTF-8 mode. this requires PCRE to be built with
-              the --enable-utf8 option or else a Lua exception will be thrown.
-
-U             similar to "u" but disables PCRE's UTF-8 validity check on
-              the subject string. first introduced in ngx_lua v0.8.1.
-
-x             extended mode (similar to Perl's /x modifier)
-```
-
-These options can be combined:
+![PCRE_EXTENDED](_sources/PCRE_EXTENDED.png)
 
 ```nginx
  local m, err = ngx.re.match("hello, world", "HEL LO", "ix") -- m[0] == "hello"

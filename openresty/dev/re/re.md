@@ -54,26 +54,26 @@ Unmatched subpatterns will have `false` values in their `captures` table fie
 
 Specify `options` to control how the match operation will be performed. The following option characters are supported:
 
-| Lua Flag | PCRE C Library                           |                                                                               |
-| -------- | ---------------------------------------- | ----------------------------------------------------------------------------- |
-| a        | PCRE_ANCHORED                            | anchored mode (only match from the beginning)                                 |
-| d        | `pcre_dfa_exec()`                        | enable the DFA mode (or the longest token match semantics)                    |
-| D        | PCRE_DUPNAMES                            | enable duplicate named pattern support                                        |
-| i        | PCRE_CASELESS                            | 忽略大小写                                                                         |
-| j        | `pcre_study()`<br>PCRE_STUDY_JIT_COMPILE | enable PCRE JIT compilation                                                   |
-| J        | PCRE_JAVASCRIPT_COMPAT                   | enable the PCRE Javascript compatible mode                                    |
-| m        | PCRE_MULTILINE                           | 多行模式，`^` 和 `$`  能够匹配数据中的换行符,注意只支持LF的换行,不支持CR或者LFCR换行                          |
-| o        | -                                        | 只编译一次模式，worker级别的正则缓存                                                         |
-| s        | PCRE_DOTALL                              | 单行模式， `.`会匹配换行符(`\r`和`\n`)                                                    |
-| u        | PCRE_UTF8                                | UTF-8模式                                                                       |
-| U        | PCRE_UTF8\|PCRE_NO_UTF8_CHECK            | similar to "u" but disables PCRE's UTF-8 validity check on the subject string |
-| x        | PCRE_EXTENDED                            | 扩展模式,模式中的空白字符, 和“#”到换行符之间的字符都被忽略                                              |
+| Lua Flag | PCRE C Library                           |                                                           |
+| -------- | ---------------------------------------- | --------------------------------------------------------- |
+| a        | PCRE_ANCHORED                            | anchored mode (only match from the beginning)             |
+| d        | `pcre_dfa_exec()`                        | 开启DFA模式                                                   |
+| D        | PCRE_DUPNAMES                            | enable duplicate named pattern support                    |
+| i        | PCRE_CASELESS                            | 忽略大小写                                                     |
+| j        | `pcre_study()`<br>PCRE_STUDY_JIT_COMPILE | 开启 JIT 编译支持                                               |
+| J        | PCRE_JAVASCRIPT_COMPAT                   | 开启 Javascript 兼容模式                                        |
+| m        | PCRE_MULTILINE                           | 开启多行模式<br>`^` 和 `$`  能够匹配数据中的换行符,注意只支持LF的换行,不支持CR或者LFCR换行 |
+| o        | -                                        | 开启只编译一次模式<br>worker级别的正则缓存                                |
+| s        | PCRE_DOTALL                              | 开启单行模式<br> `.`会匹配换行符(`\r`和`\n`)                           |
+| u        | PCRE_UTF8                                | 开启UTF-8模式                                                 |
+| U        | PCRE_UTF8\|PCRE_NO_UTF8_CHECK            | 开启UTF-8模式, 但是不检测UTF8的有效性                                  |
+| x        | PCRE_EXTENDED                            | 开启扩展模式<br>模式中的空白字符, 和“#”到换行符之间的字符都被忽略                     |
 
 
 
 扩展模式
 
-![PCRE_EXTENDED](_sources/PCRE_EXTENDED.png)
+![PCRE_EXTENDED](_sources/PCRE_EXTENDED.bmp)
 
 ```nginx
  local m, err = ngx.re.match("hello, world", "HEL LO", "ix") -- m[0] == "hello"

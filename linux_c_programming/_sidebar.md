@@ -39,3 +39,7 @@
 
 - **正则表达式**
   - [null](linux_c_programming/re/)
+
+- **常用命令**
+  - [简介](linux_c_programming/cmds/)
+  - [paste](linux_c_programming/cmds/paste.md)

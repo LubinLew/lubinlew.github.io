@@ -7,6 +7,7 @@
   - [文件读写](python/functions/file.md)
   - [json数组排序](python/functions/json_array_sort.md.md)
   - [打印正则表达式](python/functions/re_string_proc.md)
+  - [打印TraceBack](python/functions/traceback.md)
   
   
 

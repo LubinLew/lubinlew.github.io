@@ -5,3 +5,4 @@
 - [各种开源协议](others/license.md)
 - [Linux共享](others/sshfs.md)
 - [WebSSH工具-GateOne](others/gateone.md)
+- [vscode配置](others/vscode.md)

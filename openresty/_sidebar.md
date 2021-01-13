@@ -22,6 +22,7 @@
 
 
 - [**OpenResty功能开发**](openresty/dev/README.md)
+  - [API](openresty/dev/api/README.md)
   - [正则表达式](openresty/dev/re/re.md)
   - [HTTPS开发](openresty/dev/https.md)
 

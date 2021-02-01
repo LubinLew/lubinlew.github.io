@@ -17,9 +17,9 @@ HTTP认证分为基本认证 和 摘要认证，基本认证被广泛支持。
 ### auth_basic
 
 ```nginx
-Syntax:     auth_basic string | off;
-Default:     auth_basic off;
-Context:     http, server, location, limit_except
+Syntax:  auth_basic string | off;
+Default: auth_basic off;
+Context: http, server, location, limit_except
 ```
 
 值为 `off` 的时候表示关闭基本认证功能
@@ -29,9 +29,9 @@ Context:     http, server, location, limit_except
 ### auth_basic_user_file
 
 ```nginx
-Syntax:     auth_basic_user_file file;
-Default:     —
-Context:     http, server, location, limit_except
+Syntax:  auth_basic_user_file file;
+Default: —
+Context: http, server, location, limit_except
 ```
 
 该指令用于设置基本认证的用户名和密码文件, 文件的格式如下:

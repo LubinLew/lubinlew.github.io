@@ -26,7 +26,12 @@
   - [null](linux_c_programming/debug/)
 
 - **提高程序性能**
-  - [null](linux_c_programming/performance/)
+  - [简介](linux_c_programming/performance/)
+  - [Perf](linux_c_programming/performance/perf.md)
+  - [DTrace](linux_c_programming/performance/dtrace.md)
+  - [Systemtap](linux_c_programming/performance/systemtap.md)
+  - [火焰图](linux_c_programming/performance/FlameGraph.md)
+
 
 - **常用工具**
   - [null](linux_c_programming/tools/)

@@ -26,7 +26,7 @@
   - [null](linux_c_programming/debug/)
 
 - **提高程序性能**
-  - [简介](linux_c_programming/performance/)
+  - [简介](linux_c_programming/performance/README.md)
   - [Perf](linux_c_programming/performance/perf.md)
   - [DTrace](linux_c_programming/performance/dtrace.md)
   - [Systemtap](linux_c_programming/performance/systemtap.md)

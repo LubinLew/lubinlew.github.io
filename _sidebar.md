@@ -15,5 +15,5 @@
 * [网络安全](network_security/)
 * [虚拟化](virtualization/)
 * [LVS](lvs/)
-* [GeoIP2](geoip/)
+* [GeoIP2](geoip.lubinlew.site)
 * [其他](others/)

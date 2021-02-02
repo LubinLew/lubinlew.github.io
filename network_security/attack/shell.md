@@ -2,7 +2,7 @@
 
 > [反弹SHELL介绍及原理 - Cocowool](https://www.cnblogs.com/cocowool/p/reverse-shell.html)
 > 
-> [linux各种一句话反弹shell总结 - myles007](https://www.anquanke.com/member/125339)](https://www.anquanke.com/post/id/87017)
+> [linux各种一句话反弹shell总结 - myles007](https://www.anquanke.com/post/id/87017)
 
 ## 反弹SHELL工具
 

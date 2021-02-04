@@ -1,6 +1,12 @@
 - [**简介**](nginx/README.md)
 
-- [**常用数据结构**](nginx/data/README.md)
+- [数据类型](nginx/type/README.md)
+  - [整型](nginx/type/integer.md)
+  - [字符串](nginx/type/string.md)
+  - [数据打印](nginx/type/print.md)
+
+
+- [数据结构](nginx/data/README.md)
   - [内存池](nginx/data/ngx_pool_t.md)
   - [缓存](nginx/data/ngx_buf_t.md)
   - [动态数组(ngx_array_t)](nginx/data/ngx_array_t.md)

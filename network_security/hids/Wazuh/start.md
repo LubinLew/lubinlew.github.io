@@ -70,7 +70,7 @@ Wazuh服务器组件负责分析从代理接收的数据，并在检测到威胁
 
 Wazuh服务器运行分析引擎，Wazuh RESTful API，代理注册服务，代理连接服务，Wazuh集群守护程序和Filebeat。下图表示服务器体系结构和组件：
 
-![Server架构](/network_security/hids/Wazuh/_resources/architecture_server.png)
+![Server架构](_resources/architecture_server.png)
 
 #### Server 服务
 
@@ -118,7 +118,7 @@ Elasticsearch集群是一个或多个节点的集合，这些节点相互通信�
 
 下图显示了Wazuh部署架构。它显示了解决方案组件以及如何将Wazuh服务器和Elasticsearch配置为群集，从而提供负载平衡和高可用性。
 
-![Wazuh架构](/network_security/hids/Wazuh/_resources/deployment.png)
+![Wazuh架构](_resources/deployment.png)
 
 ### Wazuh Agent 和 Wazuh Server 间的通信
 

@@ -14,6 +14,8 @@ Wazuh拥有世界上最大的开源安全社区之一。您可以成为其中的
   
   此外，我们还提供[专业的支持，培训和咨询服务](https://wazuh.com/professional-services/)。
 
+----
+
 ## 组件(Components)
 
 Wazuh平台提供的功能可保护您的云，容器和服务器工作负载。其中包括日志数据分析，入侵和恶意软件检测，文件完整性监视，配置评估，漏洞检测以及对法规遵从性的支持。 Wazuh解决方案基于以下三个组件： 
@@ -62,6 +64,8 @@ Wazuh平台提供的功能可保护您的云，容器和服务器工作负载。
 
 [Wazuh Agent](Wazuh-Agent)与 [Wazuh Server](Wazuh-Server) 进行通信，以便发送收集的数据和与安全相关的事件。此外，代理发送操作数据，报告其配置和状态。连接后，可以从 [Wazuh Server](Wazuh-Server) 远程升级，监视和配置代理。 [Wazuh Agent](Wazuh-Agent)与服务器的通信通过安全通道（TCP或UDP）进行，实时提供数据加密和压缩。此外，它包括流控制机制，可避免泛洪，在必要时对事件进行排队并保护网络带宽。 <mark>在第一次将 [Wazuh Agent](Wazuh-Agent) 连接到服务器之前，必须先注册 [Wazuh Agent](Wazuh-Agent)。此过程为代理提供了唯一的预共享密钥，该密钥用于身份验证和数据加密</mark>。
 
+----
+
 ### Wazuh Server
 
  [Wazuh Server](Wazuh-Server) 组件负责分析从代理接收的数据，并在检测到威胁或异常时触发警报。它还用于远程管理代理配置并监视其状态。  [Wazuh Server](Wazuh-Server) 使用威胁情报源来提高其检测能力。它还利用法规遵从性要求（例如PCI DSS，HIPAA，NIST 800-53…）和Mitre ATT＆CK框架来丰富警报数据，从而提供有关警报的有用上下文。 另外， [Wazuh Server](Wazuh-Server) 可以与外部软件集成，例如票务系统（例如Service Now，Jira，PagerDuty）和即时消息传递平台（例如Slack）。这可简化安全操作。
@@ -88,6 +92,8 @@ Wazuh平台提供的功能可保护您的云，容器和服务器工作负载。
 
 - **Filebeat**：用于将事件和警报发送到Elasticsearch。它读取Wazuh分析引擎的输出并实时发送事件。当连接到多节点Elasticsearch集群时，它还提供负载平衡。 Wazuh剂弹性堆栈
 
+----
+
 ### Elastic Stack
 
 Elastic Stack是流行的开源项目的统一套件，用于日志管理，包括Elasticsearch，Kibana，Filebeat等。与Wazuh解决方案特别相关的项目是： 
@@ -107,6 +113,8 @@ Elastic Stack是流行的开源项目的统一套件，用于日志管理，包�
 - **wazuh-monitoring**：一段时间内与 [Wazuh Agent](Wazuh-Agent) 状态相关的数据的索引。 Web界面使用它来表示各个代理何时处于活动状态，已断开连接或从不连接。 
 
 索引由文档组成。对于以上索引，文档是单独的警报，已归档的事件或与 [Wazuh Agent](Wazuh-Agent) 状态相关的数据。 Elasticsearch索引分为一个或多个分片，每个分片可以选择具有一个或多个副本。每个主分片和副本分片都是一个单独的Lucene索引。因此，Elasticsearch索引由许多Lucene索引组成。在Elasticsearch索引上运行搜索时，将在所有分片上并行执行搜索，并合并结果。在多节点Elasticsearch集群中使用Elasticsearch索引划分为多个分片和副本，目的是扩大搜索范围并实现高可用性。单节点Elasticsearch集群通常每个索引只有一个分片，没有副本。
+
+---
 
 ## Wazuh 架构
 

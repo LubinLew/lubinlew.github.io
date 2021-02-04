@@ -4,6 +4,8 @@
   - [整型](nginx/type/integer.md)
   - [字符串](nginx/type/string.md)
   - [数据打印](nginx/type/print.md)
+  - [字符串转数值](nginx/type/atoi.md)
+  - [内存管理](nginx/type/mem_mgr.md)
 
 
 - [数据结构](nginx/data/README.md)

@@ -4,8 +4,8 @@
   - [文件包含](network_security/web/http/file_inclusion.md)
   - [二次转码](network_security/web/http/double_url_encodeing.md)
 
-- [**Wazuh**](network_security/hids/Wazuh/README.md)
-  - [入门](network_security/hids/Wazuh/start.md)
+- [**HIDS**](network_security/hids/README.md)
+  - [Wazuh](network_security/hids/Wazuh/)
 
 - [**攻击手段**](network_security/attack/README.md)
   - [反弹Shell](network_security/attack/shell.md)

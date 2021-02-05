@@ -74,8 +74,8 @@
         live2d_settings['modelId'] = 4;                  // 默认模型 ID
         live2d_settings['modelTexturesId'] = 87;         // 默认材质 ID
         live2d_settings['modelStorage'] = false;         // 不储存模型 ID
-        live2d_settings['canCloseLive2d'] = false;       // 隐藏 关闭看板娘 按钮
-        live2d_settings['canTurnToHomePage'] = false;    // 隐藏 返回首页 按钮
+        live2d_settings['canCloseLive2d'] = true;       // 隐藏 关闭看板娘 按钮
+        live2d_settings['canTurnToHomePage'] = true;    // 隐藏 返回首页 按钮
         live2d_settings['waifuSize']            = '280x250';    // 看板娘大小，例如 '280x250', '600x535'
 	 live2d_settings['waifuTipsSize']        = '250x70';     // 提示框大小，例如 '250x70', '570x150'
 	 live2d_settings['waifuFontSize']        = '12px';       // 提示框字体，例如 '12px', '30px'
@@ -85,7 +85,6 @@
         live2d_settings['waifuDraggable'] = 'unlimited';    // 拖拽样式
         live2d_settings['waifuDraggableRevert'] = false;  //松开鼠标还原拖拽位置
         live2d_settings['waifuEdgeSide'] = 'right:0';         //看板娘贴边方向
-        /* 在 initModel 前添加 */
         initModel("_sources/live2d/assets/waifu-tips.json")
     </script>
 

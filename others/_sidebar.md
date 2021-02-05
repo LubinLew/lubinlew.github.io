@@ -6,4 +6,3 @@
 - [Linux共享](others/sshfs.md)
 - [WebSSH工具-GateOne](others/gateone.md)
 - [vscode配置](others/vscode.md)
-- [安装自签发CA证书](others/custom_ca.md)

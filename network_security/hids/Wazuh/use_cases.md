@@ -4,11 +4,11 @@ Wazuh平台用于以不同方式保护和监视系统。由于其所有功能，
 
 | 用例列表                                                     | 用例列表                                               |
 | -------------------------------------------------------- | -------------------------------------------------- |
-| 1.[Log data analysis](#日志数据分析log-data-analysis)          | 2.[File integrity monitoring](#file-integrity)     |
-| 3.[Rootkits detection](#rootkits-detection)              | 4.[Active response](#active-response)              |
-| 5.[Configuration assessment](#configuration-assessment)  | 6.[System inventory](#system-inventory)            |
-| 7.[Vulnerability detection](#vulnerability-detection)    | 8.[Cloud security monitoring](#cloud-security)     |
-| 9.[Containers security monitoring](#containers-security) | 10.[Regulatory compliance](#regulatory-compliance) |
+| 1.[Log data analysis](#日志数据分析log-data-analysis)          | 2.[File integrity monitoring](#文件完整性监控file-integrity-monitoring)     |
+| 3.[Rootkits detection](#rootkit检测rootkits-detection)              | 4.[Active response](#主动响应active-response)              |
+| 5.[Configuration assessment](#配置评估configuration-assessment)  | 6.[System inventory](#系统盘点system-inventory)            |
+| 7.[Vulnerability detection](#漏洞检测vulnerability-detection)    | 8.[Cloud security monitoring](#云安全监控cloud-security-monitoring)     |
+| 9.[Containers security monitoring](#容器安全监控containers-security-monitoring) | 10.[Regulatory compliance](#监管合规regulatory-compliance) |
 
 ## 日志数据分析(Log data analysis)
 

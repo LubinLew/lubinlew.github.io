@@ -42,6 +42,34 @@ typedef uintptr_t       ngx_uint_t;     //无符号整数
 typedef intptr_t        ngx_flag_t;     //相当于bool，标志量用
 ```
 
+## off_t
+
+`off_t` 是一个无符号整型, 用于指示文件偏移量, 数据位数同CPU位数相同.
+
+```c
+#ifndef __off_t_defined
+# ifndef __USE_FILE_OFFSET64
+typedef __off_t   off_t;
+# else
+typedef __off64_t off_t;
+# endif
+# define __off_t_defined
+#endif
+```
+
+## size_t 和 ssize_t
+
+`size_t` 是无符号整型, 用于表示C对象占用的字节数.
+
+ `ssize_t` 基本和 `size_t` 一样区别是`ssize_t`是有符号整型, 一些系统函数如 `read()`  和 `write()` 会使用其作为返回值，可以返回 -1 表示错误。
+
+```c
+typedef long unsigned int size_t;
+typedef long int ssize_t;
+```
+
+
+
 ## 整型的范围与长度
 
 ```c

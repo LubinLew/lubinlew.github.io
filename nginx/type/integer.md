@@ -1,8 +1,38 @@
 # Nginx 中的整型
 
+nginx 中经常可以看到 `u_char` 等类型的使用, 下面是其定义的方法。
 
+## 常用整型定义
 
-## 基本类型定义
+```c
+// /usr/include/bits/types.h
+typedef unsigned char __u_char;
+typedef unsigned short int __u_short;
+typedef unsigned int __u_int;
+typedef unsigned long int __u_long;
+
+// /usr/include/sys/types.h
+typedef __u_char u_char;
+typedef __u_short u_short;
+typedef __u_int u_int;
+typedef __u_long u_long;
+```
+
+上面结果是在CentOS7下通过GCC预编译的方法获得的。
+
+```bash
+$$ cat test.c 
+#include <stdlib.h>
+int main(void){
+    u_char ch = 0;
+    return ch;
+}
+
+$$ gcc -E test.c > test.i
+# 查看 test.i 内容
+```
+
+## 保存指针地址的整型定义
 
 关于 `intptr_t` 和 `uintptr_t` [HERE](linux_c_programming/base/integer_range.md)
 

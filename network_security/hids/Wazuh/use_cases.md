@@ -12,7 +12,7 @@ Wazuh平台用于以不同方式保护和监视系统。由于其所有功能，
 
 ## 日志数据分析(Log data analysis)
 
-自动化的日志管理和分析可加速威胁检测。在许多情况下，可以在设备，系统和应用程序的日志消息中找到攻击的证据。 Wazuh可用于自动聚合和分析日志数据。 运行在受监视端点上的 [Wazuh Agent](start?id=wazuh-agent) 通常负责读取操作系统和应用程序日志消息，并将其转发到进行分析的 [Wazuh Server](start?id=wazuh-server) 。如果未部署代理，则服务器还可以通过syslog从网络设备或应用程序接收数据。 Wazuh使用解码器来识别日志消息的源应用程序。然后，它使用特定于应用程序的规则分析数据。这是用于检测SSH身份验证失败事件的规则的示例：
+自动化的日志管理和分析可加速威胁检测。在许多情况下，可以在设备，系统和应用程序的日志消息中找到攻击的证据。 Wazuh可用于自动聚合和分析日志数据。 运行在受监视端点上的 [Wazuh Agent](network_security/hids/Wazuh/start?id=wazuh-agent) 通常负责读取操作系统和应用程序日志消息，并将其转发到进行分析的 [Wazuh Server](network_security/hids/Wazuh/start?id=wazuh-server) 。如果未部署代理，则服务器还可以通过syslog从网络设备或应用程序接收数据。 Wazuh使用解码器来识别日志消息的源应用程序。然后，它使用特定于应用程序的规则分析数据。这是用于检测SSH身份验证失败事件的规则的示例：
 
 ```xml
 <rule id="5716" level="5">
@@ -70,7 +70,7 @@ Wazuh平台用于以不同方式保护和监视系统。由于其所有功能，
 }
 ```
 
- [Wazuh Server](start?id=wazuh-server) 一旦生成警报，便会将警报发送到Elastic Stack组件，在其中将其丰富的地理位置信息进行存储和索引。然后，可以使用Kibana搜索，分析和可视化数据。以下是界面中显示的警报：
+ [Wazuh Server](network_security/hids/Wazuh/start?id=wazuh-server) 一旦生成警报，便会将警报发送到Elastic Stack组件，在其中将其丰富的地理位置信息进行存储和索引。然后，可以使用Kibana搜索，分析和可视化数据。以下是界面中显示的警报：
 
 ![报警](_resources/use_case_log_analysis.png)
 
@@ -171,7 +171,7 @@ Wazuh提供了一个默认规则集，该规则集会定期更新，其中包含
 
 ## rootkit检测(Rootkits detection)
 
- [Wazuh Agent](start?id=wazuh-agent) 会定期扫描受监视的系统，以检测内核和用户空间级别的rootkit。这种恶意软件通常会替换或更改现有操作系统的组件，以更改系统行为。 Rootkit可以隐藏其他进程，文件和网络连接。 Wazuh使用不同的检测机制来搜索系统异常或众所周知的入侵。 Rootcheck组件定期执行此操作：
+ [Wazuh Agent](network_security/hids/Wazuh/start?id=wazuh-agent) 会定期扫描受监视的系统，以检测内核和用户空间级别的rootkit。这种恶意软件通常会替换或更改现有操作系统的组件，以更改系统行为。 Rootkit可以隐藏其他进程，文件和网络连接。 Wazuh使用不同的检测机制来搜索系统异常或众所周知的入侵。 Rootcheck组件定期执行此操作：
 
 | Action                        | Detection mechanism                                 | Binary  | System call |
 | ----------------------------- | --------------------------------------------------- | ------- | ----------- |
@@ -217,7 +217,7 @@ Wazuh提供了一个默认规则集，该规则集会定期更新，其中包含
 
 ## 主动响应(Active response)
 
- [Wazuh Agent](start?id=wazuh-agent) 通过在检测到威胁时运行操作来自动对威胁做出响应。<mark>Agent 具有阻止网络连接，停止运行进程或删除恶意文件等功能</mark>。此外，它还可以运行由用户开发的自定义脚本（例如，Python，Bash或PowerShell）。 为了使用此功能，用户定义了将触发脚本操作的条件，这些条件通常涉及威胁检测和评估。例如，用户可以使用日志分析规则来检测入侵尝试，并使用IP信誉数据库通过查找尝试的连接的源IP地址来评估威胁。 在上述情况下，当源IP地址被识别为恶意（信誉低下）时，通过自动设置防火墙规则以丢弃来自攻击者的所有流量，可以保护受监视系统。根据活动响应，此防火墙规则是临时的或永久的。 在下面，您可以找到用于定义两个用于自动连接阻止的脚本的配置。在Linux系统上， [Wazuh Agent](start?id=wazuh-agent) 通常为此目的与本地Iptables防火墙集成。相反，在Windows系统上，它使用空路由技术（也称为blackholing）：
+ [Wazuh Agent](network_security/hids/Wazuh/start?id=wazuh-agent) 通过在检测到威胁时运行操作来自动对威胁做出响应。<mark>Agent 具有阻止网络连接，停止运行进程或删除恶意文件等功能</mark>。此外，它还可以运行由用户开发的自定义脚本（例如，Python，Bash或PowerShell）。 为了使用此功能，用户定义了将触发脚本操作的条件，这些条件通常涉及威胁检测和评估。例如，用户可以使用日志分析规则来检测入侵尝试，并使用IP信誉数据库通过查找尝试的连接的源IP地址来评估威胁。 在上述情况下，当源IP地址被识别为恶意（信誉低下）时，通过自动设置防火墙规则以丢弃来自攻击者的所有流量，可以保护受监视系统。根据活动响应，此防火墙规则是临时的或永久的。 在下面，您可以找到用于定义两个用于自动连接阻止的脚本的配置。在Linux系统上， [Wazuh Agent](network_security/hids/Wazuh/start?id=wazuh-agent) 通常为此目的与本地Iptables防火墙集成。相反，在Windows系统上，它使用空路由技术（也称为blackholing）：
 
 ```xml
 <command>
@@ -267,7 +267,7 @@ In this case, rule 100100 is used to look for alerts where the source IP address
 
 ## 配置评估(Configuration assessment)
 
-自动化安全配置评估（SCA）是改善企业安全状况并减少攻击面的一项基本功能。 Wazuh SCA模块有助于通过受监视的端点维护标准配置。这是通过基于Internet安全中心（CIS）强化指南的预定义检查来完成的。 启用S​​CA模块后， [Wazuh Agent](start?id=wazuh-agent) 会定期执行扫描，并报告受监视系统中的错误配置。这些扫描通过策略文件评估系统的配置，其中包含一组要运行的检查。例如，SCA检查可以检查文件系统配置，查找是否存在软件更新或安全补丁，查看是否启用了本地防火墙，识别不必要的运行服务或验证用户的密码策略。 SCA扫描策略以YAML格式编写，使用户可以快速了解它们。使用SCA语法，用户可以扩展现有策略以满足他们的需求或编写新策略。每个策略包含一组检查，并且每个检查都有一个或多个规则。例如，规则可用于查找文件，目录，Windows注册表项或正在运行的进程等的存在。也可以执行命令并根据正则表达式检查其输出。 Linux SCA规则示例：
+自动化安全配置评估（SCA）是改善企业安全状况并减少攻击面的一项基本功能。 Wazuh SCA模块有助于通过受监视的端点维护标准配置。这是通过基于Internet安全中心（CIS）强化指南的预定义检查来完成的。 启用S​​CA模块后， [Wazuh Agent](network_security/hids/Wazuh/start?id=wazuh-agent) 会定期执行扫描，并报告受监视系统中的错误配置。这些扫描通过策略文件评估系统的配置，其中包含一组要运行的检查。例如，SCA检查可以检查文件系统配置，查找是否存在软件更新或安全补丁，查看是否启用了本地防火墙，识别不必要的运行服务或验证用户的密码策略。 SCA扫描策略以YAML格式编写，使用户可以快速了解它们。使用SCA语法，用户可以扩展现有策略以满足他们的需求或编写新策略。每个策略包含一组检查，并且每个检查都有一个或多个规则。例如，规则可用于查找文件，目录，Windows注册表项或正在运行的进程等的存在。也可以执行命令并根据正则表达式检查其输出。 Linux SCA规则示例：
 
 ```yaml
 - id: 5546
@@ -328,7 +328,7 @@ macOS SCA规则示例：
 
 ## 系统盘点(System inventory)
 
- [Wazuh Agent](start?id=wazuh-agent) 系统清单模块从受监视的系统收集硬件和软件信息。此功能有助于识别资产并评估补丁程序管理的有效性。 可以通过Wazuh RESTful API和Web用户界面查询每个受监视端点收集的清单数据。这包括内存使用情况，磁盘空间，CPU规格，网络接口，打开的端口，正在运行的进程以及已安装的应用程序列表。 为了收集数据， [Wazuh Agent](start?id=wazuh-agent) 运行定期扫描（时间间隔是可配置的）。扫描完成后，代理会将新库存数据与以前扫描中的旧库存数据进行比较。这样，代理可以识别系统事件，例如，当打开新端口，已停止进程或已安装新应用程序时。 硬件清单，网络接口，开放端口和网络设置的示例：
+ [Wazuh Agent](network_security/hids/Wazuh/start?id=wazuh-agent) 系统清单模块从受监视的系统收集硬件和软件信息。此功能有助于识别资产并评估补丁程序管理的有效性。 可以通过Wazuh RESTful API和Web用户界面查询每个受监视端点收集的清单数据。这包括内存使用情况，磁盘空间，CPU规格，网络接口，打开的端口，正在运行的进程以及已安装的应用程序列表。 为了收集数据， [Wazuh Agent](network_security/hids/Wazuh/start?id=wazuh-agent) 运行定期扫描（时间间隔是可配置的）。扫描完成后，代理会将新库存数据与以前扫描中的旧库存数据进行比较。这样，代理可以识别系统事件，例如，当打开新端口，已停止进程或已安装新应用程序时。 硬件清单，网络接口，开放端口和网络设置的示例：
 
 ![1](_resources/use_case_inventory_1.png)
 
@@ -346,7 +346,7 @@ macOS SCA规则示例：
 
 ## 漏洞检测(Vulnerability detection)
 
-攻击者通常会将易受攻击的软件应用程序作为攻击目标，以破坏端点并在目标网络上获得持久存在。 Wazuh平台依靠其软件清单功能，维护安装了 [Wazuh Agent](start?id=wazuh-agent) 的端点上安装的所有应用程序的最新列表。通过将此信息与国家漏洞数据库（NVD）以及从不同操作系统供应商收集的信息进行关联，Wazuh能够识别易受攻击的应用程序并生成风险报告。 为了检测易受攻击的软件，Wazuh使用通过使用从以下来源提取的数据自动创建的常见漏洞和暴露（CVE）数据库：
+攻击者通常会将易受攻击的软件应用程序作为攻击目标，以破坏端点并在目标网络上获得持久存在。 Wazuh平台依靠其软件清单功能，维护安装了 [Wazuh Agent](network_security/hids/Wazuh/start?id=wazuh-agent) 的端点上安装的所有应用程序的最新列表。通过将此信息与国家漏洞数据库（NVD）以及从不同操作系统供应商收集的信息进行关联，Wazuh能够识别易受攻击的应用程序并生成风险报告。 为了检测易受攻击的软件，Wazuh使用通过使用从以下来源提取的数据自动创建的常见漏洞和暴露（CVE）数据库：
 
 - [CVEs for Ubuntu Linux distributions](https://canonical.com/)
 
@@ -358,7 +358,7 @@ macOS SCA规则示例：
 
 - [Microsoft Security Response Center](https://www.microsoft.com/msrc)
 
-为了启用漏洞检测，用户需要配置 [Wazuh Agent](start?id=wazuh-agent) 以收集软件清单数据，并配置 [Wazuh Server](start?id=wazuh-server) 从不同的漏洞源中提取CVE信息。这是漏洞检测警报的示例：
+为了启用漏洞检测，用户需要配置 [Wazuh Agent](network_security/hids/Wazuh/start?id=wazuh-agent) 以收集软件清单数据，并配置 [Wazuh Server](network_security/hids/Wazuh/start?id=wazuh-server) 从不同的漏洞源中提取CVE信息。这是漏洞检测警报的示例：
 
 ```json
 {
@@ -437,7 +437,7 @@ Wazuh安全平台为多云和混合环境提供威胁检测，配置合规性以
 
 ### Amazon Web Services
 
- [Wazuh Agent](start?id=wazuh-agent) 还提供了一个模块来监视和保护您的AWS云基础架构。该模块从S3存储桶中收集AWS服务日志数据，并将收集到的日志消息转发到 [Wazuh Server](start?id=wazuh-server) ，在其中使用AWS的即用Wazuh规则分析事件。 下表描述了Wazuh能够监视的AWS服务： 
+ [Wazuh Agent](network_security/hids/Wazuh/start?id=wazuh-agent) 还提供了一个模块来监视和保护您的AWS云基础架构。该模块从S3存储桶中收集AWS服务日志数据，并将收集到的日志消息转发到 [Wazuh Server](network_security/hids/Wazuh/start?id=wazuh-server) ，在其中使用AWS的即用Wazuh规则分析事件。 下表描述了Wazuh能够监视的AWS服务： 
 
 - Amazon Guardduty：威胁检测服务，可连续监视恶意活动和未经授权的行为，以保护您的AWS账户，工作负载和Amazon S3中存储的数据。 
 
@@ -523,11 +523,11 @@ More information on how Wazuh monitors AWS can be found at our [documentation](h
 
 ### Microsoft Azure
 
-通过Microsoft Azure的 [Wazuh Agent](start?id=wazuh-agent) 模块，可以轻松提取Azure平台日志。特别是，它旨在从以下服务获取数据： 
+通过Microsoft Azure的 [Wazuh Agent](network_security/hids/Wazuh/start?id=wazuh-agent) 模块，可以轻松提取Azure平台日志。特别是，它旨在从以下服务获取数据： 
 
 - 日志分析API：日志分析API是Azure Monitor服务的核心组件，用于聚合和分析日志数据。此类数据的来源是云应用程序，操作系统和Azure资源。用于Azure的Wazuh模块能够查询Log Analytics API，提取由Azure监视器服务收集的日志。 
 
-- Blob存储API：来自Azure服务的日志可以有选择地推送到Azure Blob存储。具体来说，可以配置Azure服务以将日志导出到为此目的而创建的存储帐户中的容器。之后， [Wazuh Agent](start?id=wazuh-agent) 将通过与Blob Storage API集成来下载这些日志。 Active Directory图API：
+- Blob存储API：来自Azure服务的日志可以有选择地推送到Azure Blob存储。具体来说，可以配置Azure服务以将日志导出到为此目的而创建的存储帐户中的容器。之后， [Wazuh Agent](network_security/hids/Wazuh/start?id=wazuh-agent) 将通过与Blob Storage API集成来下载这些日志。 Active Directory图API：
 
 - Azure Active Directory图API通过REST API端点提供对AZURE AD的访问。 Wazuh使用它来监视Active Directory事件（例如，创建新用户，更新用户属性，禁用用户帐户等）。
 
@@ -657,7 +657,7 @@ Wazuh提供以下机制来监视Docker主机或Kubernetes节点：
 
 - 与Docker引擎和Kubernetes API集成：在这种情况下，用于Docker的Wazuh模块充当订户。它侦听Docker或Kubernetes事件，能够在检测到异常或安全事件时发出警报。 
 
-- 将 [Wazuh Agent](start?id=wazuh-agent) 部署到Docker主机和Kubernetes节点：对于自我管理的基础架构， [Wazuh Agent](start?id=wazuh-agent) 的部署提供了一套全面的安全功能，例如恶意软件检测，文件完整性监视，配置评估，日志数据分析，漏洞检测和积极回应。 
+- 将 [Wazuh Agent](network_security/hids/Wazuh/start?id=wazuh-agent) 部署到Docker主机和Kubernetes节点：对于自我管理的基础架构， [Wazuh Agent](network_security/hids/Wazuh/start?id=wazuh-agent) 的部署提供了一套全面的安全功能，例如恶意软件检测，文件完整性监视，配置评估，日志数据分析，漏洞检测和积极回应。 
 
 - 与托管基础架构提供商（例如Google GKE，Amazon EKS等）的集成：在这种情况下，用于云安全监控的Wazuh模块下载托管服务审核日志以进行安全分析。 
   
@@ -749,7 +749,7 @@ Wazuh提供以下机制来监视Docker主机或Kubernetes节点：
 
 ### 容器级别
 
-为了在容器级别获得可见性，您可以将 [Wazuh Agent](start?id=wazuh-agent) 部署到Kubernetes DaemonSet容器。这种部署可确保 [Wazuh Agent](start?id=wazuh-agent) 将在Kubernetes集群的所有节点中运行。此外，其他Kubernetes Pods将能够将数据（例如应用程序日志消息）发送到DaemonSet容器，以便代理可以对其进行处理并将其转发到 [Wazuh Server](start?id=wazuh-server) 以进行安全性分析。
+为了在容器级别获得可见性，您可以将 [Wazuh Agent](network_security/hids/Wazuh/start?id=wazuh-agent) 部署到Kubernetes DaemonSet容器。这种部署可确保 [Wazuh Agent](network_security/hids/Wazuh/start?id=wazuh-agent) 将在Kubernetes集群的所有节点中运行。此外，其他Kubernetes Pods将能够将数据（例如应用程序日志消息）发送到DaemonSet容器，以便代理可以对其进行处理并将其转发到 [Wazuh Server](network_security/hids/Wazuh/start?id=wazuh-server) 以进行安全性分析。
 
 | 容器级别的安全警报示例                              | 容器级别的安全警报示例                           |
 | ---------------------------------------- | ------------------------------------- |

@@ -1,2 +1,2 @@
-- [mmdb格式说明](http://lubinlew.github.io/GeoLite2/docs/format.md)
-- [mmdb文件制作](http://lubinlew.github.io/GeoLite2/docs/mmdb_writer.md)
+- [mmdb格式说明](https://github.com/LubinLew/GeoLite2/blob/main/docs/format.md)
+- [mmdb文件制作](https://github.com/LubinLew/GeoLite2/blob/main/docs/mmdb_writer.md)

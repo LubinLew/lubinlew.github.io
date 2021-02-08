@@ -1,5 +1,3 @@
-
-
 # Wazuh server 安装
 
 本部分为用户提供了必要的信息，以使用Open Distro for Elasticsearch 进行 Wazuh 的安装，Elasticsearch 是Apache 2.0 许可的发行版，通过 Elastic Security 提供了企业安全性，警报，SQL支持，自动索引管理或深度性能分析等增强功能。其他特性。
@@ -50,9 +48,9 @@
 
 ```bash
 # 下载脚本
-curl -so ~/all-in-one-installation.sh https://raw.githubusercontent.com/wazuh/wazuh-documentation/4.0/resources/open-distro/unattended-installation/all-in-one-installation.sh &
+curl -so all-in-one-installation.sh https://raw.githubusercontent.com/wazuh/wazuh-documentation/4.0/resources/open-distro/unattended-installation/all-in-one-installation.sh
 # 运行安装
-bash ~/all-in-one-installation.sh
+bash all-in-one-installation.sh
 ```
 
 该脚本将执行运行状况检查，以确保主机具有足够的资源来保证适当的性能。要跳过此步骤，请在运行脚本时添加 `-i` 或 `--i​​gnore-healthcheck` 选项。 执行脚本后，它将显示以下消息，以确认安装成功：
@@ -100,6 +98,82 @@ password: admin
 
 在`/etc/kibana/kibana.yml`文件中找到的Kibana配置将server.host参数设置为0.0.0.0。这意味着可以从外部访问Kibana，并将接受主机的所有可用IP。如果需要，可以为特定IP更改此值。 强烈建议为`/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/internal_users.yml`文件中找到的用户更改Elasticsearch的默认密码。有关此过程的更多信息，请参见此处。 Kibana运行之后，有必要为每个用户分配相应的角色。要了解更多信息，请访问“设置Wazuh Kibana插件”部分。 要在一次安装中卸载全部组件的所有组件，请访问卸载部分。
 
+
+
+### 逐步安装
+
+本文档指导在多合一部署中安装Wazuh和Open Distro for Elasticsearch组件。这种类型的部署适用于测试和小型工作环境。 本指南提供了有关配置官方存储库以执行安装的说明。或者，也可以使用软件包来完成安装。在我们的软件包列表中查看可用软件包的列表。
+
+#### 先决条件
+
+适用于Elasticsearch的Open Distro需要Java开发套件以及其他软件包的安装，例如wget，curl，unzip和libcap，这些软件包将在后续步骤中使用.
+
+安装所有必需的软件包以进行安装：
+
+```bash
+export JAVA_HOME=/usr/ && yum install curl unzip wget libcap && yum install java-11-openjdk-devel
+```
+
+如果JDK 11对于所使用的操作系统不可用，请使用“采用Open JDK”安装软件包“ openingopenjdk-11-hotspot”。
+
+#### 安装Wazuh
+
+Wazuh服务器从已部署的Wazuh代理收集并分析数据。它运行Wazuh管理器，Wazuh API和Filebeat。 设置Wazuh的第一步是将Wazuh存储库添加到服务器。
+
+##### 添加Wazuh repository
+
+```bash
+# 导入GPG密钥
+rpm --import https://packages.wazuh.com/key/GPG-KEY-WAZUH
+
+
+# 添加 repository
+cat > /etc/yum.repos.d/wazuh.repo << EOF
+[wazuh]
+gpgcheck=1
+gpgkey=https://packages.wazuh.com/key/GPG-KEY-WAZUH
+enabled=1
+name=EL-$releasever - Wazuh
+baseurl=https://packages.wazuh.com/4.x/yum/
+protect=1
+EOF
+```
+
+##### 安装 Wazuh manager
+
+```bash
+# 安装 wazuh-manager 软件包
+yum install wazuh-manager
+
+# 重新加载systemd Manager配置
+systemctl daemon-reload
+# 配置开机启动
+systemctl enable wazuh-manager
+# 启动开机启动
+systemctl start wazuh-manager
+
+# 查看 是否正确安装
+systemctl status wazuh-manager
+```
+
+##### 安装 Elasticsearch
+
+```bash
+yum install opendistroforelasticsearch
+
+# 下载 ES 配置文件
+curl -so /etc/elasticsearch/elasticsearch.yml https://raw.githubusercontent.com/wazuh/wazuh-documentation/4.0/resources/open-distro/elasticsearch/7.x/elasticsearch_all_in_one.yml
+
+# 为了正确使用Wazuh Kibana插件，要添加额外的角色和用户
+curl -so /usr/share/elasticsearch/plugins/opendistro_security/securityconfig/roles.yml https://raw.githubusercontent.com/wazuh/wazuh-documentation/4.0/resources/open-distro/elasticsearch/roles/roles.yml
+curl -so /usr/share/elasticsearch/plugins/opendistro_security/securityconfig/roles_mapping.yml https://raw.githubusercontent.com/wazuh/wazuh-documentation/4.0/resources/open-distro/elasticsearch/roles/roles_mapping.yml
+curl -so /usr/share/elasticsearch/plugins/opendistro_security/securityconfig/internal_users.yml https://raw.githubusercontent.com/wazuh/wazuh-documentation/4.0/resources/open-distro/elasticsearch/roles/internal_users.yml
+```
+
+TBD
+
+
+
 ---
 
 ## 分布式部署
@@ -113,8 +187,8 @@ password: admin
 - Wazuh Server，包括作为单节点群集或多节点群集的Wazuh管理器，Wazuh API和Filebeat。 
 
 - Elastic Stack，包括Open Distro for Elasticsearch（作为单节点群集或多节点群集），以及Kibana（包括Wazuh Kibana插件），与Elasticsearch节点位于同一主机上或位于单独的主机上。
-
- 通信将使用SSL证书进行加密。这些证书将使用Search Guard脱机TLS工具生成。 另外，为了正确使用Wazuh Kibana插件，将添加额外的Elasticsearch角色和用户。
+  
+  通信将使用SSL证书进行加密。这些证书将使用Search Guard脱机TLS工具生成。 另外，为了正确使用Wazuh Kibana插件，将添加额外的Elasticsearch角色和用户。
 
 ---
 

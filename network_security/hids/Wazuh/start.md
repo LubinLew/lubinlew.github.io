@@ -10,7 +10,7 @@ Wazuh拥有世界上最大的开源安全社区之一。您可以成为其中的
 
 - [Google网上论坛](https://groups.google.com/g/wazuh)：您可以在这里分享问题并向其他Wazuh用户学习。通过电子邮件订阅很容易。 
 
-- [GitHub]([https://github.com/wazuh)：获得Wazuh源代码的访问权限，报告问题并为该项目做贡献。我们很乐意审核并接受请求请求。 
+- [GitHub](https://github.com/wazuh)：获得Wazuh源代码的访问权限，报告问题并为该项目做贡献。我们很乐意审核并接受请求请求。 
   
   此外，我们还提供[专业的支持，培训和咨询服务](https://wazuh.com/professional-services/)。
 

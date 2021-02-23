@@ -9,6 +9,11 @@
 - [**LuaJIT 库**](openresty/lua/library/README.md)
   - [FFI库](openresty/lua/library/ffi.md)
 
+- [**OpenResty 模块**](openresty/modules/README.md)
+  - [lua-cjson](openresty/modules/lua-cjson.md)
+  - [lua-resty-redis.md](openresty/modules/lua-resty-redis.md)
+  - [lua-resty-upload](openresty/modules/lua-resty-upload.md)
+
 - [**OpenResty阶段**](openresty/lua/phase/README.md)
   - [简介](openresty/phase/README.md)
   - [rewrite](openresty/phase/rewrite.md)

@@ -6,7 +6,7 @@
 
 
 
-# LuaJIT与标准Lua的语法区别
+## LuaJIT与标准Lua的语法区别
 
 LuaJIT是基于Lua 5.1语法开发的，后续又实现了Lua 5.2 和 Lua 5.3部分与5.1语法兼容的新特性，LuaJIT 增加了不少独有的函数，这些函数非常重要。当前LuaJIT作者退休，也没有到新的维护者，所以 OpenResty维护了一个自己的LuaJIT分支 [openresty/luajit2](https://github.com/openresty/luajit2)，并扩展了很多独有的 API，基本都是出于对性能方面的考虑而增加的。
 

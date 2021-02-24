@@ -1,8 +1,8 @@
-# 字符串处理 - string
+# Lua字符串
 
 Lua 字符串用于表示文本，其由一个或多个字节(1个字节有8个比特位)组成。Lua 语言中字符串可以存储任意格式的二进制数据，可以使用任意的编码方式(UTF8、UTF16、GB2312等)来存储数据。
 
-Lua 字符串是不可变的，不能像 C 语言一样修改字符串中某个字符，只能通过创建一个新的字符串的方式进行修改，而原来的字符串不变。
+<mark>Lua 字符串是不可变的</mark>，不能像 C 语言一样修改字符串中某个字符，只能通过创建一个新的字符串的方式进行修改，而原来的字符串不变。
 
 ```lua
 a = "one string"
@@ -12,17 +12,13 @@ print(a) --> one string
 print(b) --> another string
 ```
 
-Lua的字符串下标从1开始。 下标可以是负数,表示逆序, 例如 -1 表示倒数第一个字符, -2表示倒数第二个字符,以此类推。
+<mark>Lua的字符串下标从1开始</mark>。 下标可以是负数,表示逆序, 例如 -1 表示倒数第一个字符, -2表示倒数第二个字符,以此类推。
 
 ## 字符串的基本操作
 
 ### 字符串声明
 
-Lua 字符串的声明可以使用单引号和 双引号。二者的区别是：
-
-- 双引号声明的字符串中间出现单引号时， 单引号不需要转义
-
-- 单引号声明的字符串中间出现双引号时， 双引号不需要转义
+Lua 中的字符串可以使用双引号 或者 单引号来界定, `"string"` 和 `'string'` 是完全相同的的字符串。其唯一的区别是使用双引号声明的字符串中出现单引号时，单引号不需要转义；使用单引号声明的字符串中出现双引号时，双引号不需要转义。实际编码过程中，尽量使用相同的声明方式，保持代码风格。
 
 ```lua
 a = "double ' quote"
@@ -34,30 +30,25 @@ e = "double \" quote"
 f = 'single \' quote'
 ```
 
-#### 声明长字符串
+#### 转义序列(escape sequence)
 
+字符串中可以包含下面与C语言类似的转义序列:
 
+| 转义序列   | 英文释义                                                            | 中文释义       | 补充说明      |
+| ------ | --------------------------------------------------------------- | ---------- | --------- |
+| `\a`   | bell                                                            | 响铃         | 设备的蜂鸣器    |
+| `\b`   | backspace                                                       | 退格         | 回退一个字符    |
+| `\f`   | form feed                                                       | 换页         |           |
+| `\n`   | newline                                                         | 换行         |           |
+| `\r`   | carriage return                                                 | 回车         |           |
+| `\t`   | horizontal tab                                                  | 水平制表符      |           |
+| `\v`   | vertical tab                                                    | 垂直制表符      |           |
+| `\\`   | backslash                                                       | 反斜杠        |           |
+| `\"`   | quotation mark [double quote]                                   | 双引号        |           |
+| `\'`   | apostrophe [single quote]                                       | 单引号        |           |
+| `\ddd` | A character in a string can be specified by its numerical value | 使用数值表示一个字符 | 最多3个十进制数字 |
 
-### 转义字符
-
-Lua中支持很多 C 风格的转义字符:
-
-| 转义字符 | 中文释义  | 英文释义                     |
-| ---- | ----- | ------------------------ |
-| \a   | 响铃    | bell                     |
-| \b   | 退格    | back space               |
-| \f   | 换页    | from feed                |
-| \r   | 回车    | carriage return          |
-| \n   | 换行    | newline                  |
-| \t   | 水平制表符 | horizontal tab           |
-| \v   | 垂直制表符 | vertical tab             |
-| \\\  | 反斜杠   | backslash                |
-| \"   | 双引号   | double quote             |
-| \'   | 单引号   | single quote             |
-| \ddd | 十进制   | decimal escape character |
-| \xhh | 十六进制  | hex escape character     |
-
-这里需要注意的是 `\ddd`  和 `\xhh` 这两个用ASCII码值声明字符的方式。`\ddd` 表示使用十进制数一个字符。例如`1` 的ASCII码值为 49, 那么可以使用  `\49` 或 `\049` 表示。但是如果后面还有其他数字，则会导致解析错误，例如`\492` 想表示`12`但是会导致Lua解析错误，所以最好使用 `\049` 满3位的方式。
+这里需要注意的是 `\ddd` 是用ASCII码值声明字符的方式。`\ddd` 表示使用十进制数一个字符。例如`1` 的ASCII码值为 49, 那么可以使用 `\49` 或 `\049` 表示。但是如果后面还有其他数字，则会导致解析错误，例如`\492` 想表示`12`但是会导致Lua解析错误，所以需要使用 `\049` 满3位的方式。
 
 ```lua
  print("\49")   ---> 1
@@ -65,27 +56,66 @@ Lua中支持很多 C 风格的转义字符:
  print("\0492") ---> 12
 ```
 
-`\xhh`是使用十六进制的方式声明一个字符。
+> Lua5.2 开始支持 `\xHH` 十六进制, 例如 `\41` 等价于 0x41 即字母 A
+> 
+> Lua5.3 开始支持 `\u{h...h}` 的方式来声明UTF8字符,例如 `\u{3b1}` 即希腊字符 α (阿尔法)
+> 
+> Lua5.2 开始支持 `\z`转义符, 用来跳过其后的所有空白符,这样可以将长字符串分多行声明
+
+#### 长字符串声明
+
+对于长字符串可以使用 `[[ ... ]]` 双方括号的方式来声明。
+
+其中的转义字符不再生效。
+
+多行字符串中的缩进、空格、换行等都会被保留。
+
+如果多行字符串中的第一个字符是换行符时，那么这个换行符会被忽略。
 
 ```lua
-print("\x31")  ---> 1
+long_str = [[
+<html>
+<head>
+  <title>Long String</title>
+<body>
+  <h1>BODY</h1>
+</head>
+<\html>
+]]
 ```
 
-另外 Lua 5.3 还支持 使用 `\u{hhhh}`的方式声明UTF8字符，但是目前LuaJIT不支持这个特性。
+如果字符串中有`[[`或者`]]` 字符时，会破坏声明，这时候需要使用`[=[ ... ]=]` 这种方式声明，注意其中`=`等号的个数是任意的, 但是前后等号的个数必须是相同的。
+
+`[==[ ... ]==]` 或者 `[===[ ... ]===]` 等都是正确的声明方式。
+
+```lua
+long_str = [===[
+example1:[[A]]
+example2:[=[B]=]
+example3:[==[C]==]
+]===]
+```
+
+---
 
 ### 字符串长度
 
 像 Lua 语言中其他对象(表、函数等)一样，Lua 的字符串也是自动内存管理的对象之一。这意味着 Lua 语言会负责字符串的分配和释放，开发人员无需关心。可以使用长度操作符 `#` 获取字符串长度，注意这个长度是字节数，而不是字符数。
 
+> Lua 字符串没有类似C语言`\0` 的字符串结尾符号。
+
 ```lua
 a = "hello"
 print(#a)             ---> 5
 print(#"hello world") ---> 11
+print(#"你好")         ---> 6
 ```
 
 ### 字符串拼接
 
 Lua 中字符串可以使用 连接操作符 `..` 来进行连接。可以同时拼接多个字符串。如果操作数中存在数值，那么 Lua 语言会先把数值转化为字符串。
+
+Lua 语言在运行时提供了数值与字符串之间的自动转化。针对字符串的所有算术操作会尝试将字符串转换为数值。Lua语言不仅仅在算术操作时进行这种强制类型转换，还会在任何需要数值的情况下进行自动转换，例如函数`math.sin()`的参数。
 
 ```lua
 a = "hello"
@@ -106,13 +136,48 @@ print(1 .. 2 .. 3 .. 4 .. 5) ---> 12345
 print("1" .. 2) ---> 12
 ```
 
-The string library provides all its functions inside the table `string`. It also sets a metatable for strings where the `__index` field points to the `string` table. Therefore, you can use the string functions in object-oriented style. For instance, `string.byte(s, i)` can be written as `s:byte(i)`.
-
-The string library assumes one-byte character encodings.
-
-
+----
 
 ## 字符串标准库
+
+该库提供了用于字符串操作的通用功能，例如查找和提取子字符串以及模式匹配。在Lua中索引字符串时，第一个字符位于位置1（而不是C中的0）。允许索引为负，并解释为从字符串的末尾开始向后索引。因此，最后一个字符位于位置-1，依此类推。
+
+字符串库`string`实质上时一个`table`, 其中提供了其所有功能。它还为`__index`字段指向表的字符串设置一个`string`元表。因此，您可以使用面向对象样式的字符串函数。例如，`string.byte(s, i)` 可以写成`s:byte(i)`。
+
+| 函数                                          | 能否被JIT编译器编译                                               | 释义          | 备注                                                |
+| ------------------------------------------- | --------------------------------------------------------- | ----------- | ------------------------------------------------- |
+| string.len (s)                              | yes                                                       | 字符串长度(字节数)  |                                                   |
+| string.byte (s [, i [, j]])                 | yes                                                       | 返回字符串中字符的数值 |                                                   |
+| string.char (···)                           | 2.1                                                       |             |                                                   |
+| string.dump (function [,strip])             | never                                                     |             | Lua5.1不支持第二个参数,<br>Lua5.3支持第三个参数<br>LuaJIT支持第二个参数 |
+| string.find (s, pattern [, init [, plain]]) | 2.1 partial<br>Only fixed string searches (no patterns).  |             |                                                   |
+| string.format (formatstring, ···)           | 2.1 partial<br>Not for %p or non-string arguments for %s. |             |                                                   |
+| string.match (s, pattern [, init])          | no                                                        |             |                                                   |
+| string.gmatch (s, pattern)                  | no                                                        |             |                                                   |
+| string.gsub (s, pattern, repl [, n])        | no                                                        |             |                                                   |
+| string.lower (s)                            | 2.1                                                       |             |                                                   |
+| string.upper (s)                            | 2.1                                                       |             |                                                   |
+| string.rep(s, n [,sep])                     | 2.1                                                       |             | Lua5.1不支持第三个参数,<br>Lua5.2支持第三个参数<br>LuaJIT支持第三个参数 |
+| string.reverse (s)                          | 2.1                                                       | 字符串逆序       |                                                   |
+| string.sub (s, i [, j])                     | yes                                                       |             |                                                   |
+
+### string.len (s)
+
+返回一个字符串的字节长度。
+
+空字符串 `""` 的长度为0；
+
+内嵌的0也算长度,  `"a\000bc\000"` 的长度为5(`\000` 表示 0x00)。
+
+```lua
+print(string.len(""))   ---> 0
+
+print(string.len("\0"))   ---> 1
+print(string.len("\00"))  ---> 1
+print(string.len("\000")) ---> 1
+
+print(string.len("你好")) ---> 6
+```
 
 ### string.byte (s [, i [, j]])
 
@@ -133,55 +198,101 @@ print(v1, v2, v3, v4, v5) -- 104 101 108 108 111
 
 ### string.char (···)
 
-Receives zero or more integers. Returns a string with length equal to the number of arguments, in which each character has the internal numerical code equal to its corresponding argument.
+接收零个或多个整数。返回一个长度等于参数个数的字符串，其中每个字符的内部数字代码均等于其相应参数。
 
-Note that numerical codes are not necessarily portable across platforms.
+```lua
+local str = string.char(97,98,0x43,0x44)
+print(str) ---> abCD
+```
 
-### `string.dump (function)`
+注意`数字代码` 不一定可以跨平台。
 
-Returns a string containing a binary representation of the given function, so that a later [`loadstring`](http://www.lua.org/manual/5.1/manual.html#pdf-loadstring) on this string returns a copy of the function. `function`must be a Lua function without upvalues.
+### string.dump (function[, strip])
 
-### `string.find (s, pattern [, init [, plain]])`
+返回一个字符串，该字符串表示参数指定的函数的二进制形式，这个字符串之后可以使用`loadstring()`加载，返回该函数的副本。函数必须是不带升值(upvalues)的Lua函数。
 
-Looks for the first match of `pattern` in the string `s`. If it finds a match, then `find` returns the indices of `s` where this occurrence starts and ends; otherwise, it returns **nil**. A third, optional numerical argument `init` specifies where to start the search; its default value is 1 and can be negative. A value of **true** as a fourth, optional argument `plain` turns off the pattern matching facilities, so the function does a plain "find substring" operation, with no characters in `pattern`being considered "magic". Note that if `plain` is given, then `init` must be given as well.
+可选参数`strip` 为布尔类型, 表示是否携带debug信息，默认值为`false` 表示携带debug信息, 值为`true` 表示不带有debug信息, 返回的字符串体积更小,之后加载会更快更省内存。
 
-If the pattern has captures, then in a successful match the captured values are also returned, after the two indices.
+> LuaJIT生成的字符串是可移植的, 任意支持LuaJIT的平台都可以使用，甚至不受其CPU位数和大小端的限制。
+> 
+> LuaJIT不能加载 标准Lua生成的函数字符串, 二者是不兼容的
+> 
+> 不同的LuaJIT版本可能会存在兼容性问题,例如 2.0 与 2.1版本
 
-### `string.format (formatstring, ···)`
+```lua
+-- 定义函数
+function test(p)
+    print(p)
+end
 
-Returns a formatted version of its variable number of arguments following the description given in its first argument (which must be a string). The format string follows the same rules as the `printf` family of standard C functions. The only differences are that the options/modifiers `*`, `l`, `L`, `n`, `p`, and `h` are not supported and that there is an extra option, `q`. The `q` option formats a string in a form suitable to be safely read back by the Lua interpreter: the string is written between double quotes, and all double quotes, newlines, embedded zeros, and backslashes in the string are correctly escaped when written. For instance, the call
+-- 将 test 函数导出成字符串形式,并去除debug信息
+fn_str = string.dump(test, true)
 
-     string.format('%q', 'a string with "quotes" and \n new line')
+-- 加载 字符串, 得到一个函数副本
+fn_str_copy = loadstring(fn_str)
 
-will produce the string:
+-- 使用这个函数副本(同使用原来的 test 函数相同)
+fn_str_copy("hello")
+```
 
-     "a string with \"quotes\" and \
-      new line"
+上述的方式可以用来动态升级程序, 或者对关键函数加密.
 
-The options `c`, `d`, `E`, `e`, `f`, `g`, `G`, `i`, `o`, `u`, `X`, and `x` all expect a number as argument, whereas `q` and `s` expect a string.
 
-This function does not accept string values containing embedded zeros, except as arguments to the `q` option.
 
-### `string.gmatch (s, pattern)`
+### string.find (s, pattern [, init [, plain]])
 
-Returns an iterator function that, each time it is called, returns the next captures from `pattern` over string `s`. If `pattern` specifies no captures, then the whole match is produced in each call.
+在字符串`s`中查找`pattern`的第一个匹配项。 如果找到匹配项，则返回匹配的开始和结束的索引; 否则，返回`nil`。 
 
-As an example, the following loop
+第三个可选参数`init`为整型，指定从何处开始搜索； 其默认值为1，并且可以为负，注意这里的负值不表示倒序匹配，只是指定位置。 
 
-     s = "hello world from Lua"
-     for w in string.gmatch(s, "%a+") do
-       print(w)
-     end
+第四个可选参数`plain`为布尔类型，是模式匹配的开关。默认值为`false`，表示使用模式匹配，值为`true`会关闭模式匹配功能，这时`pattern`中的任何字符都不会被视为“ magic”。
 
-will iterate over all the words from string `s`, printing one per line. The next example collects all pairs `key=value` from the given string into a table:
+#### 模式匹配 - pattern
 
-     t = {}
-     s = "from=world, to=Lua"
-     for k, v in string.gmatch(s, "(%w+)=(%w+)") do
-       t[k] = v
-     end
+lua中`pattern` 与平常使用的正则表达式有所不同。
 
-For this function, a '`^`' at the start of a pattern does not work as an anchor, as this would prevent the iteration.
+| 字符类      | 释义                 | 备注                    |
+| -------- | ------------------ | --------------------- |
+| `.`      | 表示任意一个字符           |                       |
+| `%a`     | 表示任意一个字母           |                       |
+| `%c`     | 表示任意一个控制字符         |                       |
+| `%d`     | 表示任意一个数字           |                       |
+| `%l`     | 表示任意一个小写字母         |                       |
+| `%g`     | 表示任意一个除空格以外的可打印字符  | LuaJIT 和 Lua5.2才支持该该项 |
+| `%p`     | 表示任意一个标点符号         |                       |
+| `%s`     | 表示任意一个空格字符         |                       |
+| `%u`     | 表示任意一个大写字母         |                       |
+| `%w`     | 表示任意一个字母数字字符       |                       |
+| `%x`     | 表示任意一个十六进制数字       |                       |
+| `%z`     | 用0表示字符             |                       |
+| `%x`     |                    |                       |
+| `[set]`  | 字符集, 匹配任何在括号内的字符   |                       |
+| `[^set]` | 负字符集, 匹配任何不在括号内的字符 |                       |
+
+得到的
+
+| 模式项              | 释义  | 备注  |
+| ---------------- | --- | --- |
+| `*`              |     |     |
+| `+`              |     |     |
+| `-`              |     |     |
+| `?`              |     |     |
+| `%n`,  1<= n <=9 |     |     |
+| `%bxy`           |     |     |
+| `^`              |     |     |
+| `$`              |     |     |
+| `()`             |     |     |
+
+```lua
+print(string.find("1abc2abc3", "%a"))    ---> 2	 2
+print(string.find("1abc2abc3", "%a%a"))  ---> 2  3
+
+print(string.find("1abc2abc3", "%a+"))   ---> 2  4
+```
+
+
+
+
 
 ### `string.gsub (s, pattern, repl [, n])`
 
@@ -218,30 +329,134 @@ Here are some examples:
      x = string.gsub("$name-$version.tar.gz", "%$(%w+)", t)
      --> x="lua-5.1.tar.gz"
 
-### `string.len (s)`
 
-Receives a string and returns its length. The empty string `""` has length 0. Embedded zeros are counted, so `"a\000bc\000"` has length 5.
 
-### `string.lower (s)`
 
-Receives a string and returns a copy of this string with all uppercase letters changed to lowercase. All other characters are left unchanged. The definition of what an uppercase letter is depends on the current locale.
 
 ### `string.match (s, pattern [, init])`
 
 Looks for the first *match* of `pattern` in the string `s`. If it finds one, then `match` returns the captures from the pattern; otherwise it returns **nil**. If `pattern`specifies no captures, then the whole match is returned. A third, optional numerical argument `init` specifies where to start the search; its default value is 1 and can be negative.
 
-### `string.rep (s, n)`
 
-Returns a string that is the concatenation of `n` copies of the string `s`.
 
-### `string.reverse (s)`
+### 
 
-Returns a string that is the string `s` reversed.
+### `string.gmatch (s, pattern)`
 
-### `string.sub (s, i [, j])`
+Returns an iterator function that, each time it is called, returns the next captures from `pattern` over string `s`. If `pattern` specifies no captures, then the whole match is produced in each call.
 
-Returns the substring of `s` that starts at `i` and continues until `j`; `i` and `j` can be negative. If `j` is absent, then it is assumed to be equal to -1 (which is the same as the string length). In particular, the call `string.sub(s,1,j)` returns a prefix of `s` with length `j`, and `string.sub(s, -i)` returns a suffix of `s` with length `i`.
+As an example, the following loop
 
-### `string.upper (s)`
+```
+ s = "hello world from Lua"
+ for w in string.gmatch(s, "%a+") do
+   print(w)
+ end
+```
 
-Receives a string and returns a copy of this string with all lowercase letters changed to uppercase. All other characters are left unchanged. The definition of what a lowercase letter is depends on the current locale.
+will iterate over all the words from string `s`, printing one per line. The next example collects all pairs `key=value` from the given string into a table:
+
+```
+ t = {}
+ s = "from=world, to=Lua"
+ for k, v in string.gmatch(s, "(%w+)=(%w+)") do
+   t[k] = v
+ end
+```
+
+For this function, a '`^`' at the start of a pattern does not work as an anchor, as this would prevent the iteration.
+
+
+
+### string.format (formatstring, ···)
+
+根据第一个参数（必须是字符串）中给出的描述，返回其可变数量的参数的格式版本。 格式字符串遵循与标准C函数的printf系列相同的规则。 唯一的区别是不支持选项/修饰符*，l，L，n，p和h，并且还有一个附加选项q。 q选项以适合Lua解释器安全读取的格式格式化字符串：该字符串写在双引号之间，并且写入时正确地转义了该字符串中的所有双引号，换行符，嵌入的零和反斜杠。
+
+Returns a formatted version of its variable number of arguments following the description given in its first argument (which must be a string). The format string follows the same rules as the `printf` family of standard C functions. 
+
+区别是Lua不支持 `*`, `l`, `L`, `n`, `p`, `h`选项, 并且增加了一个额外的 `q`选项. The `q` option formats a string in a form suitable to be safely read back by the Lua interpreter: the string is written between double quotes, and all double quotes, newlines, embedded zeros, and backslashes in the string are correctly escaped when written. For instance, the call
+
+```
+ string.format('%q', 'a string with "quotes" and \n new line')
+```
+
+will produce the string:
+
+```
+ "a string with \"quotes\" and \
+  new line"
+```
+
+The options `c`, `d`, `E`, `e`, `f`, `g`, `G`, `i`, `o`, `u`, `X`, and `x` all expect a number as argument, whereas `q` and `s` expect a string.
+
+|            |            |     |
+| ---------- | ---------- | --- |
+| `%a` ,`%A` |            |     |
+| `%c`       | 字符         |     |
+| `%d`       | 十进制整数      |     |
+| `%e`,`%E`  | 双精度浮点数     |     |
+| `%f`       |            |     |
+| `%g`, `%G` | 双精度浮点数     |     |
+| `%i`       |            |     |
+| `%o`       |            |     |
+| `%u`       |            |     |
+| `%X`       | 十六进制整数(大写) |     |
+| `%x`       | 十六进制整数(小写) |     |
+| `%s`       | 字符串        |     |
+| `%q`       |            |     |
+
+This function does not accept string values containing embedded zeros, except as arguments to the `q` option.
+
+
+
+### string.rep (s, n [, sep])
+
+返回一个字符串，该字符串是字符串`s`的`n`个副本的串联, 副本之间使用字符串`sep`分隔, `sep`默认值为空字符串。
+
+```lua
+print(string.rep("abc", 3))   --> abcabcabc
+
+print(string.rep("123", 4, "-"))  --> 123-123-123-123
+```
+
+
+
+### string.sub (s, i [, j])
+
+返回`s`的子字符串，从`i`开始，一直到`j`； `i`和`j`可以为负数。 如果不存在`j`，则假定它等于-1（与字符串长度相同）。 
+
+调用`string.sub(s,1,j)`返回长度为`j`的`s`的前缀，而`string.sub(s,-i)`返回长度为`i`的`s`的后缀。
+
+```lua
+print(string.sub("abcd", 2))    --> bcd
+print(string.sub("abcd", 2, 3)) --> bc
+print(string.sub("abcd", 3, 3)) --> c
+
+print(string.sub("abcd", -2))   --> cd
+```
+
+
+
+### string.reverse (s)
+
+返回参数`s`的逆序字符串
+
+```lua
+print(string.reverse("12345678"))   --> 87654321
+```
+
+### string.lower (s)
+
+接收一个字符串并返回此字符串的副本，并将所有大写字母更改为小写字母。其他所有字符均保持不变。大写字母的定义取决于当前语言环境。
+
+```lua
+print(string.lower("a1-B2=c3,D4_END"))  --> a1-b2=c3,d4_end
+```
+
+### string.upper (s)
+
+接收一个字符串并返回此字符串的副本，并将所有小写字母都更改为大写。其他所有字符均保持不变。小写字母的定义取决于当前语言环境。
+
+```lua
+print(string.upper("a1-B2=c3,D4_end"))  -->  A1-B2=C3,D4_END
+```

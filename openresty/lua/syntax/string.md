@@ -417,7 +417,7 @@ for w in string.gmatch("hello the world", "%s(%a+)") do
 end
 ```
 
-~~~~下一个示例`key=value`将给定字符串中的所有对收集到一个表中：
+下一个示例`key=value`将给定字符串中的所有对收集到一个表中：
 
 ```lua
  t = {}

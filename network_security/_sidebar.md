@@ -5,7 +5,8 @@
   - [二次转码](network_security/web/http/double_url_encodeing.md)
 
 - [**HIDS**](network_security/hids/README.md)
-  - [Wazuh](network_security/hids/Wazuh/)
+  - [Wazuh 介绍](network_security/hids/Wazuh/)
+  - [Wazuh 开发](network_security/hids/WazuhDev/)
 
 - [**攻击手段**](network_security/attack/README.md)
   - [反弹Shell](network_security/attack/shell.md)

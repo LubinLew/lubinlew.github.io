@@ -2,6 +2,29 @@
 
 > [coreruleset/crs-setup.conf.example at v3.4/dev](https://github.com/coreruleset/coreruleset/blob/v3.4/dev/crs-setup.conf.example)
 
+**目录**
+=================
+
+* [配置模式](#配置模式)
+* [日志设置](#日志设置)
+* [嫌疑级别设置](#嫌疑级别设置)
+* [强制使用请求体处理器URLENCODED](#强制使用请求体处理器URLENCODED)
+* [异常评分模式的严重级别](#异常评分模式的严重级别)
+* [异常计分模式的阈值设置](#异常计分模式的阈值设置)
+* [早期异常计分模式拦截](#早期异常计分模式拦截)
+* [指定应用规则的例外y](#指定应用规则的例外)
+* [HTTP策略设置](#HTTP策略设置)
+* [HTTP参数与上传限制](#HTTP参数与上传限制)
+* [采样率设置](#采样率设置)
+* [客户端IP黑名单](#客户端IP黑名单)
+* [反爬虫与DoS防护](#反爬虫与DoS防护)
+* [检测UTF-8编码](#检测UTF-8编码)
+* [基于IP信誉的阻止访问](#基于IP信誉的阻止访问)
+* [地域访问设置](#地域访问设置)
+* [集合超时设置](#集合超时设置)
+* [结束设置](#结束设置)
+
+
 ## 配置模式
 
 OWASP V3核心规则集目前支持两种配置模式：<mark>异常评分模式</mark>(默认) 和 <mark>独立控制模式</mark>。
@@ -154,7 +177,7 @@ SecAction \
 
 ---
 
-## Enforce Body Processor URLENCODED
+## 强制使用请求体处理器URLENCODED
 
 ModSecurity 根据 `Content-Type` 请求标头选择body处理器。 但是客户端并不总是为他们的请求主体有效负载设置`Content-Type`标头。 这将使ModSecurity对有效载荷的视野有限。 使用变量`tx.enforce_bodyproc_urlencoded`可以在这些情况下强制使用URLENCODED主体处理器。 默认情况下，此功能处于关闭状态，因为这意味着ModSecurity的行为已超出CRS（主体处理器不仅适用于CRS，而且适用于所有规则），而且还可能导致偏执级别1的误报。但是，启用此变量 关闭可能的CRS旁路，因此应予以考虑。
 
@@ -170,7 +193,7 @@ SecAction \
 
 ---
 
-## Anomaly Scoring Mode Severity Levels
+## 异常评分模式的严重级别
 
 CRS中的每个规则都有一个关联的严重性级别。 这些是每个严重性级别的默认得分。 如果规则匹配，这些设置将用于增加异常分数。 您可以根据自己的喜好调整这些点，但这通常是不需要的。
 
@@ -264,7 +287,7 @@ SecAction \
 
 ---
 
-## Application Specific Rule Exclusions
+## 指定应用规则的例外
 
 一些知名的应用程序可能会执行似乎是恶意的操作。 这包括在参数中允许HTML或Javascript之类的操作。 在这种情况下，CRS旨在通过允许管理员逐个应用程序启用预先构建的，特定于应用程序的排除项来防止误报。
 
@@ -368,9 +391,11 @@ SecAction "id:900400,\
 
 ---
 
-## Project Honey Pot HTTP Blacklist
+## 客户端IP黑名单
 
-（可选）您可以对照 [Project Honey Pot HTTPBL](https://www.projecthoneypot.org/httpbl.php) 检查客户端IP地址。 为了使用此功能，您需要注册以获得免费的API密钥。 使用指令 `SecHttpBlKey` 进行设置。Project Honeypot 返回多个不同的恶意IP类型，您可以通过在下面启用或禁用它们来指定要阻止的对象。
+您可以对照 [Project Honey Pot HTTPBL](https://www.projecthoneypot.org/httpbl.php) 检查客户端IP地址。
+为了使用此功能，您需要注册以获得免费的API密钥。使用指令 `SecHttpBlKey` 进行设置。
+Project Honeypot 返回多个不同的恶意IP类型，您可以通过在下面启用或禁用它们来指定要阻止的对象。
 
 ```bash
 SecHttpBlKey XXXXXXXXXXXXXXXXX
@@ -505,7 +530,7 @@ SecAction \
 
 ---
 
-## Collection 超时设置
+## 集合超时设置
 
 将 `SecCollectionTimeout` 指令从ModSecurity默认值（1小时）设置为较低的设置，该设置适用于大多数站点。通过清除陈旧的数据来提高性能。
 

@@ -1,8 +1,6 @@
 * [Linux下C编程](linux_c_programming/)
 * [ARM](arm/)
 * [k8s](k8s/)
-* [C++](cpp/)
-* [Golang](golang/)
 * [HTTP](http/)
 * [WebSocket](websocket/)
 * [Nginx](nginx/)

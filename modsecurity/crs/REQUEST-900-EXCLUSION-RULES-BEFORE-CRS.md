@@ -22,21 +22,22 @@ ModSecurity 维护两个不同的上下文(Context)：启动(startup)和每个�
 
 相反，ModSecurity支持几种动作(action)，这些动作可以在每个事务上下文期间（即正在处理规则时）更改基础配置的状态。 通常，这些是通过使用 `ctl` 动作来完成的。 由于这些是规则的一部分，因此将按照应用规则的顺序对它们进行评估（通过物理位置，考虑阶段）。 作为此命令的结果，应考虑何时执行 `ctl` 动作。 这与涉及修改ID的'ctl'选项（例如`ruleRemoveById`）特别相关。 在这些情况下，重要的是将此类规则放置在它们将影响的规则ID之前。 与设置上下文不同，当我们在每个事务上下文中处理规则时，我们已经知道所有规则ID。 正是基于这种逻辑，我们在所有其余规则之前包含了诸如此类的规则。 结果，`REQUEST-900-EXCLUSION-RULES-BEFORE-CRS`设计为首先加载。
 
-`ctl:ruleEngine`            -> place in REQUEST-900-EXCLUSION-RULES-BEFORE-CRS
-`ctl:ruleRemoveById`       -> place in REQUEST-900-EXCLUSION-RULES-BEFORE-CRS
-`ctl:ruleRemoveByMsg`       -> place in REQUEST-900-EXCLUSION-RULES-BEFORE-CRS
-`ctl:ruleRemoveByTag`       -> place in REQUEST-900-EXCLUSION-RULES-BEFORE-CRS
-`ctl:ruleRemoveTargetById`  -> place in REQUEST-900-EXCLUSION-RULES-BEFORE-CRS
-`ctl:ruleRemoveTargetByMsg` -> place in REQUEST-900-EXCLUSION-RULES-BEFORE-CRS
-`ctl:ruleRemoveTargetByTag` -> place in REQUEST-900-EXCLUSION-RULES-BEFORE-CRS
-
-`SecRuleRemoveById`         -> place in RESPONSE-999-EXCLUSION-RULES-AFTER-CRS
-`SecRuleRemoveByMsg`        -> place in RESPONSE-999-EXCLUSION-RULES-AFTER-CRS
-`SecRuleRemoveByTag`        -> place in RESPONSE-999-EXCLUSION-RULES-AFTER-CRS
-`SecRuleUpdateActionById`   -> place in RESPONSE-999-EXCLUSION-RULES-AFTER-CRS
-`SecRuleUpdateTargetById`   -> place in RESPONSE-999-EXCLUSION-RULES-AFTER-CRS
-`SecRuleUpdateTargetByMsg`  -> place in RESPONSE-999-EXCLUSION-RULES-AFTER-CRS
-`SecRuleUpdateTargetByTag`  -> place in RESPONSE-999-EXCLUSION-RULES-AFTER-CRS
+| 指令                          | 使用位置                                   |
+| --------------------------- | -------------------------------------- |
+| `ctl:ruleEngine`            | REQUEST-900-EXCLUSION-RULES-BEFORE-CRS |
+| `ctl:ruleRemoveById`        | REQUEST-900-EXCLUSION-RULES-BEFORE-CRS |
+| `ctl:ruleRemoveByMsg`       | REQUEST-900-EXCLUSION-RULES-BEFORE-CRS |
+| `ctl:ruleRemoveByTag`       | REQUEST-900-EXCLUSION-RULES-BEFORE-CRS |
+| `ctl:ruleRemoveTargetById`  | REQUEST-900-EXCLUSION-RULES-BEFORE-CRS |
+| `ctl:ruleRemoveTargetByMsg` | REQUEST-900-EXCLUSION-RULES-BEFORE-CRS |
+| `ctl:ruleRemoveTargetByTag` | REQUEST-900-EXCLUSION-RULES-BEFORE-CRS |
+| `SecRuleRemoveById`         | RESPONSE-999-EXCLUSION-RULES-AFTER-CRS |
+| `SecRuleRemoveByMsg`        | RESPONSE-999-EXCLUSION-RULES-AFTER-CRS |
+| `SecRuleRemoveByTag`        | RESPONSE-999-EXCLUSION-RULES-AFTER-CRS |
+| `SecRuleUpdateActionById`   | RESPONSE-999-EXCLUSION-RULES-AFTER-CRS |
+| `SecRuleUpdateTargetById`   | RESPONSE-999-EXCLUSION-RULES-AFTER-CRS |
+| `SecRuleUpdateTargetByMsg`  | RESPONSE-999-EXCLUSION-RULES-AFTER-CRS |
+| `SecRuleUpdateTargetByTag`  | RESPONSE-999-EXCLUSION-RULES-AFTER-CRS |
 
 ## 示例
 

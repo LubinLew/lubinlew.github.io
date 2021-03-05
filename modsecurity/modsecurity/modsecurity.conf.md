@@ -14,45 +14,67 @@
 * [审核日志配置](#审核日志配置)
 * [杂项](#杂项)
 
-
+----
 
 ## 规则引擎初始化
 
-启用ModSecurity，将其附加到每个事务。 仅从开始就使用检测，因为这样可以最大程度地减少安装后中断的机会。
+ModSecurity 引擎操作指令 `SecRuleEngine`, 其选项如下:
+
+| 选项              | 说明                |
+| --------------- | ----------------- |
+| `On`            | 开启规则匹配并进行相应的拦截    |
+| `Off`           | 关闭规则匹配            |
+| `DetectionOnly` | 开启规则匹配，但不执行任何拦截操作 |
+
+例子: 设置引擎为侦测模式，不进行拦截
 
 ```bash
 SecRuleEngine DetectionOnly
 ```
 
+---
+
 ## 请求体处理
 
-允许ModSecurity访问请求体。 否则，ModSecurity将无法查看任何POST参数，从而导致巨大的安全漏洞。
+允许 ModSecurity 检查请求体。 否则，ModSecurity 将无法检查任何POST数据，从而导致安全漏洞。
 
 ```bash
 SecRequestBodyAccess On
 ```
 
-启用XML请求主体解析器。
+### 启用XML请求体解析器
 
-在xml内容类型的情况下启动XML Processor
+在 xml 内容类型的情况下启动XML Processor
 
 ```bash
 SecRule REQUEST_HEADERS:Content-Type "(?:application(?:/soap\+|/)|text/)xml" \
-     "id:'200000',phase:1,t:none,t:lowercase,pass,nolog,ctl:requestBodyProcessor=XML"
+     "id:'200000', \
+      phase:1, \
+      t:none, \
+      t:lowercase,\
+      pass, \
+      nolog, \
+      ctl:requestBodyProcessor=XML"
 ```
 
+### 启用JSON请求体解析器
 
-
-启用JSON请求主体解析器。 
-
-如果是JSON内容类型，则启动JSON处理程序； 如果您的应用程序不使用“ application / json”，则进行相应的更改
+如果是JSON内容类型，则启动JSON处理程序； 如果您的应用程序不使用 `application/json`，则进行相应的更改。
 
 ```bash
 SecRule REQUEST_HEADERS:Content-Type "application/json" \
-     "id:'200001',phase:1,t:none,t:lowercase,pass,nolog,ctl:requestBodyProcessor=JSON"
+     "id:'200001', \
+      phase:1, \
+      t:none,  \
+      t:lowercase, \
+      pass,  \
+      nolog, \
+      ctl:requestBodyProcessor=JSON"
 ```
 
-我们将接受的最大请求正文大小。 如果您支持文件上传，则第一行给出的值必须与您愿意接受的最大文件一样大。 第二个值是指数据大小，不包括文件。 您希望使该值尽可能低。
+我们将接受的最大请求正文大小。 
+
+如果您支持文件上传，则第一行给出的值必须与您愿意接受的最大文件一样大。 第二个值是指数据大小，不包括文件。 您希望使该值尽可能低。
 
 ```bash
 SecRequestBodyLimit 13107200
@@ -70,8 +92,15 @@ SecRequestBodyLimitAction Reject
 
 ```bash
 SecRule REQBODY_ERROR "!@eq 0" \
-"id:'200002', phase:2,t:none,log,deny,status:400,msg:'Failed to parse request body.',logdata:'%{reqbody_error_msg}',severity:2"
-
+   "id:'200002', \
+    phase:2, \
+    t:none,  \
+    log,     \
+    deny,    \
+    status:400, \
+    msg:'Failed to parse request body.', \
+    logdata:'%{reqbody_error_msg}', \
+    severity:2"
 ```
 
 默认情况下，严格遵守我们在multipart / form-data中接受的内容
@@ -136,17 +165,14 @@ RFC 1341描述了多部分内容类型，其语法必须仅包含三行强制性
 
 SecRule MULTIPART_UNMATCHED_BOUNDARY "@eq 1" \
     "id:'200004',phase:2,t:none,log,deny,msg:'Multipart parser detected a possible unmatched boundary.'"
-
 ```
 
  PCRE Tuning
  We want to avoid a potential RegEx DoS condition
 
 ```bash
-
 SecPcreMatchLimit 1000
 SecPcreMatchLimitRecursion 1000
-
 ```
 
 一些内部错误将在TX中设置标志，我们将需要查找这些标志。
@@ -157,7 +183,6 @@ SecPcreMatchLimitRecursion 1000
 ```bash
 SecRule TX:/^MSC_/ "!@streq 0" \
         "id:'200005',phase:2,t:none,deny,msg:'ModSecurity internal error flagged: %{MATCHED_VAR_NAME}'"
-
 ```
 
 ## 响应体处理
@@ -205,8 +230,6 @@ ModSecurity将保留其持久数据的位置。 由于所有系统都有/ tmp可
 SecDataDir /tmp/
 ```
 
-
-
 ## 文件上传处理配置
 
 ModSecurity存放拦截的上传文件的位置。 此位置必须对ModSecurity私有。 您不希望服务器上的其他用户访问文件，是吗？
@@ -227,8 +250,6 @@ SecUploadKeepFiles RelevantOnly
 SecUploadFileMode 0600
 ```
 
-
-
 ## 调试日志配置
 
 默认的调试日志配置是复制错误日志中的错误，警告和注意消息。
@@ -238,8 +259,6 @@ SecDebugLog /opt/modsecurity/var/log/debug.log
 SecDebugLogLevel 3
 ```
 
-
-
 ## 审核日志配置
 
 记录由规则标记的事务以及触发服务器错误的事务（由5xx或4xx确定，不包括404级响应状态代码）。
@@ -248,8 +267,6 @@ SecDebugLogLevel 3
 SecAuditEngine RelevantOnly
 SecAuditLogRelevantStatus "^(?:5|4(?!04))"
 ```
-
-
 
 记录我们所了解的有关交易的所有信息。
 
@@ -269,8 +286,6 @@ SecAuditLog /var/log/modsec_audit.log
 ```bash
 SecAuditLogStorageDir /opt/modsecurity/var/audit/
 ```
-
-
 
 ## 杂项
 

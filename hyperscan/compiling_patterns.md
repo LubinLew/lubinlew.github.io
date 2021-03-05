@@ -1,8 +1,12 @@
 # 模式编译(Compiling Patterns)
 
+Hyperscan 支持 正则表达式  和 纯字符串 2种规格的编译与扫描，使用的API也是不相同。
+
 ## 构建数据库(Building a Database)
 
-Hyperscan compiler API 接收正则表达式并将其转换为编译过的模式数据库，这个数据库是用于扫描数据的。Hyperscan 提供了3个函数用于编译模式数据库：
+Hyperscan compiler API 接收正则表达式并将其转换为编译过的模式数据库，这个数据库是用于扫描数据的。编译的作用是允许 Hyperscan 库分析给定的正则式并且决定怎样更优化的扫描这些`pattern`，这些操作如果放到运行时(扫描)则需要非常高的计算成本。
+
+Hyperscan 提供了3个函数用于编译 `pattern` 数据库：
 
 ```c
 /* hs_compile.h */
@@ -45,22 +49,19 @@ hs_error_t HS_CDECL hs_compile_ext_multi(
 
 3. [`hs_compile_ext_multi()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_compile_ext_multi "hs_compile_ext_multi"): 类似上面的API，编译一组正则表达式，但是允许为每一个正则表达式声明[扩展参数(Extended Parameters)](http://intel.github.io/hyperscan/dev-reference/compilation.html#extparam) 。
 
-编译的作用是允许 Hyperscan库分析给定的正则式并且决定怎样更优化的扫描这些patterns，这些操作如果放到运行时则需要非常高的计算成本。
+### 扫描模式
 
-当编译表达式时, 需要决定用什么模式进行扫描, 模式分为 流模式 块模式 和 向量模式:
+当编译表达式时，需要决定用什么模式进行扫描, 模式分为 **流模式** **块模式** 和 **矢量模式**:
 
 - **流模式(Streaming mode)**: 需要扫描的目标数据是一个持续的数据流,并不能一次就能获取到全部的数据;
 
 - **块模式(Block mode)**: 目标数据是分离的数据块, 但是可以一次获取全部的数据, 不需要保存状态.
 
-- **向量模式(Vectored mode)**: 目标数据由一系列不连续的快组成.但是可以一次获取全部的数据,不需要保存状态.
+- **矢量模式(Vectored mode)**: 目标数据由一系列不连续的快组成.但是可以一次获取全部的数据,不需要保存状态.
 
-模式是通过参数 `mode` 声明 [`hs_compile()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_compile "hs_compile") must be set to [`HS_MODE_STREAM`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.HS_MODE_STREAM "HS_MODE_STREAM"); similarly,
-block mode requires the use of [`HS_MODE_BLOCK`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.HS_MODE_BLOCK "HS_MODE_BLOCK") and vectored mode
-requires the use of [`HS_MODE_VECTORED`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.HS_MODE_VECTORED "HS_MODE_VECTORED"). A pattern database compiled
-for one mode (streaming, block or vectored) can only be used in that mode. The
-version of Hyperscan used to produce a compiled pattern database must match the
-version of Hyperscan used to scan with it.
+要编译要在流模式下使用的模式，必须将 `mode` 参数设置为`HS_MODE_STREAM`，块模式要求使用 `HS_MODE_BLOCK`，矢量模式要求使用`HS_MODE_VECTORED`。 
+
+为一种模式编译的模式数据库只能在该模式下使用。 用于生成已编译模式数据库的Hyperscan 版本必须与用于对其进行扫描的 Hyperscan 版本需要相同。
 
 ```c
 /* hs_compile.h */
@@ -73,43 +74,19 @@ version of Hyperscan used to scan with it.
 #define HS_MODE_VECTORED        4
 ```
 
-Hyperscan provides support for targeting a database at a particular CPU
-platform; see [Instruction Set Specialization](http://intel.github.io/hyperscan/dev-reference/compilation.html#instr-specialization) for details.
+Hyperscan提供了针对特定CPU平台上的数据库的支持。 有关详细信息，请参考 [Instruction Set Specialization](http://intel.github.io/hyperscan/dev-reference/compilation.html#instr-specialization) 。
 
 ### 编译纯字符串(Compile Pure Literals)
 
-纯字符串是一种特殊的正则表达式. A character sequence is
-regarded as a pure literal if and only if each character is read and
-interpreted independently. No syntax association happens between any adjacent
-characters.
+纯文字是正则表达式的一种特殊情况。当且仅当每个字符被独立读取和解释时，字符序列才被视为纯文字。在任何相邻字符之间不会发生语法关联。
 
-For example, given an expression written as `/bc?/`. We could say it is
-a regluar expression, with the meaning that character `b` followed by nothing
-or by one character `c`. On the other view, we could also say it is a pure
-literal expression, with the meaning that this is a character sequence of 3-byte
-length, containing characters `b`, `c` and `?`. In regular case, the
-question mark character `?` has a particular syntax role called 0-1 quantifier,
-which has an syntax association with the character ahead of it. Similar
-characters exist in regular grammer like `[`, `]`, `(`, `)`, `{`, `}`, `-`, `*`, `+`, `\`, `|`, `/`, `:`, `^`, `.`, `$`.
-While in pure literal case, all these meta characters lost extra meanings
-expect for that they are just common ASCII codes.
+例如，给定一个表达式为 `/bc?/` 。我们可以说它是一个正则表达式，意思是字符b后无字符或跟一个字符`c`。另一种观点上，我们也可以说它是一个纯文字表达，其含义是这是一个3字节长的字符序列，包含`b`，`c`和`？`字符。
 
-Hyperscan is initially designed to process common regular expressions. It is
-hence embedded with a complex parser to do comprehensive regular grammer
-interpretion. Particularly, the identification of above meta characters is the
-basic step for the interpretion of far more complex regular grammers.
+在正常情况下，问号字符 `?` 具有一个特殊的语法角色，称为0-1量词，它与前面的字符具有语法关联。类似的字符存在于常规语法中，例如`[`, `]`, `(`, `)`, `{`, `}`, `-`, `*`, `+`, `\`, `|`, `/`, `:`, `^`, `.`, `$`。在纯文字情况下，所有这些元字符都失去了额外的含义，因为它们只是普通的ASCII码。
 
-However in real cases, patterns may not always be regular expressions. They
-could just be pure literals. Problem will come if the pure literals contain
-regular meta characters. Supposing fed directly into traditional Hyperscan
-compile API, all these meta characters will be interpreted in predefined ways,
-which is unnecessary and the result is totally out of expectation. To avoid
-such misunderstanding by traditional API, users have to preprocess these
-literal patterns by converting the meta characters into some other formats:
-either by adding a backslash `\` before certain meta characters, or by
-converting all the characters into a hexadecimal representation.
+Hyperscan 最初旨在处理常见的正则表达式。因此，它嵌入了复杂的解析器以进行全面的常规语法解释。特别地，上述元字符的识别是解释更复杂的常规语法的基本步骤。
 
-在`v5.2.0`版本中, 引入了2个新的API用来编译纯字符串模式:
+但是，在实际情况下，模式可能并不总是正则表达式。它们可能只是纯文字。如果纯文字包含常规元字符，则会出现问题。你需要转义这些元字符，如果数量较多的情况，会非常麻烦。所以在`v5.2.0`版本中, 引入了2个新的API用来编译纯字符串模式:
 
 ```c
 /* hs_compile.h */
@@ -133,52 +110,25 @@ hs_error_t HS_CDECL hs_compile_lit_multi(
         hs_compile_error_t **error);
 ```
 
-1. [`hs_compile_lit()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_compile_lit "hs_compile_lit"): compiles a single pure literal into a pattern
-   database.
+1. [`hs_compile_lit()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_compile_lit "hs_compile_lit"): 将单个纯文字编译到模式数据库中。
 
-2. [`hs_compile_lit_multi()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_compile_lit_multi "hs_compile_lit_multi"): compiles an array of pure literals into a
-   pattern database. All of the supplied patterns will be scanned for
-   concurrently at scan time, with user-supplied identifiers returned when they
-   match.
+2. [`hs_compile_lit_multi()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_compile_lit_multi "hs_compile_lit_multi"): 将纯文字数组编译到模式数据库中。
 
-These 2 APIs are designed for use cases where all patterns contained in the
-target rule set are pure literals. Users can pass the initial pure literal
-content directly into these APIs without worrying about writing regular meta
-characters in their patterns. No preprocessing work is needed any more.
+这2个API设计用于用例，其中目标规则集中包含的所有模式都是纯文字。 用户可以将初始的纯文字内容直接传递到这些API中，而不必担心在其模式中编写常规的元字符。 不再需要任何预处理工作。支持标志: [`HS_FLAG_CASELESS`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.HS_FLAG_CASELESS "HS_FLAG_CASELESS"), [`HS_FLAG_SINGLEMATCH`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.HS_FLAG_SINGLEMATCH "HS_FLAG_SINGLEMATCH"), [`HS_FLAG_SOM_LEFTMOST`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.HS_FLAG_SOM_LEFTMOST "HS_FLAG_SOM_LEFTMOST"),不支持扩展参数 [Extended Parameters](http://intel.github.io/hyperscan/dev-reference/compilation.html#extparam). 
 
-For new APIs, the `length` of each literal pattern is a newly added parameter.
-Hyperscan needs to locate the end position of the input expression via clearly
-knowing each literal’s length, not by simply identifying character `\0` of a
-string.
+---
 
-Supported flags: [`HS_FLAG_CASELESS`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.HS_FLAG_CASELESS "HS_FLAG_CASELESS"), [`HS_FLAG_SINGLEMATCH`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.HS_FLAG_SINGLEMATCH "HS_FLAG_SINGLEMATCH"), [`HS_FLAG_SOM_LEFTMOST`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.HS_FLAG_SOM_LEFTMOST "HS_FLAG_SOM_LEFTMOST").
+## 模式支持(Pattern Support)
 
-Note
+Hyperscan 支持PCRE库的大部分语法, 这些语法可以在 <[PCRE - Perl Compatible Regular Expressions](http://www.pcre.org/)> 中找到, 有一些语法是不支持的,这会导致编译错误。
 
-字符串编译API不支持扩展参数 [Extended Parameters](http://intel.github.io/hyperscan/dev-reference/compilation.html#extparam). And
-for runtime implementation, traditional runtime APIs can still be
-used to match pure literal patterns.
+用于验证Hyperscan对这种语法的解释的PCRE版本为8.41或更高版本。
 
-Note
+### 支持的构造(Supported Constructs)
 
-If the target rule set contains at least one regular expression,
-please use traditional compile APIs [`hs_compile()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_compile "hs_compile"), [`hs_compile_multi()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_compile_multi "hs_compile_multi") and [`hs_compile_ext_multi()`](http://intel.github.io/hyperscan/dev-reference/api_files.html#c.hs_compile_ext_multi "hs_compile_ext_multi").
-The new literal APIs introduced here are designed for rule sets
-containing only pure literal expressions.
+Hyperscan支持以下正则表达式构造：
 
-## Pattern Support
-
-Hyperscan 支持PCRE库的大部分语法, 这些语法可以在 <[PCRE - Perl Compatible Regular Expressions](http://www.pcre.org/)> 中找到, 有一些语法是不支持的,这会导致编译错误 .
-
-The version of PCRE used to validate Hyperscan’s interpretation of this syntax
-is 8.41 or above.
-
-### Supported Constructs
-
-The following regex constructs are supported by Hyperscan:
-
-- Literal characters and strings, with all libpcre quoting and character
-  escapes.
+- 文字字符和字符串，所有libpcre引号和字符转义符Literal characters and strings, with all libpcre quoting and character escapes.
 
 - Character classes such as `.` (dot), `[abc]`, and `[^abc]`, as well as the predefined character classes `\s`, `\d`, `\w`, `\v`, and `\h` and their
   negated counterparts (`\S`, `\D`, `\W`, `\V`, and `\H`).
@@ -251,60 +201,47 @@ can be successfully compiled with Hyperscan; notably, many bounded repeat
 forms that can be compiled with Hyperscan without the Start of Match flag
 enabled cannot be compiled with the flag enabled.
 
-### Unsupported Constructs
+### 不支持的构造(Unsupported Constructs)
 
-The following regex constructs are not supported by Hyperscan:
+Hyperscan不支持以下正则表达式构造：
 
-- Backreferences and capturing sub-expressions.
+- 反向引用和捕获子表达式
 
-- Arbitrary zero-width assertions.
+- 任意零宽度断言
 
-- Subroutine references and recursive patterns.
+- 子例程引用(Subroutine references)和递归模式
 
-- Conditional patterns.
+- 条件模式
 
 - Backtracking control verbs.
 
-- The `\C` “single-byte” directive (which breaks UTF-8 sequences).
+- `\C` 单字节指令（会中断UTF-8序列）。
 
 - The `\R` newline match.
 
 - The `\K` start of match reset directive.
 
-- Callouts and embedded code.
+- 标注和嵌入式代码
 
-- Atomic grouping and possessive quantifiers.
+- 原子分组(Atomic grouping)和所有格量词(possessive quantifiers) 
+
+----
 
 ## 语义学(Semantics)
 
-While Hyperscan follows libpcre syntax, it provides different semantics. The
-major departures from libpcre semantics are motivated by the requirements of
-streaming and multiple simultaneous pattern matching.
+尽管Hyperscan遵循libpcre语法，但它提供了不同的语义。 与libpcre语义的主要区别在于流和多个同时模式匹配的要求。与libpcre语义的主要区别在于：
 
-The major departures from libpcre semantics are:
 
-1. **Multiple pattern matching**: Hyperscan allows matches to be reported for
-   several patterns simultaneously. This is not equivalent to separating the
-   patterns by `|` in libpcre, which evaluates alternations
-   left-to-right.
 
-2. **Lack of ordering**: the multiple matches that Hyperscan produces are not
-   guaranteed to be ordered, although they will always fall within the bounds of
-   the current scan.
+1. **Multiple pattern matching**: Hyperscan允许同时报告几种模式的匹配。 这不等于用`|`分隔模式。 在libpcre中，它从左到右评估交替。
 
-3. **End offsets only**: Hyperscan’s default behaviour is only to report the end
-   offset of a match. Reporting of the start offset can be enabled with
-   per-expression flags at pattern compile time. See [Start of Match](http://intel.github.io/hyperscan/dev-reference/compilation.html#som) for details.
+2. **Lack of ordering**: 尽管Hyperscan始终位于当前扫描的范围之内，但不能保证对它们进行排序。
 
-4. **“All matches” reported**: scanning `/foo.*bar/` against `fooxyzbarbar` will return two matches from Hyperscan – at the points
-   corresponding to the ends of `fooxyzbar` and `fooxyzbarbar`. In contrast,
-   libpcre semantics by default would report only one match at `fooxyzbarbar` (greedy semantics) or, if non-greedy semantics were switched on, one match at `fooxyzbar`. This means that switching between greedy and non-greedy
-   semantics is a no-op in Hyperscan.
+3. **End offsets only**: Hyperscan的默认行为是仅报告匹配项的结束偏移量。 可以在模式编译时使用每个表达式标志启用开始偏移的报告。 有关详细信息，请参见比赛开始。.
 
-To support libpcre quantifier semantics while accurately reporting streaming
-matches at the time they occur is impossible. For example, consider the pattern
-above, `/foo.*bar/`, in streaming mode, against the following
-stream (three blocks scanned in sequence):
+4. **“All matches” reported**: 对fooxyzbarbar设置/foo.*bar/将从Hyperscan返回两个匹配项–在与fooxyzbar和fooxyzbarbar的末端相对应的点。 相反，默认情况下，libpcre语义将仅在fooxyzbarbar上报告一个匹配项（贪婪语义），或者，如果启用了非贪婪语义，则在fooxyzbar上报告一个匹配项。 这意味着在Hyperscan中，贪婪和非贪婪语义之间的切换是不可操作的。
+
+要支持libpcre量词语义，同时在流匹配发生时准确地报告流匹配，是不可能的。 例如，在流模式下，针对下面的流（按顺序扫描三个块），考虑上面的模式/foo.*bar/：
 
 > | block 1     | block 2 | block 3 |
 > | ----------- | ------- | ------- |

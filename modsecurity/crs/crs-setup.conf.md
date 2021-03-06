@@ -2,10 +2,11 @@
 
 > [coreruleset/crs-setup.conf.example at v3.4/dev](https://github.com/coreruleset/coreruleset/blob/v3.4/dev/crs-setup.conf.example)
 
-**目录**
-=================
+---
 
-* [配置模式](#配置模式)
+## 目录
+
+* [工作模式](#工作模式)
 * [日志设置](#日志设置)
 * [嫌疑级别设置](#嫌疑级别设置)
 * [强制使用请求体处理器URLENCODED](#强制使用请求体处理器URLENCODED)
@@ -24,27 +25,26 @@
 * [集合超时设置](#集合超时设置)
 * [结束设置](#结束设置)
 
+---
 
-## 配置模式
+## 工作模式
 
-OWASP V3核心规则集目前支持两种配置模式：<mark>异常评分模式</mark>(默认) 和 <mark>独立控制模式</mark>。
+OWASP V3核心规则集支持两种工作模式：<mark>异常评分模式</mark>(默认) 和 <mark>独立控制模式</mark>。
 
 ### 异常评分模式(Anomaly Scoring)
 
-也可称为 `协同检测模式`(collaborative detection mode)，这是默认且推荐的模式，因为它提供了最准确的日志信息，并且在设置阻止策略方面提供了最大的灵活性。
+亦称为 `协同检测模式`(collaborative detection mode)，这是默认且推荐的模式，因为它能够降低误拦率，提供最准确详细的日志信息，并且在设置阻止策略方面提供了最大的灵活性。
 
-此模式的工作原理是：当检测到威胁时，并不会直接阻断此次访问，而是向下继续进行规则匹配，每个匹配成功的规则都会增加 `异常分数`，在对客户端发起的请求数据检测结束时，以及对返回数据检测结束时，都会对 `异常分数` 的总和进行判断，如果大于设置的阈值，才会进行阻断动作，审计日志中也会记录此次访问中所有匹配成功的规则信息。
+此模式的工作原理是：当检测到威胁时，并不会直接阻断此次访问，而是向下继续进行规则匹配，每个匹配成功的规则都会增加 [`异常分数`](#异常评分模式的严重级别)，在对客户端发起的请求数据检测结束（Phase:2)和响应数据检测结束(Phase:4)后，都会对 [`异常分数`](#异常评分模式的严重级别) 的总和进行判断，如果大于设置的 [阈值](#异常计分模式的阈值设置)，就会进行阻断动作，审计日志中也会记录此次访问中所有匹配成功的规则信息。
 
 ### 独立控制模式(Self-Contained)
 
 此模式是V2版本规则集的默认模式，它的工作方式是，只要有一条规则匹配成功，便拦截此次访问，审计日志中也只会记录第一次检测到威胁的规则信息。
 
-它可以降低资源使用率，但代价是在阻止策略方面的灵活性较小，而信息日志记录的信息较少（仅记录第一个检测到的威胁）。
-规则会继承您指定的破坏性操作（即拒绝，丢弃等）。第一个匹配的规则将执行此操作。 在大多数情况下，这将导致在第一个规则匹配后停止评估。
+它可以降低资源使用率，但是误拦率高，在阻止策略方面的灵活性较小，而信息日志记录的信息较少（仅记录第一个检测到的威胁）。
+规则会继承您指定的破坏性操作（即拒绝，丢弃等）。第一个匹配的规则将执行此操作。 
 
-
-
-具体配置见下一个章节 [日志设置](#日志设置) 。
+具体配置方法见下一个章节 [日志设置](#日志设置) 。
 
 ---
 
@@ -52,20 +52,18 @@ OWASP V3核心规则集目前支持两种配置模式：<mark>异常评分模�
 
 在模式配置中，还必须调整所需的日志记录选项。共有4个日志选项。
 
-| 日志选项         | 说明                      | 备注                        |
-| ------------ | ----------------------- | ------------------------- |
-| `log`        | 日志记录到web服务器的错误日志中       | 例如会记录到nginx的error.log 日志中 |
-| `nolog`      | 日志**不会**记录到web服务器的错误日志中 | -                         |
-| `auditlog`   | 启动审计日志                  | 会记录到指令`SecAuditLog`指定的文件中 |
-| `noauditlog` | 停用审计日志                  | -                         |
+| 日志选项         | 说明                      | 备注                            |
+| ------------ | ----------------------- | ----------------------------- |
+| `log`        | 日志记录到web服务器的错误日志中       | 默认值，例如会记录到nginx的error.log 日志中 |
+| `nolog`      | 日志**不会**记录到web服务器的错误日志中 | -                             |
+| `auditlog`   | 启用审计日志                  | 默认值，会记录到指令`SecAuditLog`指定的文件中 |
+| `noauditlog` | 停用审计日志                  | -                             |
 
- 默认情况下，CRS启用对Web服务器错误日志（或事件查看器）的日志记录以及对ModSecurity审核日志。
-
-
+ 默认情况下，CRS启用对Web服务器错误日志（或事件查看器）的日志记录以及对ModSecurity审核日志。                        
 
 ### 配置例子
 
-各种模式的示例如下。您必须启用以下选项之一。注意，您必须为`phase:1`和`phase:2`指定。
+下面是各个模式的配置例子，配置文件中必需设置一种。注意，您必须为`phase:1`和`phase:2`指定。
 
 | 阶段  | 英文说明             | 中文说明         |
 | --- | ---------------- | ------------ |
@@ -75,17 +73,11 @@ OWASP V3核心规则集目前支持两种配置模式：<mark>异常评分模�
 | 4   | Response body    | 检查响应体        |
 | 5   | Logging          | 日志记录发生之前运行   |
 
-
-
 #### 默认值
 
-默认值：异常评分模式，记录到错误日志，记录到ModSecurity审核日志
+默认值：异常评分模式，记录到 web server 的错误日志和 modsecurity 的审核日志，使用403响应阻止违规请求。
 
-默认情况下，使用错误403响应阻止违规请求。
-
-要更改破坏性行为，请参阅RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf.example，并查看“更改异常模式的破坏性行为”部分。
-
-在Apache中，您可以使用ErrorDocument显示友好的错误页面或执行重定向：https://httpd.apache.org/docs/2.4/custom-error.html
+要更改破坏性行为，请参阅 [`RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf.example`](modsecurity/crs/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.md)，并查看 [更改异常评分模式的破坏性行为](modsecurity/crs/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.md#修改异常评分模式下的破坏性动作) 部分。
 
 ```bash
 SecDefaultAction "phase:1,log,auditlog,pass"
@@ -94,9 +86,7 @@ SecDefaultAction "phase:2,log,auditlog,pass"
 
 #### 异常评分模式,只记录审计日志
 
-- 默认情况下，违规请求会被阻止，并显示错误403响应
-- 要更改破坏性行为，请参阅RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf.example，并查看“更改异常模式的破坏性行为”部分。
-- 在Apache中，您可以使用ErrorDocument显示友好的错误页面或执行重定向：[Custom Error Responses - Apache HTTP Server Version 2.4](https://httpd.apache.org/docs/2.4/custom-error.html)
+默认情况下，违规请求会被阻止，并显示错误403响应
 
 ```bash
 SecDefaultAction "phase:1,nolog,auditlog,pass"
@@ -105,9 +95,9 @@ SecDefaultAction "phase:2,nolog,auditlog,pass"
 
 #### 独立控制模式, 阻止后返回403页面
 
-- 在此配置中，默认的破坏性操作变为“deny”。 规则触发后，它将停止处理请求并返回错误403。
-- 您还可以使用其他错误状态，例如404、406等。
-- 在Apache中，您可以使用ErrorDocument显示友好的错误页面或执行重定向: https://httpd.apache.org/docs/2.4/custom-error.html
+在此配置中，默认的破坏性操作变为“deny”。 规则触发后，它将停止处理请求并返回错误403。
+
+您还可以使用其他错误状态，例如404、406等。
 
 ```bash
 SecDefaultAction "phase:1,log,auditlog,deny,status:403"
@@ -116,15 +106,14 @@ SecDefaultAction "phase:2,log,auditlog,deny,status:403"
 
 #### 独立控制模式,阻止后返回主页
 
-- 在此配置中，“标记”操作将主机标头数据包括在日志中。 这有助于确定哪个虚拟主机触发了规则（如果有）。
-- 请注意，在某些情况下，这可能会导致重定向循环。 例如，如果Cookie或User-Agent标头被阻止，则当客户端随后尝试访问首页时，它也将被阻止。 您还可以重定向到另一个自定义URL。
+在此配置中，“标记”操作将主机标头数据包括在日志中。 这有助于确定哪个虚拟主机触发了规则（如果有）。
+
+请注意，在某些情况下，这可能会导致重定向循环。 例如，如果Cookie或User-Agent标头被阻止，则当客户端随后尝试访问首页时，它也将被阻止。 您还可以重定向到另一个自定义URL。
 
 ```bash
 SecDefaultAction "phase:1,log,auditlog,redirect:'http://%{request_headers.host}/',tag:'Host: %{request_headers.host}'"
 SecDefaultAction "phase:2,log,auditlog,redirect:'http://%{request_headers.host}/',tag:'Host: %{request_headers.host}'"
 ```
-
-
 
 ---
 
@@ -245,7 +234,7 @@ SecAction \
     High Anomaly Limit   |   High Anomaly Limit
     Low Paranoia Level   |   High Paranoia Level
     -> Fresh Site        |   -> Experimental Site
-
+    
     Low Anomaly Limit    |   Low Anomaly Limit
     Low Paranoia Level   |   High Paranoia Level
     -> Standard Site     |   -> High Security Site
@@ -282,8 +271,6 @@ SecAction \
   t:none,\
   setvar:tx.blocking_early=1"
 ```
-
-
 
 ---
 

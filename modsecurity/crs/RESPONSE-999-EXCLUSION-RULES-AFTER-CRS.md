@@ -1,5 +1,7 @@
 # RESPONSE-999-EXCLUSION-RULES-AFTER-CRS
 
+> [coreruleset/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf.example](https://github.com/coreruleset/coreruleset/blob/v3.4/dev/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf.example)
+
 该文件是用来在本地保存站点的例外设置。
 您希望在启动过程中无条件禁用规则或修改其操作的规则是该文件中将要使用的规则类型。
 
@@ -45,24 +47,25 @@ SecRuleUpdateTargetByTag "attack-sqli" "!ARGS:foo"
 
 ----
 
-## 命中动作
+## 修改异常评分模式下的破坏性动作
 
 OWASP V3核心规则集目前支持两种配置模式：  <mark>异常评分模式</mark>(默认) 和 <mark>独立控制模式</mark>；模式详细介绍见 [modsecurity.conf](modsecurity/modsecurity/modsecurity.conf.md)。
 
-| 动作         | 说明      |     |
-| ---------- | ------- | --- |
-| `deny`     | 拦截请求    |     |
-| `redirect` | 重定向请求   |     |
-| `status`   | 返回指定响应码 |     |
-| `drop`     | 断开请求连接  |     |
+所谓的破坏性动作指的是修改原链接的数据(即命中规则后的拦截动作)。
 
-默认的命中动作是 `deny status:403` (拒绝请求，并返回403页面)。
+| 动作                | 说明       |
+| ----------------- | -------- |
+| `deny status` XXX | 返回指定的响应码 |
+| `redirect` URL    | 重定向请求    |
+| `drop`            | 断开请求连接   |
 
-在异常评分模式下，检查累积的攻击得分违反您的政策。 要应用破坏性措施，它们会覆盖默认值 `SecDefaultAction` 中指定的带有 `deny` 操作的操作。
+默认的动作是 `deny status:403` (拒绝请求，并返回403页面)。
 
-为了将命中行为从 `deny` 更改为其他行为，您必须在CRS规则之后使用`SecRuleUpdateActionByID` 指令更新命中动作。
+在异常评分模式下，应用破坏性措施，会覆盖指令 `SecDefaultAction` 中指定默认值。
 
-通常在[`RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf`](modsecurity/crs/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.md)文件中进行配置。这些操作仅适用于异常评分模式。
+在CRS规则之后使用`SecRuleUpdateActionByID` 指令可以更新破坏性动作。通常在[`RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf`](modsecurity/crs/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.md)文件中进行配置。
+
+下面是设置例子，注意这些操作仅适用于异常评分模式。
 
 ### 重定向到主页
 

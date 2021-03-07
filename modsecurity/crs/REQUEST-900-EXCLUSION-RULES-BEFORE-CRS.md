@@ -48,7 +48,7 @@ ModSecurity 维护两个不同的上下文(Context)：启动(startup)和每个�
 
 通过此规则集，您可以控制 ModSecurity 如何处理源自授权漏洞扫描(AVS)源的流量。相关文章[HERE](http://blog.spiderlabs.com/2010/12/advanced-topic-of-the-week-handling-authorized-scanning-traffic.html)。白名单ASV网络块（不阻止或记录AVS流量）根据您的AVS流量更新IP网络块
 
-```bash
+```modsecurity
 SecRule REMOTE_ADDR "@ipMatch 192.168.1.100" \
      "id:1000,\
      phase:1,\
@@ -61,7 +61,7 @@ SecRule REMOTE_ADDR "@ipMatch 192.168.1.100" \
 
 下面规则的意思是:当 `REQUEST_URI`(URL带参数) 为 `/index.php` 时，规则 `942100` 执行时不对参数名`password` 的参数值进行检测。
 
-```bash
+```modsecurity
 SecRule REQUEST_URI "@beginsWith /index.php" \
      "id:1001,\
      phase:1,\
@@ -78,7 +78,7 @@ ModSecurity规则排除：对于标记为Attack-sqli的所有规则，禁用对A
 
 下面规则的意思是:当 `REQUEST_FILENAME`(URL不带参数) 以字符串`/wp-login.php` 结尾时，任何规则中有`attack-sqli` 的规则，不对参数名为`pwd`的参数值做检测
 
-```bash
+```modsecurity
 SecRule REQUEST_FILENAME "@endsWith /wp-login.php" \
      "id:1002,\
      phase:2,\
@@ -93,7 +93,7 @@ SecRule REQUEST_FILENAME "@endsWith /wp-login.php" \
 
  这不会影响自定义规则。
 
-```bash
+```modsecurity
 SecRule REQUEST_FILENAME "@endsWith /wp-login.php" \
      "id:1003,\
      phase:2,\
@@ -106,7 +106,7 @@ SecRule REQUEST_FILENAME "@endsWith /wp-login.php" \
 
 下面规则的意思是:当 `REQUEST_FILENAME`(URL不带参数) 以字符串`/admin` 开头时，规则ID在`941000-942999`区间内的所有规则禁用。
 
-```bash
+```modsecurity
 SecRule REQUEST_FILENAME "@beginsWith /admin" \
      "id:1004,\
      phase:2,\

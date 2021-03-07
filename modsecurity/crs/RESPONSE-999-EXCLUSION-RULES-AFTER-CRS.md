@@ -25,7 +25,7 @@
 
 下面例子的意思是: 无条件禁用ID为 `942100` 规则，该规则是使用 `libinjection`进行SQL注入检测。
 
-```bash
+```modsecurity
 SecRuleRemoveById 942100
 ```
 
@@ -33,7 +33,7 @@ SecRuleRemoveById 942100
 
 下面例子的意思是: 禁用所有含有`attack-injection-php` 标签(tag)的规则，从而禁用所有php注入规则的检测。
 
-```bash
+```modsecurity
 SecRuleRemoveByTag "attack-injection-php"
 ```
 
@@ -41,7 +41,7 @@ SecRuleRemoveByTag "attack-injection-php"
 
 下面例子的意思是:对于参数`foo` 不做任何含有标签`attack-sqli`规则的检测。
 
-```bash
+```modsecurity
 SecRuleUpdateTargetByTag "attack-sqli" "!ARGS:foo"
 ```
 
@@ -69,28 +69,28 @@ OWASP V3核心规则集目前支持两种配置模式：  <mark>异常评分模
 
 ### 重定向到主页
 
-```bash
+```modsecurity
 SecRuleUpdateActionById 949110 "t:none,redirect:'http://%{request_headers.host}/'"
 SecRuleUpdateActionById 959100 "t:none,redirect:'http://%{request_headers.host}/'"
 ```
 
 ### 重定向要其他URL
 
-```bash
+```modsecurity
 SecRuleUpdateActionById 949110 "t:none,redirect:'http://example.com/report_problem'"
 SecRuleUpdateActionById 959100 "t:none,redirect:'http://example.com/report_problem'"
 ```
 
 ### 返回404页面
 
-```bash
+```modsecurity
 SecRuleUpdateActionById 949110 "t:none,deny,status:404"
 SecRuleUpdateActionById 959100 "t:none,deny,status:404"
 ```
 
 ### 断开连接
 
-```bash
+```modsecurity
 SecRuleUpdateActionById 949110 "t:none,drop"
 SecRuleUpdateActionById 959100 "t:none,drop"
 ```

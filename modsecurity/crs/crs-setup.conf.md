@@ -44,6 +44,15 @@ OWASP V3核心规则集支持两种工作模式：<mark>异常评分模式</mar
 它可以降低资源使用率，但是误拦率高，在阻止策略方面的灵活性较小，而信息日志记录的信息较少（仅记录第一个检测到的威胁）。
 规则会继承您指定的破坏性操作（即拒绝，丢弃等）。第一个匹配的规则将执行此操作。 
 
+
+
+两种工作模式使用下面2个选项区分
+
+| 选项     | 说明    | 备注            |
+| ------ | ----- | ------------- |
+| `pass` | 不拦截请求 | 用于指定 `异常评分模式` |
+| `deny` | 拦截请求  | 用于指定 `独立控制模式` |
+
 具体配置方法见下一个章节 [日志设置](#日志设置) 。
 
 ---
@@ -63,7 +72,7 @@ OWASP V3核心规则集支持两种工作模式：<mark>异常评分模式</mar
 
 ### 配置例子
 
-下面是各个模式的配置例子，配置文件中必需设置一种。注意，您必须为`phase:1`和`phase:2`指定。
+下面是各个模式的配置例子，配置文件中必需设置一种。modsecurity 引擎处理流程共有5个阶段(Phase)。注意，您必须为`phase:1`和`phase:2`指定默认行为。
 
 | 阶段  | 英文说明             | 中文说明         |
 | --- | ---------------- | ------------ |
@@ -73,13 +82,20 @@ OWASP V3核心规则集支持两种工作模式：<mark>异常评分模式</mar
 | 4   | Response body    | 检查响应体        |
 | 5   | Logging          | 日志记录发生之前运行   |
 
+针对命中规则的场景有2个选项
+
+| 选项     | 说明    | 备注            |
+| ------ | ----- | ------------- |
+| `pass` | 不拦截请求 | 用于指定 `异常评分模式` |
+| `deny` | 拦截请求  | 用于指定 `独立控制模式` |
+
 #### 默认值
 
 默认值：异常评分模式，记录到 web server 的错误日志和 modsecurity 的审核日志，使用403响应阻止违规请求。
 
 要更改破坏性行为，请参阅 [`RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf.example`](modsecurity/crs/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.md)，并查看 [更改异常评分模式的破坏性行为](modsecurity/crs/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.md#修改异常评分模式下的破坏性动作) 部分。
 
-```bash
+```modsecurity
 SecDefaultAction "phase:1,log,auditlog,pass"
 SecDefaultAction "phase:2,log,auditlog,pass"
 ```
@@ -88,7 +104,7 @@ SecDefaultAction "phase:2,log,auditlog,pass"
 
 默认情况下，违规请求会被阻止，并显示错误403响应
 
-```bash
+```modsecurity
 SecDefaultAction "phase:1,nolog,auditlog,pass"
 SecDefaultAction "phase:2,nolog,auditlog,pass"
 ```
@@ -99,7 +115,7 @@ SecDefaultAction "phase:2,nolog,auditlog,pass"
 
 您还可以使用其他错误状态，例如404、406等。
 
-```bash
+```modsecurity
 SecDefaultAction "phase:1,log,auditlog,deny,status:403"
 SecDefaultAction "phase:2,log,auditlog,deny,status:403"
 ```
@@ -110,7 +126,7 @@ SecDefaultAction "phase:2,log,auditlog,deny,status:403"
 
 请注意，在某些情况下，这可能会导致重定向循环。 例如，如果Cookie或User-Agent标头被阻止，则当客户端随后尝试访问首页时，它也将被阻止。 您还可以重定向到另一个自定义URL。
 
-```bash
+```modsecurity
 SecDefaultAction "phase:1,log,auditlog,redirect:'http://%{request_headers.host}/',tag:'Host: %{request_headers.host}'"
 SecDefaultAction "phase:2,log,auditlog,redirect:'http://%{request_headers.host}/',tag:'Host: %{request_headers.host}'"
 ```
@@ -135,7 +151,7 @@ SecDefaultAction "phase:2,log,auditlog,redirect:'http://%{request_headers.host}/
 
 同样重要的是，还要研究下面定义的变量`tx.enforce_bodyproc_urlencoded`（强制主体处理器URLENCODED）。 启用它会关闭CRS的可能旁路。
 
-```bash
+```modsecurity
 SecAction \
   "id:900000,\
    phase:1,\
@@ -154,7 +170,7 @@ SecAction \
 
 请注意，将tx.executing_paranoia_level设置为较高的妄想级别会导致对性能的影响，与将tx.paranoia_level设置为该级别一样高。
 
-```bash
+```modsecurity
 SecAction \
   "id:900001,\
    phase:1,\
@@ -170,7 +186,7 @@ SecAction \
 
 ModSecurity 根据 `Content-Type` 请求标头选择body处理器。 但是客户端并不总是为他们的请求主体有效负载设置`Content-Type`标头。 这将使ModSecurity对有效载荷的视野有限。 使用变量`tx.enforce_bodyproc_urlencoded`可以在这些情况下强制使用URLENCODED主体处理器。 默认情况下，此功能处于关闭状态，因为这意味着ModSecurity的行为已超出CRS（主体处理器不仅适用于CRS，而且适用于所有规则），而且还可能导致偏执级别1的误报。但是，启用此变量 关闭可能的CRS旁路，因此应予以考虑。
 
-```bash
+```modsecurity
 SecAction \
   "id:900010,\
    phase:1,\
@@ -198,7 +214,7 @@ CRS中的每个规则都有一个关联的严重性级别。 这些是每个严�
 注意：在此文件中，我们使用'phase：1'设置CRS配置变量。
 通常，使用“ phase：request”。 但是，我们要绝对确保在处理CRS规则之前已设置所有配置变量。
 
-```bash
+```modsecurity
 SecAction \
  "id:900100,\
   phase:1,\
@@ -239,7 +255,7 @@ SecAction \
     Low Paranoia Level   |   High Paranoia Level
     -> Standard Site     |   -> High Security Site
 
-```bash
+```modsecurity
 SecAction \
  "id:900110,\
   phase:1,\
@@ -262,7 +278,7 @@ SecAction \
 
 请注意，尽早阻止将对您隐藏潜在的警报。 这意味着如果请求被提前阻止，则不会评估在阶段2（或阶段4）的警报中出现的有效负载。 因此，当您在将来某个时候再次禁用早期阻止功能时，第二阶段的新警报可能会弹出。
 
-```bash
+```modsecurity
 SecAction \
   "id:900120,\
   phase:1,\
@@ -284,7 +300,7 @@ SecAction \
 
 建议您在站点上运行多个Web应用程序，以使用类似于以下示例的规则将排除的影响限制为仅将排除的Web应用程序驻留的路径：SecRule REQUEST_URI“ @beginsWith / wordpress /” setvar：tx.crs_exclusions_wordpress = 1
 
-```bash
+```modsecurity
 SecAction \
  "id:900130,\
   phase:1,\
@@ -342,7 +358,7 @@ These variables are used in the following rule files:
 
 设置最大允许参数个数，超过则则阻止请求
 
-```bash
+```modsecurity
 SecAction \
  "id:900300,\
   phase:1,\
@@ -362,13 +378,13 @@ SecAction \
 
 如果允许请求通过而无需CRS进行检查，则审核日志中没有条目（出于性能原因），但是会写入错误日志条目。 如果要禁用错误日志条目，请在包含CRS之后的某个地方发出以下指令（例如 `RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf`）。
 
-```bash
+```modsecurity
 SecRuleUpdateActionById 901150 "nolog"
 ```
 
 注意：如果 `tx.sampling_percentage` 小于100，则某些请求将完全绕过核心规则，并且您将失去使用ModSecurity保护服务的能力。
 
-```bash
+```modsecurity
 SecAction "id:900400,\
   phase:1,\
   pass,\
@@ -384,7 +400,7 @@ SecAction "id:900400,\
 为了使用此功能，您需要注册以获得免费的API密钥。使用指令 `SecHttpBlKey` 进行设置。
 Project Honeypot 返回多个不同的恶意IP类型，您可以通过在下面启用或禁用它们来指定要阻止的对象。
 
-```bash
+```modsecurity
 SecHttpBlKey XXXXXXXXXXXXXXXXX
 
 SecAction "id:900500,\
@@ -408,7 +424,7 @@ SecAction "id:900500,\
 
 下面是加载 GeoLite2 数据库的方法：
 
-```bash
+```modsecurity
 SecGeoLookupDB /usr/share/GeoIP/GeoLite2-Country.mmdb
 ```
 
@@ -416,7 +432,7 @@ SecGeoLookupDB /usr/share/GeoIP/GeoLite2-Country.mmdb
 
 IP信誉文件(`REQUEST-910-IP-REPUTATION.conf`)中的规则可以对照高风险国家/地区代码列表检查客户端。国家/地区的简写代码，详见 [ISO 3166-1 alpha-2 - Wikipedia](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements) 。如果确定没有从给定国家/地区收到任何合法请求，则可以通过此变量`tx.high_risk_country_codes`禁用来自该国家/地区的所有访问权限。 
 
-```bash
+```modsecurity
 SecAction \
  "id:900600,\
   phase:1,\
@@ -434,7 +450,7 @@ SecAction \
 
 当客户端在60秒内发出100个以上的请求（不包括静态文件）时，这被视为“突发”。 在两次突发之后，客户端被阻塞600秒。对静态文件的请求不计入DoS； 它们在`tx.static_extensions`设置中列出，您可以在此文件中更改(详见 [HTTP策略设置](HTTP策略设置))。For a detailed description, see rule file `REQUEST-912-DOS-PROTECTION.conf`.
 
-```bash
+```modsecurity
 SecAction \
  "id:900700,\
   phase:1,\
@@ -452,7 +468,7 @@ SecAction \
 
 CRS可以选择检查请求内容中是否存在无效的UTF-8编码。 我们只想在网站实际使用UTF-8编码的情况下应用此检查； 否则会导致误报。默认不启用该功能。
 
-```bash
+```modsecurity
 SecAction \
  "id:900950,\
   phase:1,\
@@ -491,7 +507,7 @@ IP集合中的记录带有一个标志，该标志使用名为`ip.reput_block_fl
 
 #### 启用IP信誉检测
 
-```bash
+```modsecurity
 SecAction \
  "id:900960,\
   phase:1,\
@@ -505,7 +521,7 @@ SecAction \
 
 默认阻止时间为300秒(5分钟)
 
-```bash
+```modsecurity
 SecAction \
  "id:900970,\
   phase:1,\
@@ -526,7 +542,7 @@ SecAction \
 
 请不要对该指令进行注释，默认值：600秒（10分钟）
 
-```bash
+```modsecurity
 SecCollectionTimeout 600
 ```
 
@@ -536,7 +552,7 @@ SecCollectionTimeout 600
 
 CRS检查 `tx.crs_setup_version` 变量以确保已正确加载设置。如果您不打算使用此设置模板，那么必须在包含CRS规则/ *文件之前手动设置`tx.crs_setup_version`变量。该变量是CRS版本号的数字表示。例如，v3.0.0表示为300。
 
-```bash
+```modsecurity
 SecAction \
  "id:900990,\
   phase:1,\

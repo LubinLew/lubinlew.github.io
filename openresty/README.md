@@ -2,7 +2,7 @@
 
 [《OpenResty从入门到实战》](https://time.geekbang.org/column/intro/186) -- 温铭(OpenResty软件基金会主席) 极客时间(付费)
 
-[《OpenResty 最佳实践》](https://moonbingbing.gitbooks.io/openresty-best-practices/content/) -- 温铭(OpenResty软件基金会主席) 免费gitbook
+[《OpenResty 最佳实践》](https://yousali.me/openresty-best-practices/) -- 温铭(OpenResty软件基金会主席) 免费gitbook
 
 [《Promramming OpenResty》](https://openresty.gitbooks.io/programming-openresty/content/)-- 章亦春(OpenResty作者) 免费gitbook(英文)
 

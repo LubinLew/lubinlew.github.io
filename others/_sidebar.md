@@ -6,3 +6,4 @@
 - [Linux共享](others/sshfs.md)
 - [WebSSH工具-GateOne](others/gateone.md)
 - [vscode配置](others/vscode.md)
+- [swagger 2.0规范](swagger_2.0.md)

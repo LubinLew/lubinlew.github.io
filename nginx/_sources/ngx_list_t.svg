@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" height="296" viewBox="0 0 572 296" width="572" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs/>
+    <g transform="translate(-158.00,-90.00)">
+        <g id="shape1" transform="translate(159.00,325.00)">
+            <path fill="#ebebeb" fill-rule="nonzero" d="M.0,.0L570.0,.0L570.0,60.0L.0,60.0L.0,.0z" stroke="#323232"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="50.5" x="259.5">memory</tspan>
+            </text>
+        </g>
+        <g id="group2" transform="translate(325.00,91.00)">
+            <g id="table3" transform="translate(0.00,30.00)">
+                <g>
+                    <path fill="#fae9e9" d="M.0,.0L54.0,.0L54.0,30.0L.0,30.0L.0,.0z" stroke="#323232"/>
+                    <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:8.00pt">
+                        <tspan y="19.0" x="16.5">part</tspan>
+                    </text>
+                </g>
+                <g>
+                    <path fill="#ffffff" d="M54.0,.0L108.0,.0L108.0,30.0L54.0,30.0L54.0,.0z" stroke="#323232"/>
+                    <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:8.00pt">
+                        <tspan y="19.0" x="71.5">size</tspan>
+                    </text>
+                </g>
+                <g>
+                    <path fill="#ffffff" d="M108.0,.0L162.0,.0L162.0,30.0L108.0,30.0L108.0,.0z" stroke="#323232"/>
+                    <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:8.00pt">
+                        <tspan y="19.0" x="119.0">nalloc</tspan>
+                    </text>
+                </g>
+                <g>
+                    <path fill="#ffffff" d="M162.0,.0L216.0,.0L216.0,30.0L162.0,30.0L162.0,.0z" stroke="#323232"/>
+                    <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:8.00pt">
+                        <tspan y="19.0" x="177.0">pool</tspan>
+                    </text>
+                </g>
+                <g>
+                    <path fill="#ffede9" d="M216.0,.0L270.0,.0L270.0,30.0L216.0,30.0L216.0,.0z" stroke="#323232"/>
+                    <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:8.00pt">
+                        <tspan y="19.0" x="234.0">last</tspan>
+                    </text>
+                </g>
+            </g>
+            <g id="shape4">
+                <path fill="#e0f0d9" fill-rule="nonzero" d="M.0,.0L270.0,.0L270.0,30.0L.0,30.0L.0,.0z" stroke="#323232"/>
+                <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                    <tspan y="20.5" x="106.5">ngx_list_t</tspan>
+                </text>
+            </g>
+        </g>
+        <g id="group5" transform="translate(159.00,220.00)">
+            <g id="table6" transform="translate(0.00,30.00)">
+                <g>
+                    <path fill="#ffffff" d="M.0,.0L54.0,.0L54.0,30.0L.0,30.0L.0,.0z" stroke="#323232"/>
+                    <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:8.00pt">
+                        <tspan y="19.0" x="18.0">elts</tspan>
+                    </text>
+                </g>
+                <g>
+                    <path fill="#ffffff" d="M54.0,.0L108.0,.0L108.0,30.0L54.0,30.0L54.0,.0z" stroke="#323232"/>
+                    <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:8.00pt">
+                        <tspan y="19.0" x="68.5">nelts</tspan>
+                    </text>
+                </g>
+                <g>
+                    <path fill="#fec3b3" d="M108.0,.0L162.0,.0L162.0,30.0L108.0,30.0L108.0,.0z" stroke="#323232"/>
+                    <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:8.00pt">
+                        <tspan y="19.0" x="123.5">next</tspan>
+                    </text>
+                </g>
+            </g>
+            <g id="shape7">
+                <path fill="#d0d9f1" fill-rule="nonzero" d="M.0,.0L162.0,.0L162.0,30.0L.0,30.0L.0,.0z" stroke="#323232"/>
+                <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                    <tspan y="20.5" x="29.0">ngx_list_part_t(1)</tspan>
+                </text>
+            </g>
+        </g>
+        <g id="group8" transform="translate(363.00,220.00)">
+            <g id="table9" transform="translate(0.00,30.00)">
+                <g>
+                    <path fill="#ffffff" d="M.0,.0L54.0,.0L54.0,30.0L.0,30.0L.0,.0z" stroke="#323232"/>
+                    <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:8.00pt">
+                        <tspan y="19.0" x="18.0">elts</tspan>
+                    </text>
+                </g>
+                <g>
+                    <path fill="#ffffff" d="M54.0,.0L108.0,.0L108.0,30.0L54.0,30.0L54.0,.0z" stroke="#323232"/>
+                    <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:8.00pt">
+                        <tspan y="19.0" x="68.5">nelts</tspan>
+                    </text>
+                </g>
+                <g>
+                    <path fill="#fedad0" d="M108.0,.0L162.0,.0L162.0,30.0L108.0,30.0L108.0,.0z" stroke="#323232"/>
+                    <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:8.00pt">
+                        <tspan y="19.0" x="123.5">next</tspan>
+                    </text>
+                </g>
+            </g>
+            <g id="shape10">
+                <path fill="#d0d9f1" fill-rule="nonzero" d="M.0,.0L162.0,.0L162.0,30.0L.0,30.0L.0,.0z" stroke="#323232"/>
+                <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                    <tspan y="20.5" x="29.0">ngx_list_part_t(2)</tspan>
+                </text>
+            </g>
+        </g>
+        <g id="group11" transform="translate(567.00,220.00)">
+            <g id="table12" transform="translate(0.00,30.00)">
+                <g>
+                    <path fill="#ffffff" d="M.0,.0L54.0,.0L54.0,30.0L.0,30.0L.0,.0z" stroke="#323232"/>
+                    <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:8.00pt">
+                        <tspan y="19.0" x="18.0">elts</tspan>
+                    </text>
+                </g>
+                <g>
+                    <path fill="#ffffff" d="M54.0,.0L108.0,.0L108.0,30.0L54.0,30.0L54.0,.0z" stroke="#323232"/>
+                    <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:8.00pt">
+                        <tspan y="19.0" x="68.5">nelts</tspan>
+                    </text>
+                </g>
+                <g>
+                    <path fill="#fedad0" d="M108.0,.0L162.0,.0L162.0,30.0L108.0,30.0L108.0,.0z" stroke="#323232"/>
+                    <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:8.00pt">
+                        <tspan y="19.0" x="123.5">next</tspan>
+                    </text>
+                </g>
+            </g>
+            <g id="shape13">
+                <path fill="#d0d9f1" fill-rule="nonzero" d="M.0,.0L162.0,.0L162.0,30.0L.0,30.0L.0,.0z" stroke="#323232"/>
+                <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                    <tspan y="20.5" x="22.5">ngx_list_part_t(last)</tspan>
+                </text>
+            </g>
+        </g>
+        <g id="shape14" transform="translate(353.00,151.00)">
+            <path fill="none" d="M.0,.0L-103.1,65.8" stroke="#191919"/>
+            <path fill="#191919" stroke-width="1" stroke-linecap="round" d="M-101.5,68.3L-108.1,69.0L-104.7,63.2L-101.5,68.3" stroke="#191919"/>
+        </g>
+        <g id="shape15" transform="translate(568.49,150.72)">
+            <path fill="none" d="M.0,.0L75.0,65.3" stroke="#191919"/>
+            <path fill="#191919" stroke-width="1" stroke-linecap="round" d="M77.0,63.1L79.5,69.3L73.0,67.6L77.0,63.1" stroke="#191919"/>
+        </g>
+        <g id="shape16" transform="translate(321.00,265.00)">
+            <path fill="none" d="M.0,.0C5.2,-0.5,10.3,-1.0,14.7,-5.7C19.2,-10.5,22.8,-19.5,27.3,-24.3C30.2,-27.4,33.4,-28.7,36.7,-29.3" stroke="#191919"/>
+            <path fill="#191919" stroke-width="1" stroke-linecap="round" d="M35.7,-32.2L42.0,-30.0L36.4,-26.3L35.7,-32.2" stroke="#191919"/>
+        </g>
+        <g id="shape17" transform="translate(525.00,265.00)">
+            <path fill="none" d="M.0,.0C5.2,-0.5,10.3,-1.0,14.7,-5.7C19.2,-10.5,22.8,-19.5,27.3,-24.3C30.2,-27.4,33.4,-28.7,36.7,-29.3" stroke="#191919"/>
+            <path fill="#191919" stroke-width="1" stroke-linecap="round" d="M35.7,-32.2L42.0,-30.0L36.4,-26.3L35.7,-32.2" stroke="#191919"/>
+        </g>
+        <g id="table18" transform="translate(170.00,325.00)">
+            <g>
+                <path fill="#ffede9" d="M.0,.0L140.0,.0L140.0,30.0L.0,30.0L.0,.0z" stroke="#323232"/>
+                <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:8.00pt">
+                    <tspan y="19.0" x="23.5" style="fill:#ff0000">nalloc * size</tspan>
+                    <tspan x="85.5"> bytes</tspan>
+                </text>
+            </g>
+        </g>
+        <g id="table19" transform="translate(374.00,325.00)">
+            <g>
+                <path fill="#ffede9" d="M.0,.0L140.0,.0L140.0,30.0L.0,30.0L.0,.0z" stroke="#323232"/>
+                <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:8.00pt">
+                    <tspan y="19.0" x="23.5" style="fill:#ff0000">nalloc * size</tspan>
+                    <tspan x="85.5"> bytes</tspan>
+                </text>
+            </g>
+        </g>
+        <g id="table20" transform="translate(578.00,325.00)">
+            <g>
+                <path fill="#ffede9" d="M.0,.0L140.0,.0L140.0,30.0L.0,30.0L.0,.0z" stroke="#323232"/>
+                <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:8.00pt">
+                    <tspan y="19.0" x="23.5" style="fill:#ff0000">nalloc * size</tspan>
+                    <tspan x="85.5"> bytes</tspan>
+                </text>
+            </g>
+        </g>
+        <g id="shape21" transform="translate(186.00,280.00)">
+            <path fill="none" d="M.0,.0C.9,6.5,1.8,13.0,10.3,17.2C18.9,21.5,35.1,23.5,43.7,27.8C49.7,30.8,51.9,34.9,53.0,39.3" stroke="#191919"/>
+            <path fill="#191919" stroke-width="1" stroke-linecap="round" d="M55.9,38.6L54.0,45.0L50.0,39.6L55.9,38.6" stroke="#191919"/>
+        </g>
+        <g id="shape22" transform="translate(390.00,280.00)">
+            <path fill="none" d="M.0,.0C.9,6.5,1.8,13.0,10.3,17.2C18.9,21.5,35.1,23.5,43.7,27.8C49.7,30.8,51.9,34.9,53.0,39.3" stroke="#191919"/>
+            <path fill="#191919" stroke-width="1" stroke-linecap="round" d="M55.9,38.6L54.0,45.0L50.0,39.6L55.9,38.6" stroke="#191919"/>
+        </g>
+        <g id="shape23" transform="translate(593.00,280.00)">
+            <path fill="none" d="M.0,.0C.9,6.6,1.8,13.2,10.5,17.4C19.2,21.6,35.8,23.4,44.5,27.6C51.0,30.8,53.1,35.2,54.2,40.0" stroke="#191919"/>
+            <path fill="#191919" stroke-width="1" stroke-linecap="round" d="M57.0,38.6L55.0,45.0L51.1,39.6L57.0,38.6" stroke="#191919"/>
+        </g>
+    </g>
+</svg>

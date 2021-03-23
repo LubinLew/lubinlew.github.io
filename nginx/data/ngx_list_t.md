@@ -1,6 +1,6 @@
 # 单向链表 - ngx_list_t
 
-nginx的单向链表设计和[ngx_array_t](nginx/data/ngx_array_t.md)很相似。链表由多个节点组成, 每个节点其实是一个数组。所以nginx的单向链表其实就是一个更高级的动态数组。数组中的元素由不同的节点管理，与 [ngx_array_t](nginx/data/ngx_array_t.md) 相比，不需要保证数组中元素在内存中连续性。适用于那些数组元素数量不确定的场合。
+nginx的单向链表设计和 [ngx_array_t](nginx/data/ngx_array_t.md) 很相似。链表由多个节点组成, 每个节点其实是一个数组。所以nginx的单向链表其实就是一个更高级的动态数组。数组中的元素由不同的节点管理，与 [ngx_array_t](nginx/data/ngx_array_t.md) 相比，不需要保证数组中元素在内存中连续性。适用于那些数组元素数量不确定的场合。
 
 ## 数据结构定义
 
@@ -41,6 +41,10 @@ typedef struct {
 } ngx_list_t;
 ```
 
+整体内存布局如下图:
+
+![ngx_list_t](_sources/ngx_list_t.svg)
+
 ## API 接口定义
 
 ### 单向链表管理结构初始化 - ngx_list_init
@@ -64,8 +68,6 @@ ngx_list_init(ngx_list_t *list, ngx_pool_t *pool, ngx_uint_t n, size_t size)
 
     return NGX_OK;
 }
-
-
 ```
 
 ### 创建单向链表 - ngx_list_create
@@ -212,12 +214,9 @@ main(int argc, char *const *argv)
         /* 指向下一个节点 */
         part = part->next;
     }
-    
+
     ngx_destroy_pool(pool);
 
     return 0;
 }
-
 ```
-
-

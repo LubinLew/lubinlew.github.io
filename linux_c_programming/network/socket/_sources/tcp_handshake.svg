@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="613" height="531" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 613 531">
+    <defs/>
+    <g transform="translate(-66.00,-75.50)">
+        <g id="table1" transform="translate(134.00,76.00)">
+            <g>
+                <path fill="#4cdae6" stroke="#42c0ca" d="M.0,.0L114.0,.0L114.0,33.0L.0,33.0L.0,.0z"/>
+                <text style="fill:#ffffff;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
+                    <tspan x="45.0" y="22.0">TCP</tspan>
+                </text>
+            </g>
+            <g>
+                <path fill="#ffffff" stroke="#42c0ca" d="M.0,33.0L114.0,33.0L114.0,82.9L.0,82.9L.0,33.0z"/>
+                <text style="fill:#454545;font-family:Microsoft YaHei;font-size:12.00pt" xml:space="preserve">
+                    <tspan x="33.0" y="64.5">客户端</tspan>
+                </text>
+            </g>
+        </g>
+        <g id="table2" transform="translate(508.26,76.00)">
+            <g>
+                <path fill="#4cdae6" stroke="#000000" d="M.0,.0L114.0,.0L114.0,33.0L.0,33.0L.0,.0z"/>
+                <text style="fill:#ffffff;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
+                    <tspan x="45.0" y="22.0">TCP</tspan>
+                </text>
+            </g>
+            <g>
+                <path fill="#fa945d" stroke="#000000" d="M.0,33.0L114.0,33.0L114.0,82.9L.0,82.9L.0,33.0z"/>
+                <text style="fill:#454545;font-family:Microsoft YaHei;font-size:12.00pt" xml:space="preserve">
+                    <tspan x="33.0" y="64.5">服务端</tspan>
+                </text>
+            </g>
+        </g>
+        <g id="shape3" transform="translate(193.00,208.00)">
+            <path fill="none" stroke="#303030" d="M.0,.0L362.1,47.2"/>
+            <path stroke-width="1" fill="#303030" stroke="#303030" stroke-linecap="round" d="M362.4,44.2L368.0,48.0L361.7,50.2L362.4,44.2"/>
+            <rect x="179.5" fill="#ffffff" y="15.5" width="27.0" height="19.0"/>
+            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
+                <tspan x="179.5" y="30.5">SYN</tspan>
+            </text>
+        </g>
+        <path fill="none" id="shape4" stroke="#191919" transform="translate(191.00,159.00)" d="M.0,.0L.0,446.0"/>
+        <path fill="none" id="shape5" stroke="#191919" transform="translate(565.26,159.00)" d="M.0,.0L.0,446.0"/>
+        <g id="shape6" transform="translate(565.00,300.00)">
+            <path fill="none" stroke="#303030" d="M.0,.0L-366.1,56.1"/>
+            <path stroke-width="1" fill="#303030" stroke="#303030" stroke-linecap="round" d="M-365.6,59.1L-372.0,57.0L-366.5,53.1L-365.6,59.1"/>
+            <rect x="-221.6" fill="#ffffff" y="20.2" width="57.0" height="19.0"/>
+            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
+                <tspan x="-221.6" y="35.2">SYN ACK</tspan>
+            </text>
+        </g>
+        <g id="shape7" transform="translate(193.00,405.00)">
+            <path fill="none" stroke="#303030" d="M.0,.0L360.8,65.9"/>
+            <path stroke-width="1" fill="#303030" stroke="#303030" stroke-linecap="round" d="M361.4,63.0L366.7,67.0L360.3,68.9L361.4,63.0"/>
+            <rect x="179.3" fill="#ffffff" y="25.5" width="26.0" height="19.0"/>
+            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
+                <tspan x="179.3" y="40.5">ACK</tspan>
+            </text>
+        </g>
+        <g id="shape8" transform="translate(67.00,172.00)">
+            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
+                <tspan x="14.0" y="24.5">connect( ) 阻塞</tspan>
+            </text>
+        </g>
+        <g id="shape9" transform="translate(558.00,262.00)">
+            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
+                <tspan x="18.5" y="24.5">accept( ) 阻塞</tspan>
+            </text>
+        </g>
+        <g id="shape10" transform="translate(67.00,362.85)">
+            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
+                <tspan x="14.0" y="24.5">connect( ) 返回</tspan>
+            </text>
+        </g>
+        <g id="shape11" transform="translate(558.00,472.00)">
+            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
+                <tspan x="18.5" y="24.5">accept( ) 返回</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

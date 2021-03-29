@@ -73,7 +73,11 @@ Greenbone 漏洞管理(GVM)是一个框架， 它由
 
 ![架构](_resources/openvas-arch-20.08.png)
 
-### 
+各个组件
+
+![组件](_resources/openvas-modules.svg)
+
+
 
 ### Greenbone Vulnerability Manager Daemon (gvmd)
 

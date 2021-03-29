@@ -1,0 +1,76 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 638 349" xmlns="http://www.w3.org/2000/svg" height="349" width="638">
+    <defs/>
+    <g transform="translate(-196.00,-90.00)">
+        <g transform="translate(559.00,255.00)" id="shape1">
+            <path d="M.0,40.0C.0,17.9,17.9,.0,40.0,.0C62.1,.0,80.0,17.9,80.0,40.0C80.0,62.1,62.1,80.0,40.0,80.0C17.9,80.0,.0,62.1,.0,40.0z" fill="#8acf57" fill-rule="nonzero" stroke="#323232"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan x="22.5" y="45.5">gvmd</tspan>
+            </text>
+        </g>
+        <g transform="translate(375.50,264.00)" id="shape2">
+            <path d="M.0,31.0C.0,13.9,29.8,.0,66.5,.0C103.2,.0,133.0,13.9,133.0,31.0C133.0,48.1,103.2,62.0,66.5,62.0C29.8,62.0,.0,48.1,.0,31.0z" fill="#ffe8cd" fill-rule="nonzero" stroke="#323232"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan x="23.0" y="27.0">ospd-openvas</tspan>
+                <tspan x="20.0" y="46.0">(python server)</tspan>
+            </text>
+        </g>
+        <g transform="translate(197.00,231.00)" id="shape3">
+            <path d="M.0,64.0C.0,28.7,28.7,.0,64.0,.0C99.3,.0,128.0,28.7,128.0,64.0C128.0,99.3,99.3,128.0,64.0,128.0C28.7,128.0,.0,99.3,.0,64.0z" fill="#4c85d9" fill-rule="nonzero" stroke="#323232"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan x="11.5" y="69.5">openvas-scanner</tspan>
+            </text>
+        </g>
+        <g transform="translate(738.00,250.00)" id="shape4">
+            <path d="M.0,45.0C.0,20.1,20.1,.0,45.0,.0C69.9,.0,90.0,20.1,90.0,45.0C90.0,69.9,69.9,90.0,45.0,90.0C20.1,90.0,.0,69.9,.0,45.0z" fill="#e9edf8" fill-rule="nonzero" stroke="#323232"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan x="34.5" y="41.0">gsa</tspan>
+                <tspan x="8.0" y="60.0">(web server)</tspan>
+            </text>
+        </g>
+        <g transform="translate(733.00,91.00)" id="shape5">
+            <path d="M.0,30.0C.0,13.4,22.4,.0,50.0,.0C77.6,.0,100.0,13.4,100.0,30.0C100.0,46.6,77.6,60.0,50.0,60.0C22.4,60.0,.0,46.6,.0,30.0z" fill="#ffffff" fill-rule="nonzero" stroke="#323232"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan x="30.5" y="35.5">webUI</tspan>
+            </text>
+        </g>
+        <g transform="translate(783.00,151.00)" id="shape6">
+            <path d="M.0,.0L.0,93.0" fill="none" stroke="#191919"/>
+            <path stroke-width="1" d="M3.0,93.0L.0,99.0L-3.0,93.0L3.0,93.0" stroke-linecap="round" fill="#191919" stroke="#191919"/>
+        </g>
+        <g transform="translate(738.00,295.00)" id="shape7">
+            <path d="M.0,.0L-93.0,.0" fill="none" stroke="#191919"/>
+            <path stroke-width="1" d="M-93.0,3.0L-99.0,.0L-93.0,-3.0L-93.0,3.0" stroke-linecap="round" fill="#191919" stroke="#191919"/>
+        </g>
+        <g transform="translate(559.00,295.00)" id="shape8">
+            <path d="M.0,.0L-44.5,.0" fill="none" stroke="#191919"/>
+            <path stroke-width="1" d="M-44.5,3.0L-50.5,.0L-44.5,-3.0L-44.5,3.0" stroke-linecap="round" fill="#191919" stroke="#191919"/>
+        </g>
+        <g transform="translate(375.50,295.00)" id="shape9">
+            <path d="M.0,.0L-44.5,.0" fill="none" stroke="#191919"/>
+            <path stroke-width="1" d="M-44.5,3.0L-50.5,.0L-44.5,-3.0L-44.5,3.0" stroke-linecap="round" fill="#191919" stroke="#191919"/>
+        </g>
+        <g transform="translate(549.00,91.00)" id="shape10">
+            <path d="M.0,30.0C.0,13.4,22.4,.0,50.0,.0C77.6,.0,100.0,13.4,100.0,30.0C100.0,46.6,77.6,60.0,50.0,60.0C22.4,60.0,.0,46.6,.0,30.0z" fill="#ffffff" fill-rule="nonzero" stroke="#323232"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei UI;font-size:10.00pt">
+                <tspan x="11.5" y="26.0">python-gvm</tspan>
+                <tspan x="35.5" style="font-family:Microsoft YaHei" y="45.0">(API)</tspan>
+            </text>
+        </g>
+        <g transform="translate(599.00,151.00)" id="shape11">
+            <path d="M.0,.0L.0,98.0" fill="none" stroke="#191919"/>
+            <path stroke-width="1" d="M3.0,98.0L.0,104.0L-3.0,98.0L3.0,98.0" stroke-linecap="round" fill="#191919" stroke="#191919"/>
+        </g>
+        <g transform="translate(197.00,408.00)" id="shape12">
+            <path d="M624.0,30.0C630.6,30.0,636.0,24.6,636.0,18.0L636.0,12.0C636.0,5.4,630.6,.0,624.0,.0L12.0,.0C5.4,.0,.0,5.4,.0,12.0L.0,18.0C.0,24.6,5.4,30.0,12.0,30.0L624.0,30.0z" fill="#d7d7d7" fill-rule="nonzero" stroke="#323232"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan x="257.0" y="20.5">共通依赖库 gvm-libs</tspan>
+            </text>
+        </g>
+        <g transform="translate(427.00,237.50)" id="shape13">
+            <path d="M.0,19.5C.0,8.7,9.4,.0,21.0,.0C32.6,.0,42.0,8.7,42.0,19.5C42.0,30.3,32.6,39.0,21.0,39.0C9.4,39.0,.0,30.3,.0,19.5z" fill="#00aeee" fill-rule="nonzero" stroke="#323232"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan x="6.0" y="25.0">ospd</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

@@ -4,9 +4,12 @@
   - [文件包含](network_security/web/http/file_inclusion.md)
   - [二次转码](network_security/web/http/double_url_encodeing.md)
 
+- [**WAF**](network_security/waf/README.md)
+  - [modsecurity](network_security/waf/modsecurity/)
+
 - [**HIDS**](network_security/hids/README.md)
-  - [Wazuh 介绍](network_security/hids/Wazuh/)
-  - [osquery 介绍](network_security/hids/osquery/)
+  - [Wazuh](network_security/hids/Wazuh/)
+  - [osquery](network_security/hids/osquery/)
 
 - [**扫描器**](network_security/scanner/README.md)
   - [OpenVAS](network_security/scanner/openvas/)

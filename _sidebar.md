@@ -4,7 +4,6 @@
 * [WebSocket](websocket/)
 * [Nginx](nginx/)
 * [OpenResty](openresty/)
-* [modsecurity](modsecurity/)
 * [OpenSSL](openssl/)
 * [MySQL](mysql/)
 * [Python](python/)

@@ -6,7 +6,6 @@
 
 - [**HIDS**](network_security/hids/README.md)
   - [Wazuh 介绍](network_security/hids/Wazuh/)
-  - [Wazuh 开发](network_security/hids/WazuhDev/)
   - [osquery 介绍](network_security/hids/osquery/)
 
 - [**扫描器**](network_security/scanner/README.md)

@@ -20,6 +20,10 @@ Wazuh 解决方案由部署到需要被监视系统上的 [Wazuh Agent](#wazuh-a
     - [Server 服务](#server-服务)
   - [Elastic Stack](#elastic-stack)
 * [Wazuh 架构](#wazuh-架构)
+  - [Wazuh Agent 和 Wazuh Server 间的通信](#wazuh-agent-和-wazuh-server-间的通信)
+  - [Wazuh server 和 Elastic Stack 间的通信](#wazuh-server-和-elastic-stack-间的通信)
+  - [使用的端口](#使用的端口)
+  - [档案数据存储](#档案数据存储)
 
 ## 社区与支持
 
@@ -121,51 +125,51 @@ Wazuh 平台提供的功能可保护您的云，容器和服务器工作负载�
 
 Elastic Stack 是流行的开源日志管理套件，包括Elasticsearch，Kibana，Filebeat等工具。与Wazuh解决方案特别相关的项目是：
 
-- **Filebeat**：一种轻量级转发器，用于通过网络传送日志，通常将日志传送到Elasticsearch。在 [Wazuh Server](#wazuh-server) 上使用它来将事件和警报发送到Elasticsearch。它读取Wazuh分析引擎的输出，并通过加密通道实时发送事件。当连接到多节点Elasticsearch集群时，它还提供负载均衡。
+- **Filebeat**：一种轻量级转发器，使用golang开发，用于通过网络传送日志，通常将日志传送到Elasticsearch。在 [Wazuh Server](#wazuh-server) 上使用它来将事件和警报发送到Elasticsearch。它读取 Wazuh 分析引擎的输出，并通过加密通道实时发送事件。当连接到多节点 Elasticsearch 集群时，它还提供负载均衡。
 
-- **Elasticsearch**：高度可扩展的全文本搜索和分析引擎。 Elasticsearch是分布式的，这意味着数据索引被分为多个分片，每个分片可以具有零个或多个副本。 Wazuh对警报数据，原始事件和状态监视信息使用不同的索引。
+- **Elasticsearch**：高度可扩展的全文本搜索和分析引擎,使用Java开发。 Elasticsearch是分布式的，这意味着数据索引被分为多个分片，每个分片可以具有零个或多个副本。 Wazuh 对警报数据，原始事件和状态监视信息使用不同的索引。
 
-- **Kibana**：灵活直观的Web界面，用于挖掘，分析和可视化数据。它在Elasticsearch集群中的索引内容之上运行。 Wazuh Web用户界面已以插件的形式完全嵌入在Kibana中。它包括用于安全事件，法规遵从性（例如PCI DSS，GDPR，CIS，HIPAA，NIST 800-53）的现成仪表板，检测到的易受攻击的应用程序，文件完整性监控数据，配置评估结果，云基础架构监控事件， 和别的。
+- **Kibana**：灵活直观的Web界面，用于挖掘，分析和可视化数据。它在 Elasticsearch 集群中的索引内容之上运行。 Wazuh Web 用户界面已以插件的形式完全嵌入在 Kibana 中。它包括用于安全事件，法规遵从性（例如PCI DSS，GDPR，CIS，HIPAA，NIST 800-53）的现成仪表板，检测到的易受攻击的应用程序，文件完整性监控数据，配置评估结果，云基础架构监控事件等。
 
-  Wazuh与Elastic Stack集成在一起，提供了已经解码的消息的提要，以供Elasticsearch进行索引，还提供了用于警报和日志数据分析的实时Web控制台。此外，在Kibana之上运行的Wazuh用户界面用于管理和监视Wazuh基础结构。 Elasticsearch索引是具有相似特征（例如某些公共字段和共享数据保留要求）的文档的集合。 Wazuh利用每天创建的多达三个不同的索引来存储不同的事件类型：
+Wazuh 与 [Elastic Stack](#elastic-stack) 集成在一起，提供了已经解码的消息的提要，以供 Elasticsearch 进行索引，还提供了用于警报和日志数据分析的实时 Web 控制台。此外，在 Kibana 之上运行的 Wazuh 用户界面用于管理和监视 Wazuh 基础结构。 Elasticsearch 索引是具有相似特征（例如某些公共字段和共享数据保留要求）的文档的集合。 Wazuh 利用每天创建的多达三个不同的索引来存储不同的事件类型：
 
-- **wazuh-alerts**： [Wazuh Server](#wazuh-server) 生成的警报的索引。每次事件触发具有足够高优先级的规则（此阈值是可配置的）时，就会创建这些规则。
+- **wazuh-alerts**： [Wazuh Server](#wazuh-server) 生成警报的索引。每次触发的事件具有足够高优先级的规则（此阈值是可配置的）时，就会创建这些规则。
 
-- **wazuh-events**：无论是否执行规则，从代理收到的所有事件（存档数据）的索引。
+- **wazuh-events**：无论是否执行规则，从 `Agent` 收到的所有事件（存档数据）的索引。
 
-- **wazuh-monitoring**：一段时间内与 [Wazuh Agent](#wazuh-agent) 状态相关的数据的索引。 Web界面使用它来表示各个代理何时处于活动状态，已断开连接或从不连接。
+- **wazuh-monitoring**：一段时间内与 [Wazuh Agent](#wazuh-agent) 状态相关的数据的索引。 Web 界面使用它来表示各个 `Agent` 何时处于活动状态，已断开连接或从不连接。
 
-索引由文档组成。对于以上索引，文档是单独的警报，已归档的事件或与 [Wazuh Agent](#wazuh-agent) 状态相关的数据。 Elasticsearch索引分为一个或多个分片，每个分片可以选择具有一个或多个副本。每个主分片和副本分片都是一个单独的Lucene索引。因此，Elasticsearch索引由许多Lucene索引组成。在Elasticsearch索引上运行搜索时，将在所有分片上并行执行搜索，并合并结果。在多节点Elasticsearch集群中使用Elasticsearch索引划分为多个分片和副本，目的是扩大搜索范围并实现高可用性。单节点Elasticsearch集群通常每个索引只有一个分片，没有副本。
+索引由文档(document)组成。对于以上索引，文档是单独的警报，已归档的事件或与 [Wazuh Agent](#wazuh-agent) 状态相关的数据。 Elasticsearch 索引分为一个或多个分片，每个分片可以选择具有一个或多个副本。每个主分片和副本分片都是一个单独的 Lucene 索引。因此，Elasticsearch 索引由许多 Lucene 索引组成。在 Elasticsearch 索引上运行搜索时，将在所有分片上并行执行搜索，并合并结果。在多节点 Elasticsearch 集群中使用 Elasticsearch 索引划分为多个分片和副本，目的是扩大搜索范围并实现高可用性。单节点Elasticsearch 集群通常每个索引只有一个分片，没有副本。
 
 ---
 
 ## Wazuh 架构
 
-Wazuh体系结构基于在受监视的端点上运行的代理，这些代理将安全性数据转发到中央服务器。此外，支持无代理设备（例如防火墙，交换机，路由器，访问点等），并且可以通过Syslog，SSH或使用其自己的API主动提交日志数据。中央服务器对输入的信息进行解码和分析，并将结果传递给Elasticsearch集群以进行索引和存储。 
+Wazuh 架构基于在受监视的端点上运行的 `Agent`，这些 `Agent` 将安全相关的数据转发到 `Server` 上。此外，Wazuh 还支持无 `Agent` 设备（例如防火墙，交换机，路由器，访问点等），并且可以通过Syslog，SSH或使用其自己的API主动提交日志数据。`Server` 对输入的信息进行解码和分析，并将结果传递给 Elasticsearch 集群以进行索引和存储。
 
-Elasticsearch集群是一个或多个节点的集合，这些节点相互通信以对索引执行读取和写入操作。不需要处理大量数据的小型Wazuh部署可以通过单节点群集轻松处理。当有大量受监视的端点，预期有大量数据或需要高可用性时，建议使用多节点群集。
+Elasticsearch 集群是一个或多个节点的集合，这些节点相互通信以对索引执行读取和写入操作。不需要处理大量数据的小型 Wazuh 部署可以通过单节点群集轻松处理。当有大量受监视的端点，预期有大量数据或需要高可用性时，建议使用多节点群集。
 
-对于生产环境，建议将 [Wazuh Server](#wazuh-server) 和Elasticsearch部署到不同的主机。在这种情况下，Filebeat用于使用TLS加密将Wazuh警报和/或存档的事件安全地转发到Elasticsearch群集（单节点或多节点）。
+对于生产环境，建议将 [Wazuh Server](#wazuh-server) 和 Elasticsearch 部署到不同的主机。在这种情况下，Filebeat 用于使用 TLS 加密将 Wazuh 警报和存档的事件安全地转发到 Elasticsearch 群集（单节点或多节点）。
 
-下图显示了Wazuh部署架构。它显示了解决方案组件以及如何将 [Wazuh Server](#wazuh-server) 和Elasticsearch配置为群集，从而提供负载均衡和高可用性。
+下图显示了 Wazuh 的部署架构。它显示了解决方案组件以及如何将 [Wazuh Server](#wazuh-server) 和 Elasticsearch 配置为群集，从而提供负载均衡和高可用性。
 
 ![Wazuh架构](_resources/deployment.png)
 
 ### Wazuh Agent 和 Wazuh Server 间的通信
 
-[Wazuh Agent](#wazuh-agent) 将事件连续发送到 [Wazuh Server](#wazuh-server) 以进行分析和威胁检测。为了开始运送它们，代理程序与服务器服务建立连接以进行代理程序连接，该服务侦听端口1514（这是可配置的）。然后 [Wazuh Server](#wazuh-server) 使用分析引擎对接收到的事件进行解码和规则检查。触发规则的事件会增加警报数据，例如规则ID和规则名称。可以将事件假脱机到以下一个文件或两个文件中，具体取决于规则是否被执行：
+[Wazuh Agent](#wazuh-agent) 将事件发送到 [Wazuh Server](#wazuh-server) 以进行分析和威胁检测。为了开始传送它们，`Agent` 与 `Server` 建立连接，该连接服务监听端口1514（这是可配置的）。然后 [Wazuh Server](#wazuh-server) 使用分析引擎对接收到的事件进行解码和规则检查。触发规则的事件会增加警报数据，例如规则ID和规则名称。可以将事件假脱机到以下一个文件或两个文件中，具体取决于规则是否被执行：
 
 - 文件 `/var/ossec/logs/archives/archives.json`包含所有事件，无论它们是否违反规则。
 
 - 文件`/var/ossec/logs/alerts/alerts.json`仅包含以足够高的优先级（阈值可配置）使规则中断的事件。
 
-Wazuh消息协议默认情况下使用AES加密，每个块具有128位和256位密钥（Blowfish加密也是可选的）。
+Wazuh 消息协议默认情况下使用 AES 加密，每个块具有128位和256位密钥（Blowfish加密也是可选的）。
 
-> Read the [Benefits of using AES in Wazuh communications](https://wazuh.com/blog/benefits-of-using-aes-in-our-communications) document for more information.
+> 阅读 [Wazuh使用AES加密通信的好处](https://wazuh.com/blog/benefits-of-using-aes-in-our-communications) 来了解更多细节内容。
 
 ### Wazuh server 和 Elastic Stack 间的通信
 
- [Wazuh Server](#wazuh-server) 使用Filebeat通过TLS加密将警报和事件数据发送到Elasticsearch服务器。 Filebeat读取 [Wazuh Server](#wazuh-server) 的输出数据并将其发送到Elasticsearch（默认情况下，监听端口9200 / TCP）。 Elasticsearch为数据建立索引后，将使用Kibana来挖掘和可视化信息。 Wazuh Web用户界面作为插件在Kibana内部运行。它查询Wazuh RESTful API（默认情况下，监听 [Wazuh Server](#wazuh-server) 上的端口55000 / TCP），以显示 [Wazuh Server](#wazuh-server) 和代理的配置和与状态有关的信息。如果需要，它还可以通过API调用修改代理或服务器配置设置。此通信使用TLS加密，并使用用户名和密码进行身份验证。
+ [Wazuh Server](#wazuh-server) 使用 Filebeat 通过 TLS 加密将警报和事件数据发送到 Elasticsearch 服务器。 Filebeat 读取 [Wazuh Server](#wazuh-server) 的输出数据并将其发送到 Elasticsearch（默认情况下，监听端口9200/TCP）。 Elasticsearch 为数据建立索引后，将使用 Kibana 来挖掘和可视化信息。 Wazuh Web 用户界面作为插件在 Kibana 内部运行。它查询 Wazuh RESTful API（默认情况下，监听 [Wazuh Server](#wazuh-server) 上的端口55000/TCP），以显示 [Wazuh Server](#wazuh-server) 和`Agent` 的配置和与状态有关的信息。如果需要，它还可以通过API调用修改 `Agent` 或 `Server` 配置设置。此通信使用 TLS 加密，并使用用户名和密码进行身份验证。
 
 ### 使用的端口
 
@@ -173,12 +177,12 @@ Wazuh组件的通信使用了几种服务。下面是这些服务使用的默认
 
 | Component     | Software      | Port      | Protocol      | Purpose                             |
 | ------------- | ------------- | --------- | ------------- | ----------------------------------- |
-| Wazuh server  | Wazuh manager | 1514      | TCP (default) | Agent 连接服务                          |
-| -             | -             | 1514      | UDP           | Agent 连接服务                          |
-| -             | -             | 1515      | TCP           | Agent 连接服务                          |
+| Wazuh server  | Wazuh manager | 1514      | TCP(默认)     | Agent 连接服务                       |
+| -             | -             | 1514      | UDP           | Agent 连接服务                       |
+| -             | -             | 1515      | TCP           | Agent 连接服务                       |
 | -             | -             | 1516      | TCP           | Wazuh cluster daemon                |
-| -             | -             | 514       | UDP (default) | Wazuh syslog collector (默认不开启)      |
-| -             | -             | 514       | TCP           | Wazuh syslog collector (默认不开启)      |
+| -             | -             | 514       | UDP(默认)     | Wazuh syslog collector (默认不开启)  |
+| -             | -             | 514       | TCP           | Wazuh syslog collector (默认不开启)  |
 | -             | Wazuh API     | 55000     | TCP           | Wazuh RESTful API                   |
 | Elastic Stack | Elasticsearch | 9200      | TCP           | Elasticsearch RESTful API           |
 | -             | Elasticsearch | 9300-9400 | TCP           | Elasticsearch cluster communication |
@@ -186,7 +190,7 @@ Wazuh组件的通信使用了几种服务。下面是这些服务使用的默认
 
 ### 档案数据存储
 
-档案数据存储 警报事件和非警报事件都存储在 [Wazuh Server](#wazuh-server) 上的文件中，除了发送到Elasticsearch外。这些文件可以JSON格式（.json）和/或纯文本格式（.log-无解码字段，但更紧凑）编写。这些文件每天使用MD5，SHA1和SHA256校验和进行压缩和签名。目录和文件名结构如下：
+警报事件和非警报事件都存储在 [Wazuh Server](#wazuh-server) 上的文件中，除了发送到 Elasticsearch 外。这些文件可以JSON格式（.json）和/或纯文本格式（.log-无解码字段，但更紧凑）编写。这些文件每天使用MD5，SHA1和SHA256校验和进行压缩和签名。目录和文件名结构如下：
 
 ```bash
 root@wazuh-manager:/var/ossec/logs/archives/2020/Jan# ls -l
@@ -205,4 +209,4 @@ total 176
 -rw-r----- 1 ossec ossec    346 Jan  2 00:00 ossec-archive-03.log.sum
 ```
 
-建议根据 [Wazuh Server](#wazuh-server) 的存储容量旋转和备份存档文件。通过使用cron作业，您可以轻松地安排在服务器上仅在本地本地保留存档文件的某个时间窗口（例如，去年或过去三个月）。 另一方面，您可以选择完全放弃存储归档文件，而仅依靠Elasticsearch进行归档存储，尤其是如果您正在运行定期的Elasticsearch快照备份和/或具有分片副本的多节点Elasticsearch集群以实现高可用性。您甚至可以使用cron作业将快照索引移动到最终数据存储服务器，并使用MD5，SHA1和SHA256哈希算法对其进行签名。
+建议根据 [Wazuh Server](#wazuh-server) 的存储容量旋转和备份存档文件。通过使用cron作业，您可以轻松地安排在服务器上仅在本地本地保留存档文件的某个时间窗口（例如，去年或过去三个月）。 <mark>另一方面，您可以选择完全放弃存储归档文件，而仅依靠 Elasticsearch 进行归档存储，尤其是如果您正在运行定期的 Elasticsearch 快照备份和/或具有分片副本的多节点Elasticsearch集群以实现高可用性</mark>。您甚至可以使用cron作业将快照索引移动到最终数据存储服务器，并使用MD5，SHA1和SHA256哈希算法对其进行签名。

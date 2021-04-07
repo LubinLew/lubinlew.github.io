@@ -8,7 +8,7 @@
   - [modsecurity](network_security/waf/modsecurity/)
 
 - [**HIDS**](network_security/hids/README.md)
-  - [Wazuh](network_security/hids/Wazuh/)
+  - [Wazuh](network_security/hids/wazuh/)
   - [osquery](network_security/hids/osquery/)
 
 - [**扫描器**](network_security/scanner/README.md)

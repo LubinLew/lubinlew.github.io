@@ -5,7 +5,6 @@
 * [Nginx](nginx/)
 * [OpenResty](openresty/)
 * [OpenSSL](openssl/)
-* [MySQL](mysql/)
 * [Python](python/)
 * [HyperScan](hyperscan/)
 * [网络](network/)
@@ -13,4 +12,5 @@
 * [虚拟化](virtualization/)
 * [LVS](lvs/)
 * [GeoIP2](geoip/)
+* [数据库](database/)
 * [其他](others/)

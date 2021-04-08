@@ -26,7 +26,7 @@ azuh服务器和Elastic Stack组件可以安装在以下Linux操作系统中：
 
 ### 多合一部署
 
-在多合一部署中，Wazuh服务器和Elastic Stack都安装在同一主机上。这种类型的部署适用于测试和小型生产环境。这种环境的典型用例支持大约100个代理。 此类部署的最低要求是4 GB的RAM和2个CPU内核，建议的<mark>最低要求是16 GB的RAM和8个CPU内核。需要64位操作系统</mark>。 磁盘空间要求取决于生成的每秒警报（APS）。预期的APS取决于受监视端点的数量和类型而有很大差异。下表提供了90天警报所需的每个代理的存储量估计值，具体取决于受监视端点的类型。
+在多合一部署中，Wazuh服务器和Elastic Stack都安装在同一主机上。这种类型的部署适用于测试和小型生产环境。这种环境的典型用例支持大约100个 `Agent`。 <mark>此类部署的最低要求是2核4G，建议使用8核16G配置</mark>。 磁盘空间要求取决于生成的每秒警报数量(APS)。预期的APS取决于受监视端点的数量和类型而有很大差异。下表提供了90天警报所需的每个`Agent`的存储量估计值，具体取决于受监视端点的类型。
 
 | Monitored endpoints | APS  | Storage (GB/90 days) |
 | ------------------- | ---- | -------------------- |
@@ -40,7 +40,7 @@ azuh服务器和Elastic Stack组件可以安装在以下Linux操作系统中：
 
 ### 分布式部署
 
-在分布式部署中，Wazuh Server 和 Elastic Stack 都安装在单独的主机上。建议将此配置用于生产环境，因为它可提供服务的高可用性和可伸缩性。 Wazuh Server 和 Elastic Stack 可以分别安装为单节点或多节点群集。 Kibana 可以安装在与 Elasticsearch 相同的节点上，也可以安装在专用主机中。对于每个节点，硬件建议为：
+在分布式部署中，Wazuh Server 和 Elastic Stack 都安装在单独的主机上。生产环境建使用此配置，因为它可提供服务的高可用性和可伸缩性。 Wazuh Server 和 Elastic Stack 可以分别安装为单节点或多节点群集。 Kibana 可以安装在与 Elasticsearch 相同的节点上，也可以安装在专用主机中。对于每个节点，硬件建议为：
 
 | Minimum       |          |             | Recommended |             |
 | ------------- | -------- | ----------- | ----------- | ----------- |
@@ -48,9 +48,9 @@ azuh服务器和Elastic Stack组件可以安装在以下Linux操作系统中：
 | Wazuh server  | 2        | 2           | 8           | 4           |
 | Elastic Stack | 4        | 2           | 16          | 8           |
 
-<mark> 必须使用64位操作系统。</mark>关于磁盘空间要求，数据量取决于每秒生成的警报（APS）。下表显示了在 Wazuh Server 以及 Elasticsearch 服务器上存储90天警报所需的每个代理所需的磁盘空间的估计，具体取决于受监视端点的类型。
+关于磁盘空间要求，数据量取决于每秒生成的警报（APS）。下表显示了在 Wazuh Server 以及 Elasticsearch 服务器上存储90天警报所需的每个代理所需的磁盘空间的估计，具体取决于受监视端点的类型。
 
-| Monitored endpoints | APS  | Storage in Wazuh Manager<br><br>(GB/90 days) | Storage in Elasticsearch<br><br>(GB/90 days) |
+| Monitored endpoints | APS  |    Storage in Wazuh Manager<br>(GB/90 days)  | Storage in Elasticsearch<br>(GB/90 days)     |
 | ------------------- | ---- | -------------------------------------------- | -------------------------------------------- |
 | Servers             | 0.25 | 0.1                                          | 3.7                                          |
 | Workstations        | 0.1  | 0.04                                         | 1.5                                          |
@@ -58,18 +58,23 @@ azuh服务器和Elastic Stack组件可以安装在以下Linux操作系统中：
 
 例如，对于具有80个工作站，10个服务器和10个网络设备的环境，90天警报所需的存储在Elasticsearch服务器上约为230 GB，在Wazuh服务器上约为6 GB。
 
-### Scaling
+### 弹性伸缩
 
-为了确定Wazuh服务器是否需要更多资源，可以监视以下文件：`/var/ossec/var/run/ossec-analysisd.state`和`/var/ossec/var/run/ossec-remoted.state`。
+为了确定 Wazuh server 是否需要更多资源，可以监视以下文件：
+
+- `/var/ossec/var/run/ossec-analysisd.state`
+- `/var/ossec/var/run/ossec-remoted.state`
 
  在 `analysid.state` 文件中，变量 `events_dropped` 指示是否由于缺少资源而删除了事件。
 
-类似地，`ossec-remoted.state` 具有变量 `discarded_count`，该变量指示是否已丢弃来自代理的消息。如果环境运行正常，这两个变量应为零。如果不是这种情况，则可以将其他节点添加到群集中。 要监视 Elastic Stack 环境是否正常运行，可以使用诸如性能分析器之类的工具。 如果需要扩展，以下各节介绍如何使用 Elastic Stack 进行 Wazuh 的分布式部署。
+类似地，`ossec-remoted.state` 具有变量 `discarded_count`，该变量指示是否已丢弃来自`Agent`的消息。如果环境运行正常，这两个变量应为零。如果不是这种情况，则可以将其他节点添加到群集中。
+
+要监视 Elastic Stack 环境是否正常运行，可以使用诸如性能分析器之类的工具。 如果需要扩展，以下各节介绍如何使用 Elastic Stack 进行 Wazuh 的分布式部署。
 
 
 
 ## 部署各个组件
 
-[部署Wazuh Server](network_security/hids/Wazuh/install_server.md)
+[部署Wazuh Server](network_security/hids/wazuh/install_server.md)
 
-[部署Wazuh Agent](network_security/hids/Wazuh/install_agent.md)
+[部署Wazuh Agent](network_security/hids/wazuh/install_agent.md)

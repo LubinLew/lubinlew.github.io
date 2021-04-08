@@ -1,18 +1,18 @@
 # Wazuh server 安装
 
-本部分为用户提供了必要的信息，以使用Open Distro for Elasticsearch 进行 Wazuh 的安装，Elasticsearch 是Apache 2.0 许可的发行版，通过 Elastic Security 提供了企业安全性，警报，SQL支持，自动索引管理或深度性能分析等增强功能。其他特性。
+本部分为为 Wazuh Server 和 Elasticsearch 的安装。
 
 ## 部署类型
 
-根据选择的配置，安装指南分为两个独立的部分：多合一部署和分布式部署。 
+根据选择的配置，安装指南分为两个独立的部分：多合一部署和分布式部署。
 
-- **多合一部署**：Wazuh 和Open Distro for Elasticsearch 安装在同一主机上。这种类型的部署适用于测试和小型工作环境。 
+- **多合一部署**：Wazuh Server 和 Elasticsearch 安装在同一主机上。这种类型的部署适用于测试和小型工作环境。
 
 - **分布式部署**：每个组件都作为单节点或多节点群集安装在单独的主机中。这种类型的部署允许产品的高可用性和可伸缩性，并且在大型工作环境中很方便。
 
 ## 安装方式
 
-对于每种部署类型，用户可以在两种安装方法之间进行选择： 
+对于每种部署类型，用户可以在两种安装方法之间进行选择：
 
 - **无人值守**：自动安装。它需要初始输入必要的信息才能通过脚本执行安装过程。
 
@@ -26,11 +26,11 @@
 
 ![1](_resources/all_in_one_no_title4.png)
 
-将安装以下组件： 
+将安装以下组件：
 
 - Wazuh Server，包括作为单节点群集的 **Wazuh Manager** 和 **Wazuh API**。
 
-- Elastic Stack，包括作为单节点群集的OpenDistro for Elasticsearch，Filebeat和Kibana，包括Wazuh Kibana插件。 
+- Elastic Stack，包括作为单节点群集的 Elasticsearch，Filebeat和Kibana，包括Wazuh Kibana插件。
 
 通信将使用SSL证书进行加密。这些证书将使用Search Guard脱机TLS工具生成。 另外，为了正确使用Wazuh Kibana插件，将添加额外的Elasticsearch角色和用户。
 
@@ -38,7 +38,7 @@
 
 ### 无人值守安装
 
-文档的此部分说明如何使用脚本自动在单个主机上安装Wazuh，该脚本将自动检测操作系统是否使用rpm或deb软件包。该脚本将执行运行状况检查，以验证可用的系统资源是否满足最低要求。有关更多信息，请访问需求部分。 该脚本将安装Java Development Kit和其他软件包，包括Open Distro for Elasticsearch所需的unzip和libcap。此外，Search Guard离线TLS工具将用于生成证书，以保护Elastic Stack中的数据。
+文档的此部分说明如何使用脚本自动在单个主机上安装，该脚本将自动检测操作系统是否使用rpm或deb软件包。该脚本将执行运行状况检查，以验证可用的系统资源是否满足最低要求。有关更多信息，请访问需求部分。 该脚本将安装Java Development Kit和其他软件包，包括 Elasticsearch所需的 unzip 和libcap。此外，Search Guard离线TLS工具将用于生成证书，以保护Elastic Stack中的数据。
 
 #### 安装 Wazuh
 
@@ -48,14 +48,15 @@
 
 ```bash
 # 下载脚本
-curl -so all-in-one-installation.sh https://raw.githubusercontent.com/wazuh/wazuh-documentation/4.0/resources/open-distro/unattended-installation/all-in-one-installation.sh
+curl -so ~/all-in-one-installation.sh https://raw.githubusercontent.com/wazuh/wazuh-documentation/4.1/resources/open-distro/unattended-installation/all-in-one-installation.sh
 # 运行安装
 bash all-in-one-installation.sh
 ```
 
-该脚本将执行运行状况检查，以确保主机具有足够的资源来保证适当的性能。要跳过此步骤，请在运行脚本时添加 `-i` 或 `--i​​gnore-healthcheck` 选项。 执行脚本后，它将显示以下消息，以确认安装成功：
+该脚本将执行会检查运行状况，以确保主机具有足够的资源来保证适当的性能。要跳过此步骤，请在运行脚本时添加 `-i` 或 `--i​​gnore-healthcheck` 选项。 执行脚本后，它将显示以下消息，以确认安装成功：
 
 ```bash
+Starting the installation...
 Installing all necessary utilities for the installation...
 Done
 Adding the Wazuh repository...
@@ -94,15 +95,19 @@ password: admin
 
 首次访问Kibana时，浏览器显示警告消息，指示证书不是由受信任的机构颁发的。可以在浏览器的高级选项中添加例外，或者为了提高安全性，可以将以前生成的`root-ca.pem`文件导入浏览器的证书管理器中。或者，可以配置来自可信机构的证书。
 
+> 安装过程中, Elasticsearch 的性能分析插件会被移除, 因为他会降低性能。
+
 ###### 定制安装
 
-在`/etc/kibana/kibana.yml`文件中找到的Kibana配置将server.host参数设置为0.0.0.0。这意味着可以从外部访问Kibana，并将接受主机的所有可用IP。如果需要，可以为特定IP更改此值。 强烈建议为`/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/internal_users.yml`文件中找到的用户更改Elasticsearch的默认密码。有关此过程的更多信息，请参见此处。 Kibana运行之后，有必要为每个用户分配相应的角色。要了解更多信息，请访问“设置Wazuh Kibana插件”部分。 要在一次安装中卸载全部组件的所有组件，请访问卸载部分。
+Kibana 的配置文件为 `/etc/kibana/kibana.yml`，其中参数 `server.host` 被设置为 `0.0.0.0`,这意味着可以从外部访问 Kibana，并将接受主机的所有可用IP。如果需要，可以更改此值为特定IP。
 
+强烈建议更改Elasticsearch的默认用户密码, 这些用户可以在文件 `/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/internal_users.yml`中找到。有关此过程的更多信息，请参见[此处](https://documentation.wazuh.com/current/user-manual/elasticsearch/elastic_tuning.html#change-elastic-pass)。
 
+----
 
 ### 逐步安装
 
-本文档指导在多合一部署中安装Wazuh和Open Distro for Elasticsearch组件。这种类型的部署适用于测试和小型工作环境。 本指南提供了有关配置官方存储库以执行安装的说明。或者，也可以使用软件包来完成安装。在我们的软件包列表中查看可用软件包的列表。
+本文档指导在多合一部署中安装Wazuh Server 和 Elasticsearch组件。这种类型的部署适用于测试和小型工作环境。 本指南提供了有关配置官方存储库以执行安装的说明。或者，也可以使用软件包来完成安装。
 
 #### 先决条件
 

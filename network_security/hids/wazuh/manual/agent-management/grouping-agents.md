@@ -64,8 +64,6 @@ curl -k -X PUT "https://localhost:55000/agents/002/group/dbms?pretty=true" -H  "
  ID: 006 Name: agent-dbms-a3.
 ```
 
-
-
 使用**Wazuh API** [GET /groups/{group_id}/agents](https://documentation.wazuh.com/current/user-manual/api/reference.html#operation/api.controllers.agent_controller.get_agents_in_group)：
 
 ```bash
@@ -100,8 +98,6 @@ curl -k -X GET "https://localhost:55000/groups/dbms/agents?pretty=true&select=id
 2. 连接到Manager的20分钟内，分配给组的每个AgeManager从管理器接收*“ dbms”*文件夹中包含的`agent.conf`文件，包括在上一Manager改的文件。管理器将这些文件Agent到代理所花费的时间长短取决于文件Agent小，组中代理的数量以及所使用的连接协议。例如，取决于网络带宽和性能，使AgentDP在100个代理上接收10 MB文件夹（不包括**merged.mg**文件）可能需要8分钟，但是，如果使用TCP，则移动速度可能会更快。
 
 3. 一旦特定的座席属于某个组，则即使该Agent以其他名称或ID注Agent该代理也将**自动重新分配**到该组。发生这种情况的原因是，在重新注册座席时，会将`merged.mg`座席发送的校验和与在Manager中注册的其他座席的校验和进行比较。然而，这是不是默认的行为，而且，如果需要的话，必须由用户明确激活`local_internal_options.conf`通过添加选项（参见在[内部选件](https://documentation.wazuh.com/current/user-manual/reference/internal-options.html)）。`remoted.guess_agent_group=1``remoted`[](https://documentation.wazuh.com/current/user-manual/reference/internal-options.html)
-
-
 
 -----
 

@@ -1,7 +1,5 @@
 # Agent
 
-
-
 编译 Agent
 
 ```bash
@@ -26,6 +24,7 @@ BUILD_AGENT+=navsec-modulesd
 
 ### navsec-agentd
 
+
 ```makefile
 
 client_agent_c := $(wildcard client-agent/*.c)
@@ -39,5 +38,3 @@ client-agent/%.o: client-agent/%.c
 navsec-agentd: ${client_agent_o} monitord/rotate_log.o monitord/compress_log.o
 	${OSSEC_CCBIN} ${OSSEC_LDFLAGS} $^ ${OSSEC_LIBS} -o $@
 ```
-
-

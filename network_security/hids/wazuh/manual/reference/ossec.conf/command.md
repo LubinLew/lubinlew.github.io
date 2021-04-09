@@ -11,15 +11,17 @@ XML section name
 
 ## 选项
 
-1.[name](#name)
-2.[executable](#executable)
-3.[expect](#expect)
-4.[extra_args](#extra_args)
-5.[timeout_allowed](#timeout_allowed)
+| 选项                                  | 说明                    | 备注  |
+| ----------------------------------- | --------------------- | --- |
+| [name](#name)                       | 命令的名称                 |     |
+| [executable](#executable)           | 命令执行的脚本               |     |
+| [expect](#expect)                   | 命令操作的对象(ip地址\|用户\|文件) |     |
+| [extra_args](#extra_args)           | 额外的参数                 |     |
+| [timeout_allowed](#timeout_allowed) | 命令的类型(有状态还是无状态)       |     |
 
 ### name
 
-指定命名的 名称。这个名称用于 [active-response](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/active-response.html)段.
+指定命令的名称。这个名称用于 [`<active-response>`](network_security/hids/wazuh/manual/reference/ossec.conf/active-response.md) 段.
 
 | **Default value**  | n/a      |
 | ------------------ | -------- |
@@ -41,10 +43,10 @@ XML section name
 
 一个很好的例子是firewall-block命令，该命令期望该`srcip`(source ip)字段以便知道要阻止的IP地址。多个期望的字段名称以逗号分隔。
 
-| **Default value**  | n/a                                             |
-| ------------------ | ----------------------------------------------- |
-| **Allowed values** |  `srcip` `user` `filename` ,如果有多个用逗号分隔. |
-| **use**            | Not required                                    |
+| **Default value**  | n/a                                    |
+| ------------------ | -------------------------------------- |
+| **Allowed values** | `srcip` `user` `filename` ,如果有多个用逗号分隔. |
+| **use**            | Not required                           |
 
 ### extra_args
 
@@ -52,10 +54,10 @@ XML section name
 
 允许用户自定义发送到位于Agent端的主动响应脚本的参数。此设置的内容将附加到发送给Agent的现有参数之后
 
-| **Default value**  | n/a                          |
-| ------------------ | ---------------------------- |
+| **Default value**  | n/a              |
+| ------------------ | ---------------- |
 | **Allowed values** | 主动响应脚本需要接受的额外参数. |
-| **use**            | Not required                 |
+| **use**            | Not required     |
 
 ### timeout_allowed
 

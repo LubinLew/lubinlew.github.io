@@ -7,29 +7,27 @@ XML section name
 </active-response>
 ```
 
-In the active response configuration section, an existing command is bound to one or more rules or rule types along with additional criteria for when to execute the command. There is no limit to the number of active responses that can be used, however, each active response must be configured in its own separate `<active-response>` section.
+在主动响应配置中，将已有命令绑定到一个或多个规则或规则类型以及何时执行该命令的附加条件。可以使用的主动响应数量没有限制，但是，每个主动响应都必须在其自己的单独`<active-response>`部分中进行配置。
 
 ## 选项
 
-1.[disabled](#disabled)
-
-**Manager side** >
-
-2.[command](#command)
-3.[location](#location)
-4.[agent_id](#agent-id)
-5.[level](#level)
-6.[rules_group](#rules-group)
-7.[rules_id](#rules-id)
-8.[timeout](#timeout)
-
-**Agent side** >
-
-9.[repeated_offenders](#repeated-offenders)
+| 选项                                        | 说明                    | Side    |
+| ----------------------------------------- | --------------------- | ------- |
+| [disabled](#disabled)                     | 功能开关                  | -       |
+| [command](#command)                       | 绑定命令的名称               | Manager |
+| [location](#location)                     | 命令执行位置                | Manager |
+| [agent_id](#agent-id)                     | Agent ID              | Manager |
+| [level](#level)                           | 要执行命令所需的最低严重性级别       | Manager |
+| [rules_group](#rules-group)               | 触发的规则必需属于某个规则组才执行主动响应 | Manager |
+| [rules_id](#rules-id)                     | 允许执行主动响应的规则ID         | Manager |
+| [timeout](#timeout)                       | 执行反向命令之前的秒数           | Manager |
+| [repeated_offenders](#repeated-offenders) | 多次触发者执行反向命令之前的分钟数     | Agent   |
 
 ### disabled
 
-Toggles the active-response capability on and off. Setting this option to `yes` on an agent will disable active-response for that agent only, while setting it in the manager’s `ossec.conf` file will disable active-response on the manager and all agents.
+主动响应功能开关。 在一个 `Agent`上将此项设置为 `yes` 那么只有这个`Agent`才禁用主动响应, 
+
+但是在 `Manager` 上设置为`yes` 则是表示在 `Manger` 和 所有 `Agent` 禁用主动响应。
 
 > This option is available on server, local, and agent installations.
 
@@ -41,84 +39,86 @@ Toggles the active-response capability on and off. Setting this option to `yes`
 
 绑定命令的名称
 
-| **Default value**  | n/a                                      |
-| ------------------ | ---------------------------------------- |
-| **Allowed values** | Any defined active response command name |
+| **Default value**  | n/a      |
+| ------------------ | -------- |
+| **Allowed values** | 已定名命令的名称 |
 
 ### location
 
-指定命令在何种系统上才能执行。
+指定命令在何处才能执行。
 
-| **Default value**  | n/a            |                                 |
-| ------------------ | -------------- | ------------------------------------- |
-| **Allowed values** | local              | 只在产生该事件的agent上运行 |
-|                    | server             | 在 Wazuh manager 上运行         |
-| defined-agent      | 只在使用`agent_id`指定的的agent上运行 |          |
-| all                | 在所有的Agnet上执行(!小心使用).          |                 |
+| **Default value**  | n/a           | -                          |
+| ------------------ | ------------- | -------------------------- |
+| **Allowed values** | local         | 只在产生该事件的Agent上运行           |
+|                    | server        | 在 Wazuh Manager 上运行        |
+|                    | defined-agent | 只在使用`agent_id`指定的的agent上运行 |
+|                    | all           | 在所有的Agnet上执行(!小心使用)        |
 
-Example:
-
-If the application that interfaces with your edge firewall runs on one of your agents, you might have a firewall-block-edge command that runs a script on that agent to blacklist an offending IP on the edge firewall.
+>  例子:如果一个Agent 运行在一个能够与边缘防火墙(edge firewall)交互的端点上, 那么你就可能在边缘防火墙进行某些IP的阻断等操作。
 
 ### agent_id
 
-Specifies the ID of the agent on which to execute the active response command (used when defined-agent is set).
+指定执行主动响应的Agent ID (仅当 `<location>` 字段指定为 `defined-agent` 才有意义).
 
-| **Default value**  | n/a                                                                                   |
-| ------------------ | ------------------------------------------------------------------------------------- |
-| **Allowed values** | Any agent id number, as long as **defined-agent** has been specified as the location. |
+| **Default value**  | n/a      |
+| ------------------ | -------- |
+| **Allowed values** | Agent ID |
 
 ### level
 
-Defines a minimum severity level required for the command to be executed.
+定义要执行命令所需的最低严重性级别。
 
-| **Default value**  | n/a                    |
-| ------------------ | ---------------------- |
-| **Allowed values** | Any level from 1 to 16 |
+| **Default value**  | n/a    |
+| ------------------ | ------ |
+| **Allowed values** | 1 ~ 16 |
 
 ### rules_group
 
-Defines the rule group that a rule must belong to one for the command to be executed.
+定义命中的规则必需属于某个规则组,才执行主动响应。
 
-| **Default value**  | n/a                                                                                          |
-| ------------------ | -------------------------------------------------------------------------------------------- |
-| **Allowed values** | Any rule group is allowed. Multiple groups should be separated with a pipe character (“\|”). |
+| **Default value**  | n/a                          |
+| ------------------ | ---------------------------- |
+| **Allowed values** | 允许任何规则组。多个组应使用竖线字符 `“\|”` 分隔 |
 
 > 所有的 group都必须以逗号结束
 
 ### rules_id
 
-Limits the command execution to only when one or more listed rules fire.
+指定允许执行主动响应的规则ID列表.
 
-| **Default value**  | n/a                       |
-| ------------------ | ------------------------- |
+| **Default value**  | n/a                |
+| ------------------ | ------------------ |
 | **Allowed values** | rule id,多个ID使用逗号分隔 |
 
-Note
-
-When setting `level`, `rules_group` and `rules_id` together, the active response will be triggered always that any rule matches with **one** of these options. In other words, they are accumulative options, not restrictive.
+> 当同时设置 `level`，`rules_group`和`rules_id`，主动响应将触发与任何规则匹配一个。换句话说，它们是`或`的关系不是`与`的关系。
 
 ### timeout
 
-Specifies how long in seconds before the reverse command is executed. When `repeated_offenders` is used, `timeout` only applies to the first offense.
+指定执行反向命令之前的秒数。
 
-| **Default value**  | n/a                         |
-| ------------------ | --------------------------- |
-| **Allowed values** | A positive number (seconds) |
+当设置了`repeated_offenders` 选项时, `timeout` 只影响第一次触发规则。
+
+| **Default value**  | n/a       |
+| ------------------ | --------- |
+| **Allowed values** | 正整数 (单位秒) |
 
 ### repeated_offenders
 
-Sets timeouts in minutes for repeat offenders. This is a comma-separated list of increasing timeouts that can contain a maximum of 5 entries.
+当一个`目标`多次触发某个规则时, 这个选项用来设置执行反向命令之前分钟数。
 
-| **Default value**  | n/a                         |
-| ------------------ | --------------------------- |
-| **Allowed values** | A positive number (minutes) |
+ 这是一个以逗号分隔的递增超时列表，最多可以包含5个条目。
 
-Warning
+这个选项必须直接配置到 `Agent` 中的 `ossec.conf` 文件中, 即使使用了集中配置文件`agent.conf`;
 
-This option must be configured directly in the **ossec.conf** file of the agent, even when using a manager/agent setup with centralized configuration of other settings via **agent.conf**. Apart from that, it has to be defined in the upper `<active-response>` section found in the configuration file.
+除此之外，它必须在配置文件中位于上方的`<active-response>`部分中定义。
 
-## Sample Configuration
+| **Default value**  | n/a        |
+| ------------------ | ---------- |
+| **Allowed values** | 正整数 (单位分钟) |
+
+----
+
+## 配置示例
 
 ```xml
 <!-- On the manager side -->

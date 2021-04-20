@@ -22,5 +22,9 @@
    - cut - 文本分割
    - tee - 将标准输入输出到标准输出并存入文件
 
+
+## 软件包管理
+   - [rpm](linux_c_programming/cmds/rpm.md)
+   
 ## 其他
    - [command](linux_c_programming/cmds/command.md)

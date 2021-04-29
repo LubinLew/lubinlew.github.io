@@ -6,15 +6,13 @@
 > 
 > [How To Set Up Password Authentication with Nginx](https://www.digitalocean.com/community/tutorials/how-to-set-up-password-authentication-with-nginx-on-ubuntu-14-04)
 
-HTTP认证分为基本认证 和 摘要认证，基本认证被广泛支持。
+HTTP认证分为基本认证(HTTP Basic Authentication) 和 摘要认证，基本认证被广泛支持。Nginx中原生支持 基本认证。
 
-## 基本认证
 
-`HTTP Basic Authentication` 
 
 ## Nginx 命令字段
 
-### auth_basic
+#### auth_basic
 
 ```nginx
 Syntax:  auth_basic string | off;
@@ -25,8 +23,7 @@ Context: http, server, location, limit_except
 值为 `off` 的时候表示关闭基本认证功能
 值为其他时候是 `realm` , 即用户名密码输入的提示语.
 
-
-### auth_basic_user_file
+#### auth_basic_user_file
 
 ```nginx
 Syntax:  auth_basic_user_file file;
@@ -45,11 +42,32 @@ name3:password3
 
 注意上面的密码指的不是明文密码, 是经过加密后的密码.
 
-#### 密码加密方式
+---
 
-##### 1.使用函数 `crypt()` 加密
+## 密码加密方式
 
-函数`crypt()`是一种标准的unix密码加密算法, 这种加密方式可以使用Apache的 `htpasswd` 命令来完成
+### 1.使用函数 `crypt()` 加密
+
+函数`crypt()`是一种标准的unix密码加密算法, 
+
+```c
+#define _XOPEN_SOURCE       /* See feature_test_macros(7) */
+#include <unistd.h>
+
+/* 参数 salt 是一个 盐值, 是一个只有2个字符的字符串,字符取值为[a-zA-Z0-9]
+ * 输出结果的前两位就是这个盐值, 下面使用命htpasswd或openssl令每次使用相同的密码却生成不同的结果的原因就在此(每次盐值是随机)
+ */
+char *crypt(const char *key, const char *salt);
+
+#define _GNU_SOURCE         /* See feature_test_macros(7) */
+#include <crypt.h>
+
+char *crypt_r(const char *key, const char *salt, struct crypt_data *data);
+       
+/* Link with -lcrypt. */
+```
+
+这种加密方式可以使用Apache的 `htpasswd` 命令来完成
 
 ```bash
 $ yum install httpd-tools    # apt-get install apache2-utils
@@ -67,7 +85,7 @@ $ echo -n 'usrname:' >> /etc/nginx/auth.db
 $ openssl passwd -crypt >> /etc/nginx/auth.db # 需要交互输入密码
 ```
 
-##### 2.使用 `apr1`一种基于MD5变种的密码加密算法
+### 2.使用 `apr1`一种基于MD5变种的密码加密算法
 
 这个可用使用 `openssl` 命令来完成
 
@@ -76,7 +94,7 @@ $ echo -n 'usrname:' >> /etc/nginx/auth.db
 $ openssl passwd -apr1 >> /etc/nginx/auth.db # 需要交互输入密码
 ```
 
-##### 3.使用 [RFC 2307](https://tools.ietf.org/html/rfc2307#section-5.3) 中指定的 “`{scheme}data`” 语法
+### 3.使用 [RFC 2307](https://tools.ietf.org/html/rfc2307#section-5.3) 中指定的 “`{scheme}data`” 语法
 
 目前nginx中实现了下面3种方案（scheme）： 
 
@@ -88,7 +106,7 @@ $ openssl passwd -apr1 >> /etc/nginx/auth.db # 需要交互输入密码
 user1:{PLAIN}1234  # 明文秘密 1234
 ```
 
-###### 明文SHA1方案 `SHA`
+#### 明文SHA1方案 `SHA`
 
 明文 SHA-1 哈希, 不应该被使用, 支持的目的是方便从其他服务器迁移到nginx, 
 
@@ -121,7 +139,7 @@ echo -n '1234' | sha1sum | cut -b 1-40 | xxd -r -p | base64
 user2:{SHA}cRDtpNCeBiql5KOQsKVyrA0sAiA=
 ```
 
-###### 加盐SHA1方案  `SSHA`
+#### 加盐SHA1方案  `SSHA`
 
 [加盐的](https://en.wikipedia.org/wiki/Salt_(cryptography)) SHA-1 哈希, 被 [OpenLDAP](https://www.openldap.org/) and [Dovecot](https://www.dovecot.org/) 等软件使用.
 

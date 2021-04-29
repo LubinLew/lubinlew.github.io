@@ -16,6 +16,7 @@
 
 - [常用功能设置](nginx/functions/README.md)
   - [HTTP基本认证](nginx/functions/auth_basic.md)
+  - [跨域配置](nginx/functions/cros.md)
 
 - [部署模式](nginx/mode/README.md)
   - [Web服务器](nginx/mode/web_server.md)

@@ -32,8 +32,6 @@ Elasticsearch 的核心是搜索引擎，所以用户开始将其用于日志用
 
 “我只想对某个文件进行 tail 操作，”用户表示。我们用心倾听。在 2015 年，我们向 ELK Stack 中加入了一系列轻量型的单一功能数据采集器，并把它们叫做 Beats。
 
-
-
 ----
 
 ## Elastic 生态圈
@@ -63,28 +61,24 @@ Beats是elastic公司开源的一款采集系统监控数据的代理agent，是
 
 Beats由如下组成:
 
--  Packetbeat是一个网络数据包分析器，用于监控、收集网络流量信息，Packetbeat嗅探服务器之间的流量，
-
-解析应用层协议，并关联到消息的处理，其支 持ICMP (v4 and v6)、DNS、HTTP、Mysql、PostgreSQL、
-Redis、MongoDB、Memcache等协议；
+- Packetbeat : 是一个网络数据包分析器，用于监控、收集网络流量信息，Packetbeat嗅探服务器之间的流量，解析应用层协议，并关联到消息的处理，其支 持ICMP (v4 and v6)、DNS、HTTP、Mysql、PostgreSQL、Redis、MongoDB、Memcache等协议；
 
 - Filebeat : 用于监控、收集服务器日志文件，其已取代 logstash forwarder；
 
--  Metricbeat : 可定期获取外部系统的监控指标信息，其可以监控、收集 Apache、HAProxy、MongoDB
-  MySQL、Nginx、PostgreSQL、Redis、System、Zookeeper等服务；
+-  Metricbeat : 可定期获取外部系统的监控指标信息，其可以监控、收集 Apache、HAProxy、MongoDB、MySQL、Nginx、PostgreSQL、Redis、System、Zookeeper等服务；
 
 - Winlogbeat : 用于监控、收集Windows系统的日志信息；
 
-
+-------
 
 ## 资料
 
 黑马视频教程: [Elastic Stack（ELK）从入门到实践](https://www.bilibili.com/video/BV1iJ411c7Az)
 
-> [讲义1](_resources/day01.pdf)
+> [讲义1](ELK/_resources/day01.pdf)
 > 
-> [讲义2](_resources/day02.pdf)
+> [讲义2](ELK/_resources/day02.pdf)
 > 
 > [笔记](https://gitee.com/moxi159753/LearningNotes/tree/master/ElasticStack)
 
-[ELK Stack指南 第2版](_resources/ELK_Stack权威指南(第2版).zip)
+[ELK Stack指南 第2版](ELK/_resources/ELK_Stack权威指南(第2版).zip)

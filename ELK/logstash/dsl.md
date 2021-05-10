@@ -84,7 +84,7 @@ users => [ {id => 1, name => bob}, {id => 2, name => jane} ]
 
 ### 哈希(Hash)
 
-哈希是以“ field1” =>“ value1”格式指定的键值对的集合。 请注意，多个键值条目由空格而不是逗号分隔。
+哈希是以“ field1” =>“ value1”格式指定的键值对的集合。 请注意，<mark>多个键值条目由空格而不是逗号分隔</mark>。
 
 ```logstash
 match => {
@@ -132,16 +132,18 @@ logstash 从 1.3.0 版本开始支持条件判断和表达式。
 | 正则    | `=~`、`!~`                   |     |
 | 包含判读  | `in`、`not in`               |     |
 | 逻辑操作符 | `and`、`or`、`nand`、`xor`     |     |
-| 一元操作符 | `!()`                       |     |
+| 取反    | `!()`                       |     |
 
 条件判断使用 `if/else`关键字
 
 ```logstash
-if {}
+if cond {}
 
-if {} else {}
+if cond {} else {}
 
-if {} else if {} else {}
+if cond {} else if cond {} else {}
+
+if !cond {}
 ```
 
 

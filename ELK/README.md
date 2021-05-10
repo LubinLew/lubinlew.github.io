@@ -75,10 +75,8 @@ Beats由如下组成:
 
 黑马视频教程: [Elastic Stack（ELK）从入门到实践](https://www.bilibili.com/video/BV1iJ411c7Az)
 
-> [讲义1](ELK/_resources/day01.pdf)
-> 
-> [讲义2](ELK/_resources/day02.pdf)
+> [讲义1](https://github.com/LubinLew/lubinlew.github.io/tree/master/ELK/_resources)
 > 
 > [笔记](https://gitee.com/moxi159753/LearningNotes/tree/master/ElasticStack)
 
-[ELK Stack指南 第2版](ELK/_resources/ELK_Stack权威指南(第2版).zip)
+[ELK Stack指南 第2版](https://github.com/LubinLew/lubinlew.github.io/tree/master/ELK/_resources)

@@ -25,4 +25,32 @@ print(r.llen('list1'))
 # 3
 ```
 
+## 哈希
 
+```python
+import redis
+
+pool = redis.ConnectionPool(host='10.130.12.66', port=6379, password='red@6379', db=1, decode_responses=True)
+red = redis.Redis(connection_pool=pool)
+
+hkey = 'redis_hkey'
+
+# add data
+red.hset(hkey, 'field1', 'value1')
+red.hset(hkey, 'field2', 'value2')
+red.hset(hkey, 'field3', 'value3')
+
+# get data
+data = red.hget(hkey, 'field1')
+print("field1: " + data)
+data = red.hget(hkey, 'field2')
+print("field2: " + data)
+data = red.hget(hkey, 'field3')
+print("field3: " + data)
+
+# delete
+print('=== hdel ===')
+red.hdel(hkey, 'field1')
+data = red.hget(hkey, 'field1')
+print("field1: %s" % type(data))
+```

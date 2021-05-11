@@ -11,7 +11,7 @@ Logstash可以动态地将来自不同数据源的数据统一起来，
 ```bash
 rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
 
-cat > /etc/yum.repo.d/elastic.repo < EOF
+cat > /etc/yum.repos.d/elastic.repo << EOF
 [logstash-7.x]
 name=Elastic repository for 7.x packages
 baseurl=https://artifacts.elastic.co/packages/7.x/yum

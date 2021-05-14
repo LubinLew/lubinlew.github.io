@@ -2,17 +2,12 @@
 
 
 
-```bash
-yum install -y mariadb-server
-```
 
 
-
-设置 数据库 root 密码 为 root
+mysqld: File './binlog.index' not found (OS errno 13 - Permission denied)
 
 ```bash
-mysql> set password for root@localhost = password('root');
-mysql> flush privileges;
+chown mysql:mysql -R /var/lib/mysql
+chown mysql:mysql -R /var/lib/mysql-files/
+chown mysql:mysql -R /var/lib/mysql-keyring/
 ```
-
-

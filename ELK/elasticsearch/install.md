@@ -10,6 +10,7 @@ enabled=1
 autorefresh=1
 type=rpm-md
 EOF
+
 yum install -y elasticsearch
 
 # 配置 es 工作目录

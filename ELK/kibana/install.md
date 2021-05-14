@@ -1,6 +1,16 @@
 # 安装
 
 ```bash
+cat > /etc/yum.repos.d/elastic.repo << EOF
+[logstash-7.x]
+name=Elastic repository for 7.x packages
+baseurl=https://artifacts.elastic.co/packages/7.x/yum
+gpgcheck=0
+enabled=1
+autorefresh=1
+type=rpm-md
+EOF
+
 yum install -y kibana
 
 # 配置 kibana服务地址 和 ES连接方式

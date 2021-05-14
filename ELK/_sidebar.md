@@ -3,3 +3,4 @@
 * [logstash](ELK/logstash/)
 * [kibana](ELK/kibana/)
 * [elasticsearch](ELK/elasticsearch/)
+* [kafka](ELK/kafka)

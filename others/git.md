@@ -20,7 +20,7 @@
 * [进阶操作](#进阶操作)
   - [删除所有提交记录](#删除所有提交记录)
   - [同步fork项目](#同步fork项目)
-  - [gitlab 同步 github 项目](#gitlab同步github项目)
+  - [gitlab 同步 github 项目](#gitlab-同步-github-项目)
 
 
 

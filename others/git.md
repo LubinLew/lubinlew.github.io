@@ -20,6 +20,7 @@
 * [进阶操作](#进阶操作)
   - [删除所有提交记录](#删除所有提交记录)
   - [同步fork项目](#同步fork项目)
+  - [gitlab 同步 github 项目](#gitlab同步github项目)
 
 
 
@@ -199,4 +200,17 @@ git merge upstream/master
 git push
 ```
 
+### gitlab 同步 github 项目
+
+将 github 上的更新同步到 本地 gitlab 库中。
+
+社区版本的 gitlab 项目中的镜像设置不允许 pull 只允许 push， pull 需要商业授权，所以只能手动同步。
+
+```bash
+git clone git@gitlab.local.com:openvas/gsa.git
+cd gsa
+git remote add --mirror=fetch github https://github.com/greenbone/gsa.git
+git pull --all
+git push --all
+```
 

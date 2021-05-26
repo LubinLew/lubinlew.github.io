@@ -1,5 +1,6 @@
 - [git命令](others/git.md)
 - [InfluxDB](others/influxdb.md)
+- [postgresql 安装](others/postgresql.md)
 - [IaaS/PaaS/SaaS的区别](others/XaaS.md)
 - [使用github搭建个人博客](others/blog.md)
 - [各种开源协议](others/license.md)

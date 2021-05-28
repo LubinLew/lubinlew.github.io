@@ -413,4 +413,56 @@ v3.0.0 df5397c8c4a1b29c42726dfa821330fa1bac7058
 
 对于管理员来说，此存储库结构对于检查Agent 程序OS，版本和体系结构并寻找正确的升级包是必需的。例如，对于安装在Centos 7 x86_64上的代理，管理器将在*our_wpk_repo / centos / 7 / x86_64 /中*寻找最新的软件包。
 
+----
+
+## 自定义WPK软件包创建
+
+### 获取X509证书和CA
+
+要创建WPK软件包，需要具有X509证书和CA（如果您已经拥有的话），请跳至下[一部分](#生成WPK软件包)；否则，请按照以下步骤操作：
+
+##### 创建根CA:
+
+```bash
+openssl req -x509 -new -nodes -newkey rsa:2048 -keyout wpk_root.key -out wpk_root.pem -batch
+```
+
+##### 创建证书和密钥:
+
+```bash
+openssl req -new -nodes -newkey rsa:2048 -keyout wpkcert.key -out wpkcert.csr -subj '/C=US/ST=CA/O=Wazuh'
+```
+
+subject 设置说明：
+
+> - `/C=US` 是国家。
+> 
+> - `/ST=CA` 是州。
+> 
+> - `/O=Wazuh` 是组织的名称。
+
+##### 使用根CA签署此证书:
+
+```bash
+openssl x509 -req -days 365 -in wpkcert.csr -CA wpk_root.pem -CAkey wpk_root.key -out wpkcert.pem -CAcreateserial
+```
+
+### 生成WPK软件包
+
+创建WPK的方式有两种，可以手动进行，也可以通过docker自动化完成。
+
+
+
+#### docker自动化生成WPK
+
+Wazuh提供了一种使用docker构建WPK软件包的自动化方法，因此不需要任何其他依赖项。只需要 docker 和 git 工具即可。
+
+从GitHub下载我们的wazuh-packages存储库，然后转到wpk目录:
+
+```bash
+git clone https://github.com/wazuh/wazuh-packages && cd wazuh-packages/wpk
+```
+
+`generate_wpk_package.sh`使用所需的不同选项执行脚本。该脚本将使用所有必要的工具来构建Docker映像，以创建WPK并运行将其构建的容器：
+
 

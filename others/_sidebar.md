@@ -9,3 +9,4 @@
 - [SSH隧道](others/ssh_tunnel.md)
 - [vscode配置](others/vscode.md)
 - [swagger 2.0规范](others/swagger_2.0.md)
+- [SSH登录慢的问题解决](others/ssh_slow_login.md)

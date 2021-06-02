@@ -1,6 +1,6 @@
 # DH & ECDH
 
-`DH` 是 Diffie-Hellman 的首字母缩写。是一种密钥协商算法，是 Whitefield 与 Martin Hellman 在1976年提出了一个奇妙的密钥交换协议。它的巧妙之处在于双方最终协商的共同的密钥不会通过网络传输，而是双方各自计算出来的。
+`DH` 是 Diffie-Hellman 的首字母缩写。是一种密钥协商算法，是 Whitefield Diffie 与 Martin Hellman 在1976年提出了一个奇妙的密钥交换协议。它的巧妙之处在于双方最终协商的共同的密钥不会通过网络传输，而是双方各自计算出来的。
 
 `DH`算法还有一个变种叫做 `ECDH`(Elliptic-curve Diffie–Hellman)。 是`ECC`算法和`DH`的结合。
 

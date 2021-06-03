@@ -55,7 +55,7 @@ TLS 1.3 取代并废弃了先前版本的 TLS，包括 1.2 版 [RFC5246]。 它�
 | sender      | An endpoint that is transmitting records                                                                                                   |        |
 | server      | The endpoint that did not initiate the TLS connection                                                                                      |        |
 
-## 
+
 
 ## 1.2. TLS 1.3 与 TLS 1.2 的主要区别
 
@@ -161,11 +161,11 @@ Auth | {CertificateVerify*}
 然后发送 `ServerHello` 消息, 告知客户端选择使用什么密码参数.
 
 结合 `ClientHello` 和 `ServerHello` 消息就能得出共享秘钥.
-If (EC)DHE key establishment is in use, 那么` ServerHello` 将会带有 `key_share` 扩展,其中有服务端的临时 Diffie-Hellman 共享(share) 
+If (EC)DHE key establishment is in use, 那么` ServerHello` 将会带有 `key_share` 扩展,其中有服务端的临时 Diffie-Hellman 共享(share)
 
- the server's share MUST  be in the same group as one of the client's shares.  
+ the server's share MUST  be in the same group as one of the client's shares.
 
-If PSK key  establishment is in use, 那么 `ServerHello` 将带有 `pre_shared_key` 扩展来指示客户端提供的哪个PSK被服务端选中 .  
+If PSK key  establishment is in use, 那么 `ServerHello` 将带有 `pre_shared_key` 扩展来指示客户端提供的哪个PSK被服务端选中 .
 
 Note that implementations can use (EC)DHE and PSK  together, in which case both extensions will be supplied.
 
@@ -178,7 +178,7 @@ extensions that are  not required to determine the cryptographic parameters, oth
 
 - CertificateRequest:  如果希望对客户端也做基于证书的认证就像客户端发送该消息, 否则就不发
 
-最后, 客户端和服务端交换了认证消息。 
+最后, 客户端和服务端交换了认证消息。
 
 TLS  uses the same set of messages every time that certificate-based authentication is needed.  (PSK-based authentication happens as a
    side effect of key exchange.)  Specifically:
@@ -627,19 +627,18 @@ client发送自己支持的椭圆曲线类型，然后等待server选择后，�
   和包含一些或全部 (EC)DHE shares 的`key_share`(Section 4.2.8) 扩展
 
 - 含有客户端支持的签名算法的扩展 `signature_algorithms` (Section 4.2.3),
-  (可选)指定证书签名算法的扩展 `signature_algorithms_cert`" (Section 4.2.3) 
+  (可选)指定证书签名算法的扩展 `signature_algorithms_cert`" (Section 4.2.3)
 
 - 包含客户端已知的对称密钥身份(identities)列表 `pre_shared_key` (Section 4.2.11) 扩展,
   和用来指定秘钥交换模式的 `psk_key_exchange_modes` (Section 4.2.9) 扩展.
   “pre_shared_key”扩展包含客户端已知的对称密钥身份列表和“psk_key_exchange_modes”扩展，它指示可以与 PSK 一起使用的密钥交换模式。
-  
   如果服务端不选择一个 PSK, 那么前三个选项时完全正交(orthogonal)的:
   服务端独立的选择一个密码套件、一个 (EC)DHE group 、 key share for key establishment,
-  和 a signature algorithm/certificate pair to authenticate itself to the client.  
-  
-  如果客户端发送的 "supported_groups" 与服务端支持的 groups 没有重叠, 
+  和 a signature algorithm/certificate pair to authenticate itself to the client.
+
+  如果客户端发送的 "supported_groups" 与服务端支持的 groups 没有重叠,
   那么服务端必须终止握手,并发送 `handshake_failure` 或者 `insufficient_security` alert.
-  
+
   If the server selects a PSK, then it MUST also select a key
   establishment mode from the set indicated by the client's
   "psk_key_exchange_modes" extension (at present, PSK alone or with

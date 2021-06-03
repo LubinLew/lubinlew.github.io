@@ -1,58 +1,13 @@
 # TLS v1.3
 
+## 4.1. Key Exchange Messages
 
-# 4. 握手协议(Handshake Protocol)
-
-握手协议用于协商连接的安全参数。 握手消息属于 TLS 记录层，在那里它们被封装在一个或多个 TLSPlaintext 或 TLSCiphertext 结构中，
-这些结构按照当前活动连接状态的规定进行处理和传输。
-
-```c
-enum {
-          client_hello(1),
-          server_hello(2),
-          new_session_ticket(4),
-          end_of_early_data(5),
-          encrypted_extensions(8),
-          certificate(11),
-          certificate_request(13),
-          certificate_verify(15),
-          finished(20),
-          key_update(24),
-          message_hash(254),
-          (255)
-      } HandshakeType;
-
-      struct {
-          HandshakeType msg_type;    /* handshake type */
-          uint24 length;             /* remaining bytes in message */
-          select (Handshake.msg_type) {
-              case client_hello:          ClientHello;
-              case server_hello:          ServerHello;
-              case end_of_early_data:     EndOfEarlyData;
-              case encrypted_extensions:  EncryptedExtensions;
-              case certificate_request:   CertificateRequest;
-              case certificate:           Certificate;
-              case certificate_verify:    CertificateVerify;
-              case finished:              Finished;
-              case new_session_ticket:    NewSessionTicket;
-              case key_update:            KeyUpdate;
-          };
-      } Handshake;
-```
-
-消息的发送顺序必须按照 4.4.1 节 和 第 2 节中图所以定义的顺序。如果一段接收到未按照顺序的握手消息，必须中断握手并发送 "unexpected_message" alert.
-
-New handshake message types are assigned by IANA as described in Section 11.
-
-
-## 4.1. 秘钥协商消息(Key Exchange Messages)
-
-密钥交换消息 用于确定客户端和服务器的安全能力并建立共享秘密，用于保护其余握手(`ClientHello`之后的)消息和数据。
+   The key exchange messages are used to determine the security
+   capabilities of the client and the server and to establish shared
+   secrets, including the traffic keys used to protect the rest of the
+   handshake and the data.
 
 ### 4.1.1. 秘钥协商(Cryptographic Negotiation)
-
-TLSv1.3 之前使用 RSA 和 ECDHE 作为秘钥协商算法, 但是 TLSv1.3 只支持 PSK 秘钥协商算法。
-PSK 好处是速度更快。
 
 #### TLSv1.3 之前的秘钥协商方式
 
@@ -75,7 +30,7 @@ RSA秘钥交换不是前向安全算法（证书对应私钥泄漏后，之前�
 
 ##### ECDHE 秘钥协商流程
 
-- client 发送 `ClientHello` 消息，附带客户端支持的椭圆曲线类型的 `supported_groups` 扩展。
+- client 发送 `ClientHello` 消息，附带客户端支持的椭圆曲线类型。
 - server 回复 `ServerHello` 和 `Certificate` 等；
     server 选择的椭圆曲线参数，然后生成私钥（BIGNUM），乘以椭圆曲线的base point得到公钥（POINT），
     顺便签个名表示自己拥有证书，然后将报文发给client，报文就是`ServerKeyExchange`，
@@ -92,17 +47,10 @@ client发送自己支持的椭圆曲线类型，然后等待server选择后，�
 
 #### TLSv1.3 的PSK秘钥协商方式
 
-- client 发送 `ClientHello` 消息，附带客户端支持的椭圆曲线类型的 `supported_groups` 扩展。
-    且对每个自己支持的椭圆曲线类型计算公钥（POINT）。公钥放在 `key_share` 扩展中。
-- server 回复 `ServerHello` 消息, server 选择的椭圆曲线参数，然后乘以椭圆曲线的base point得到公钥（POINT）。
-    然后提取 `ClientHello` 消息中 `key_share` 拓展中对应的公钥，计算主秘钥。
-    公钥（POINT）不再和之前的以协议一样放在 `ServerKeyExchange` 中，
-    而是放在 `ServerHello` 的`key_share`拓展中。
-- client收到server的公钥（POINT）后计算主秘钥。
+- client 发送请求（Client Hello），extension携带支持的椭圆曲线类型。且对每个自己支持的椭圆曲线类型计算公钥（POINT）。公钥放在extension中的keyshare中。
+- server 回复 Server Hello和certificate等；server选择的椭圆曲线参数，然后乘以椭圆曲线的base point得到公钥（POINT）。然后提取Client Hello中的key_share拓展中对应的公钥，计算主秘钥。公钥（POINT）不再和之前的以协议一样放在Server Key Exchange中，而是放在Server Hello的key_share拓展中。client收到server的公钥（POINT）后计算主秘钥。
 
 ![PSK handshake](_sources/tls_psk_handshake.png)
-
-##### PSK 协商的详细说明
 
 秘钥协商功能由 `ClientHello` 消息中的 4 组选项提供:
 
@@ -157,11 +105,6 @@ client发送自己支持的椭圆曲线类型，然后等待server选择后，�
   (i.e., there is no overlap between the client and server parameters),
   it MUST abort the handshake with either a "handshake_failure" or
   "insufficient_security" fatal alert (see Section 6).
-
-
-
-
-
 
 ### 4.2.8.  Key Share
 

@@ -1,5 +1,146 @@
 # TLS v1.3
 
+本文介绍TLS协议的v1.3版本。 TLS协议允许客户端和服务器在 防窃听、防篡改 和 防消息伪造 的环境下通过互联网进行通信。
+
+---
+
+# 1. 简介(Introduction)
+
+TLS协议的主要目标是为两个通信端(peer)提供一个加密的通道(channel)，底层传输的唯一要求是可靠、有序的数据流。
+
+**加密通道提供以下安全属性**：
+
+- 认证(Authentication): 通道的服务器端始终需要经过身份验证； 客户端可选地进行身份验证。
+  认证可以通过非对称加密算法(例如RSA) 、
+  椭圆曲线数字签名算法(ECDSA: Elliptic Curve Digital Signature Algorithm)
+  爱德华曲线数字签名算法(EdDSA: Edwards-Curve Digital Signature Algorithm) 
+  或者 对称预共享密钥(PSK: pre-shared key)
+
+- 保密(Confidentiality): 加密通道建立后发送的数据仅对端点可见。  
+  TLS 不会隐藏它传输的数据的长度，但是端点能够填充 TLS 记录以隐藏长度来提高对流量分析技术的对抗能力。
+
+- 完整(Integrity): 加密通道建立后，发送的数据被攻击者修改是肯定可以被发现的。
+
+即使面网络被攻击者完全控制，这些属性也应该是真实的 如 [RFC3552](https://www.rfc-editor.org/rfc/rfc3552) 中所述。
+更完整的安全属性相关的声明见 [Appendix E](https://www.rfc-editor.org/rfc/rfc8446.html#appendix-E) .
+
+**TLS的两大构成组件**
+
+- [握手协议](https://www.rfc-editor.org/rfc/rfc8446.html#section-4): 用于验证通信方、协商加密模式和参数并建立共享密钥材料。 
+  
+  握手协议旨在防止篡改； 如果连接没有受到攻击，主动攻击者不能强迫对端协商不同的参数。 
+
+- [记录协议](https://www.rfc-editor.org/rfc/rfc8446.html#section-5): 它使用握手协议建立的参数来保护通信端点之间的流量。 
+  
+  记录协议将流量分成一系列记录，每个记录都使用流量密钥进行独立保护。
+
+TLS 独立于应用程序协议,更高级别的协议可以透明地建立在 TLS 之上。 TLS 标准并没有指定协议如何通过 TLS 增加安全性； 如何启动 TLS 握手以及如何解释交换的身份验证证书，由运行在 TLS 之上的协议的设计者和实现者自行判断。
+
+虽然 TLS 1.3 不直接与以前的版本兼容，但所有版本的 TLS 都包含一种版本控制机制，如果双方都支持，则允许客户端和服务器互操作地协商通用版本。
+
+TLS 1.3 取代并废弃了先前版本的 TLS，包括 1.2 版 [RFC5246]。 它还废弃了 [RFC5077] 中定义的 TLS 票证机制，并将其替换为第 2.2 节中定义的机制。 由于 TLS 1.3 更改了密钥的派生方式，因此它更新了 [RFC5705]，如第 7.5 节所述。 它还改变了在线证书状态协议 (OCSP) 消息的承载方式，因此更新了 [RFC6066] 并废弃了 [RFC6961]，如第 4.4.2.1 节所述。
+
+## 1.1 约定和术语(Conventions and Terminology)
+
+本文中使用了以下术语:
+
+| Terminology | Description                                                                                                                                | Remark |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------ |
+| client      | The endpoint initiating the TLS connection                                                                                                 |        |
+| connection  | A transport-layer connection between two endpoints                                                                                         |        |
+| endpoint    | Either the client or server of the connection                                                                                              |        |
+| handshake   | An initial negotiation between client and server that<br/> establishes the parameters of their subsequent interactions<br/> within TLS.    |        |
+| peer        | An endpoint. When discussing a particular endpoint, "peer"<br/> refers to the endpoint that is not the primary subject of<br/> discussion. |        |
+| receiver    | An endpoint that is receiving records.                                                                                                     |        |
+| sender      | An endpoint that is transmitting records                                                                                                   |        |
+| server      | The endpoint that did not initiate the TLS connection                                                                                      |        |
+
+## 
+
+## 1.2. TLS 1.3 与 TLS 1.2 的主要区别
+
+以下是 TLS 1.2 和 TLS 1.3 之间主要功能差异的列表。 它并不详尽无遗，并且许多细微差别并未列出。
+
+- 支持的对称加密算法列表已从所有被视为传统的算法中删除。 剩下的都是带有关联数据的身份验证加密 (AEAD) 算法。 密码套件概念已更改为将身份验证和密钥交换机制与记录保护算法（包括密钥长度）和要与密钥派生函数和握手消息身份验证代码 (MAC) 一起使用的散列分开。
+
+- 添加了零往返时间 (0-RTT) 模式，以某些安全属性为代价，在连接设置时为某些应用程序数据节省了往返时间。
+
+- 静态 RSA 和 Diffie-Hellman 密码套件已被删除； 所有基于公钥的密钥交换机制现在都提供前向保密。
+
+- `ServerHello` 之后的所有握手消息现在都已加密。 新引入的 `EncryptedExtensions` 消息允许之前在 `ServerHello` 中以明文形式发送的各种扩展也可以享受机密性保护。
+
+- 密钥派生函数已重新设计。 由于改进了密钥分离特性，新设计允许密码学家更轻松地进行分析。 基于 HMAC 的提取和扩展密钥派生函数 (HKDF) 用作底层原语。
+
+- 握手状态机已经过显着重组，以更加一致并删除诸如 ChangeCipherSpec 之类的多余消息（除了中间盒兼容性需要时）
+
+- 椭圆曲线算法现在在基本规范中，并且包括新的签名算法，例如 EdDSA。 TLS 1.3 删除了点格式协商，以支持每条曲线的单点格式。
+
+- 进行了其他加密改进，包括更改 RSA 填充以使用 RSA 概率签名方案 (RSASSA-PSS)，以及取消压缩、数字签名算法 (DSA) 和自定义临时 Diffie-Hellman (DHE) 组。
+
+- TLS 1.2 版本协商机制已被弃用，取而代之的是扩展中的版本列表。 这增加了与错误实施版本协商的现有服务器的兼容性。
+
+- 带有和不带有服务器端状态的会话恢复以及早期 TLS 版本的基于 PSK 的密码套件已被单个新的 PSK 交换所取代。
+
+- 参考已更新，以适当地指向 RFC 的更新版本（例如，RFC 5280 而不是 RFC 3280）。
+
+## 1.3  Updates Affecting TLS 1.2
+
+本文档定义了一些可选地影响 TLS 1.2 实现的更改，包括那些不支持 TLS 1.3 的更改：
+
+- 版本降级保护机制在第 4.1.3 节中描述。
+
+- RSASSA-PSS 签名方案在第 4.2.3 节中定义
+
+- `supported_versions` ClientHello 扩展可用于协商要使用的 TLS 版本，优先于 ClientHello 的 legacy_version 字段。
+
+- “signature_algorithms_cert”扩展允许客户端指示它可以在 X.509 证书中验证哪些签名算法。
+
+此外，本文档阐明了 TLS 早期版本的一些合规性要求； 见第 9.3 节。
+
+---
+
+## 2.  协议总览(Protocol Overview)
+
+安全通道使用的加密参数由 TLS 握手协议产生。 客户端和服务器在第一次相互通信时使用 TLS 的这个子协议。 握手协议允许对等方协商协议版本，选择加密算法，可选地相互验证，并建立共享的密钥材料。 握手完成后，对等方使用已建立的密钥来保护应用层流量。
+
+握手失败或其他协议错误会触发连接终止，可选地在警告消息之前（第 6 节）。
+
+  TLS supports three basic key exchange modes:
+
+- (EC)DHE (Diffie-Hellman over either finite fields or ellipticcurves)
+- PSK-only
+- PSK with (EC)DHE
+
+```txt
+       Client                                           Server
+
+Key  ^ ClientHello
+Exch | + key_share*
+     | + signature_algorithms*
+     | + psk_key_exchange_modes*
+     v + pre_shared_key*       -------->
+                                                  ServerHello  ^ Key
+                                                 + key_share*  | Exch
+                                            + pre_shared_key*  v
+                                        {EncryptedExtensions}  ^  Server
+                                        {CertificateRequest*}  v  Params
+                                               {Certificate*}  ^
+                                         {CertificateVerify*}  | Auth
+                                                   {Finished}  v
+                               <--------  [Application Data*]
+     ^ {Certificate*}
+Auth | {CertificateVerify*}
+     v {Finished}              -------->
+       [Application Data]      <------->  [Application Data]
+
++  表示在前面提到的消息中发送的值得注意的扩展。
+*  表示不总是发送的可选的或依赖于情况的消息或扩展。
+{} 表示使用从 [sender]_handshake_traffic_secret 派生的密钥保护的消息。
+[] 表示使用从 [sender]_application_traffic_secret_N 派生的密钥保护的消息。
+```
+
+---
+
 ## 4.1. Key Exchange Messages
 
    The key exchange messages are used to determine the security

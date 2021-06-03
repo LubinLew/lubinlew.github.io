@@ -93,7 +93,7 @@ TLS 1.3 取代并废弃了先前版本的 TLS，包括 1.2 版 [RFC5246]。 它�
 
 - `supported_versions` ClientHello 扩展可用于协商要使用的 TLS 版本，优先于 ClientHello 的 legacy_version 字段。
 
-- “signature_algorithms_cert”扩展允许客户端指示它可以在 X.509 证书中验证哪些签名算法。
+- `signature_algorithms_cert` 扩展允许客户端指示它可以在 X.509 证书中验证哪些签名算法。
 
 此外，本文档阐明了 TLS 早期版本的一些合规性要求； 见第 9.3 节。
 
@@ -101,11 +101,13 @@ TLS 1.3 取代并废弃了先前版本的 TLS，包括 1.2 版 [RFC5246]。 它�
 
 ## 2.  协议总览(Protocol Overview)
 
-安全通道使用的加密参数由 TLS 握手协议产生。 客户端和服务器在第一次相互通信时使用 TLS 的这个子协议。 握手协议允许对等方协商协议版本，选择加密算法，可选地相互验证，并建立共享的密钥材料。 握手完成后，对等方使用已建立的密钥来保护应用层流量。
+安全通道使用的加密参数由 TLS 握手协议产生。 客户端和服务器在第一次相互通信时使用 TLS 的这个子协议。
+握手协议允许对端协商协议版本，选择加密算法，可选地相互验证，并建立共享的密钥材料。
+握手完成后，对端使用已建立的密钥来保护应用层流量。
 
-握手失败或其他协议错误会触发连接终止，可选地在警告消息之前（第 6 节）。
+握手失败或其他协议错误会触发连接终止，可以向对端发送警告(alert)消息。
 
-  TLS supports three basic key exchange modes:
+TLS 支持三种基本的秘钥协商模式:
 
 - (EC)DHE (Diffie-Hellman over either finite fields or ellipticcurves)
 - PSK-only
@@ -135,9 +137,457 @@ Auth | {CertificateVerify*}
 
 +  表示在前面提到的消息中发送的值得注意的扩展。
 *  表示不总是发送的可选的或依赖于情况的消息或扩展。
-{} 表示使用从 [sender]_handshake_traffic_secret 派生的密钥保护的消息。
-[] 表示使用从 [sender]_application_traffic_secret_N 派生的密钥保护的消息。
+{} 表示使用密钥保护的消息。
+[] 表示使用密钥保护的数据。
 ```
+
+握手的过程可以分为3个阶段(如上图所示)
+
+- 秘钥交换(Key Exchange): 建立共享密钥材料并选择加密参数, 此阶段之后的所有内容都已加密。
+
+- 服务器参数(Server Parameters): 建立其他握手参数(例如是否要认证客户端, 应用程序协议支持等)
+
+- 身份认证(Authentication): 对服务端进行认证(客户端认证可选) 并提供密钥确认和握手完整性认证。
+
+在秘钥交换阶段, 客户端发送的 `ClientHello` 消息中包含一个随机数(ClientHello.random); 
+
+其中含有协议版本和对称密码 list 或者 HKDF哈希对; 或者是一组 Diffie-Hellman key
+   shares (在 `key_share` 扩展中), 一组  pre-shared key labels (在 `pre_shared_key` 扩展中)
+   extension), 或者同时存在; and potentially additional extensions.
+   Additional fields and/or messages may also be present for middlebox
+   compatibility.
+
+服务端处理 `ClientHello` 消息, 决定该条连接使用什么密码参数;
+然后发送 `ServerHello` 消息, 告知客户端选择使用什么密码参数.
+
+结合 `ClientHello` 和 `ServerHello` 消息就能得出共享秘钥.
+If (EC)DHE key establishment is in use, 那么` ServerHello` 将会带有 `key_share` 扩展,其中有服务端的临时 Diffie-Hellman 共享(share) 
+
+ the server's share MUST  be in the same group as one of the client's shares.  
+
+If PSK key  establishment is in use, 那么 `ServerHello` 将带有 `pre_shared_key` 扩展来指示客户端提供的哪个PSK被服务端选中 .  
+
+Note that implementations can use (EC)DHE and PSK  together, in which case both extensions will be supplied.
+
+服务端发送2个消息来建立 Server Parameters:
+
+- EncryptedExtensions:  该消息用来响应 `ClientHello` 消息的扩展(指的是不影响密码参数的扩展), 除了特定于单个证书的那些。
+
+extensions that are  not required to determine the cryptographic parameters, other than
+      those that are specific to individual certificates.
+
+- CertificateRequest:  如果希望对客户端也做基于证书的认证就像客户端发送该消息, 否则就不发
+
+最后, 客户端和服务端交换了认证消息。 
+
+TLS  uses the same set of messages every time that certificate-based authentication is needed.  (PSK-based authentication happens as a
+   side effect of key exchange.)  Specifically:
+
+- Certificate:  The certificate of the endpoint and any per-certificate
+  extensions.  This message is omitted by the server if not
+  authenticating with a certificate and by the client if the server
+  did not send CertificateRequest (thus indicating that the client
+  should not authenticate with a certificate).  Note that if raw
+  public keys [[RFC7250](https://www.rfc-editor.org/rfc/rfc7250 ""Using Raw Public Keys in Transport Layer Security (TLS) and Datagram Transport Layer Security (DTLS)"")] or the cached information extension
+  [[RFC7924](https://www.rfc-editor.org/rfc/rfc7924 ""Transport Layer Security (TLS) Cached Information Extension"")] are in use, then this message will not contain a
+  certificate but rather some other value corresponding to the
+  server's long-term key.  [[Section 4.4.2](https://www.rfc-editor.org/rfc/rfc8446.html#section-4.4.2)]
+
+- CertificateVerify:  A signature over the entire handshake using the
+  private key corresponding to the public key in the Certificate
+  message.  This message is omitted if the endpoint is not
+  authenticating via a certificate.  [[Section 4.4.3](https://www.rfc-editor.org/rfc/rfc8446.html#section-4.4.3)]
+
+- Finished:  A MAC (Message Authentication Code) over the entire
+  handshake.  This message provides key confirmation, binds the
+  endpoint's identity to the exchanged keys, and in PSK mode also
+  authenticates the handshake.  [[Section 4.4.4](https://www.rfc-editor.org/rfc/rfc8446.html#section-4.4.4)]
+
+
+
+ Upon receiving the server's messages, the client responds with its
+   Authentication messages, namely Certificate and CertificateVerify (if
+   requested), and Finished.
+
+
+
+ 到此，握手就结束了, and the client and server
+   derive the keying material required by the record layer to exchange
+   application-layer data protected through authenticated encryption.
+   Application Data MUST NOT be sent prior to sending the Finished
+   message, except as specified in [Section 2.3](https://www.rfc-editor.org/rfc/rfc8446.html#section-2.3).  Note that while the
+   server may send Application Data prior to receiving the client's
+   Authentication messages, any data sent at that point is, of course,
+   being sent to an unauthenticated peer.
+
+
+
+## 2.1.  Incorrect DHE Share
+
+如果客户端没有提供足够的 `key_share` 扩展（例如，它只包括服务器不接受或不支持的 DHE 或 ECDHE 组），则服务器使用 `HelloRetryRequest` 纠正不匹配，客户端需要使用适当的重新启动握手 `key_share` 扩展，如图 2 所示。如果没有可以协商的通用密码参数，服务器必须以适当的警报中止握手。
+
+```txt
+          Client                                        Server
+
+        ClientHello
+        + key_share             -------->
+                                                  HelloRetryRequest
+                                <--------               + key_share
+        ClientHello
+        + key_share             -------->
+                                                        ServerHello
+                                                        + key_share
+                                              {EncryptedExtensions}
+                                              {CertificateRequest*}
+                                                     {Certificate*}
+                                               {CertificateVerify*}
+                                                         {Finished}
+                                <--------       [Application Data*]
+        {Certificate*}
+        {CertificateVerify*}
+        {Finished}              -------->
+        [Application Data]      <------->        [Application Data]
+
+
+```
+
+Note: The handshake transcript incorporates the initial ClientHello/HelloRetryRequest exchange; 
+
+it is not reset with the  new ClientHello.
+TLS also allows several optimized variants of the basic handshake, as  described in the following sections.
+
+
+
+## 2.2 Resumption and Pre-Shared Key (PSK)
+
+Although TLS PSKs can be established out of band, PSKs can also be
+   established in a previous connection and then used to establish a new
+   connection ("session resumption" or "resuming" with a PSK).  Once a
+   handshake has completed, the server can send the client a PSK
+   identity that corresponds to a unique key derived from the initial
+   handshake (see [Section 4.6.1](https://www.rfc-editor.org/rfc/rfc8446.html#section-4.6.1)).  The client can then use that PSK
+   identity in future handshakes to negotiate the use of the associated
+   PSK.  If the server accepts the PSK, then the security context of the
+   new connection is cryptographically tied to the original connection
+   and the key derived from the initial handshake is used to bootstrap
+   the cryptographic state instead of a full handshake.  In TLS 1.2 and
+   below, this functionality was provided by "session IDs" and "session
+   tickets" [[RFC5077](https://www.rfc-editor.org/rfc/rfc5077 ""Transport Layer Security (TLS) Session Resumption without Server-Side State"")].  Both mechanisms are obsoleted in TLS 1.3.
+   PSKs can be used with (EC)DHE key exchange in order to provide
+   forward secrecy in combination with shared keys, or can be used
+   alone, at the cost of losing forward secrecy for the application
+   data.
+
+```txt
+       Client                                         Server
+
+Initial Handshake:
+       ClientHello
+       + key_share               -------->
+                                                       ServerHello
+                                                       + key_share
+                                             {EncryptedExtensions}
+                                             {CertificateRequest*}
+                                                    {Certificate*}
+                                              {CertificateVerify*}
+                                                        {Finished}
+                                 <--------     [Application Data*]
+       {Certificate*}
+       {CertificateVerify*}
+       {Finished}                -------->
+                                 <--------      [NewSessionTicket]
+       [Application Data]        <------->      [Application Data]
+
+
+Subsequent Handshake:
+       ClientHello
+       + key_share*
+       + pre_shared_key          -------->
+                                                       ServerHello
+                                                  + pre_shared_key
+                                                      + key_share*
+                                             {EncryptedExtensions}
+                                                        {Finished}
+                                 <--------     [Application Data*]
+       {Finished}                -------->
+       [Application Data]        <------->      [Application Data]
+```
+
+As the server is authenticating via a PSK, it does not send a
+   Certificate or a CertificateVerify message.  When a client offers
+   resumption via a PSK, it SHOULD also supply a "key_share" extension
+   to the server to allow the server to decline resumption and fall back
+   to a full handshake, if needed.  The server responds with a
+   "pre_shared_key" extension to negotiate the use of PSK key
+   establishment and can (as shown here) respond with a "key_share"
+   extension to do (EC)DHE key establishment, thus providing forward
+   secrecy.
+
+When PSKs are provisioned out of band, the PSK identity and the KDF
+   hash algorithm to be used with the PSK MUST also be provisioned.
+   Note:  When using an out-of-band provisioned pre-shared secret, a
+      critical consideration is using sufficient entropy during the key
+      generation, as discussed in [[RFC4086](https://www.rfc-editor.org/rfc/rfc4086 ""Randomness Requirements for Security"")].  Deriving a shared secret
+      from a password or other low-entropy sources is not secure.  A
+      low-entropy secret, or password, is subject to dictionary attacks
+      based on the PSK binder.  The specified PSK authentication is not
+      a strong password-based authenticated key exchange even when used
+      with Diffie-Hellman key establishment.  Specifically, it does not
+      prevent an attacker that can observe the handshake from performing
+      a brute-force attack on the password/pre-shared key.
+
+
+
+## 2.3 0-RTT Data
+
+When clients and servers share a PSK (either obtained externally or  via a previous handshake), 
+
+TLS 1.3 allows clients to send data on the  first flight ("early data").  
+
+The client uses the PSK to authenticate  the server and to encrypt the early data.
+ As shown in Figure 4, the 0-RTT data is just added to the 1-RTT handshake in the first flight.  
+
+The rest of the handshake uses the  same messages as for a 1-RTT handshake with PSK resumption.
+
+```txt
+Client                                               Server
+
+ClientHello
++ early_data
++ key_share*
++ psk_key_exchange_modes
++ pre_shared_key
+(Application Data*)     -------->
+                                                ServerHello
+                                           + pre_shared_key
+                                               + key_share*
+                                      {EncryptedExtensions}
+                                              + early_data*
+                                                 {Finished}
+                        <--------       [Application Data*]
+(EndOfEarlyData)
+{Finished}              -------->
+[Application Data]      <------->        [Application Data]
+```
+
+IMPORTANT NOTE: The security properties for 0-RTT data are weaker
+   than those for other kinds of TLS data.  Specifically:
+
+1. This data is not forward secret, as it is encrypted solely under
+   keys derived using the offered PSK.
+2. There are no guarantees of non-replay between connections.
+   Protection against replay for ordinary TLS 1.3 1-RTT data is
+   provided via the server's Random value, but 0-RTT data does not
+   depend on the ServerHello and therefore has weaker guarantees.
+   This is especially relevant if the data is authenticated either
+   with TLS client authentication or inside the application
+   protocol.  The same warnings apply to any use of the
+   early_exporter_master_secret.
+   0-RTT data cannot be duplicated within a connection (i.e., the server
+   will not process the same data twice for the same connection), and an
+   attacker will not be able to make 0-RTT data appear to be 1-RTT data
+   (because it is protected with different keys).  [Appendix E.5](https://www.rfc-editor.org/rfc/rfc8446.html#appendix-E.5) contains
+   a description of potential attacks, and [Section 8](https://www.rfc-editor.org/rfc/rfc8446.html#section-8) describes
+   mechanisms which the server can use to limit the impact of replay.
+   
+   
+
+----
+
+# 3. Presentation Language
+
+   This document deals with the formatting of data in an external
+   representation.  The following very basic and somewhat casually
+   defined presentation syntax will be used.
+
+[3.1](https://www.rfc-editor.org/rfc/rfc8446.html#section-3.1).  Basic Block Size
+
+   The representation of all data items is explicitly specified.  The
+   basic data block size is one byte (i.e., 8 bits).  Multiple-byte data
+   items are concatenations of bytes, from left to right, from top to
+   bottom.  From the byte stream, a multi-byte item (a numeric in the
+   following example) is formed (using C notation) by:
+      value = (byte[0] << 8*(n-1)) | (byte[1] << 8*(n-2)) |
+              ... | byte[n-1];
+   This byte ordering for multi-byte values is the commonplace network
+   byte order or big-endian format.
+
+
+
+[3.2](https://www.rfc-editor.org/rfc/rfc8446.html#section-3.2).  Miscellaneous
+
+   Comments begin with "/*" and end with "*/".
+   Optional components are denoted by enclosing them in "[[ ]]" (double
+   brackets).
+   Single-byte entities containing uninterpreted data are of
+   type opaque.
+   A type alias T' for an existing type T is defined by:
+      T T';
+
+[3.3](https://www.rfc-editor.org/rfc/rfc8446.html#section-3.3).  Numbers
+
+   The basic numeric data type is an unsigned byte (uint8).  All larger
+   numeric data types are constructed from a fixed-length series of
+   bytes concatenated as described in [Section 3.1](https://www.rfc-editor.org/rfc/rfc8446.html#section-3.1) and are also unsigned.
+   The following numeric types are predefined.
+      uint8 uint16[2];
+      uint8 uint24[3];
+      uint8 uint32[4];
+      uint8 uint64[8];
+   All values, here and elsewhere in the specification, are transmitted
+   in network byte (big-endian) order; the uint32 represented by the hex
+   bytes 01 02 03 04 is equivalent to the decimal value 16909060.
+
+[3.4](https://www.rfc-editor.org/rfc/rfc8446.html#section-3.4).  Vectors
+
+   A vector (single-dimensioned array) is a stream of homogeneous data
+   elements.  The size of the vector may be specified at documentation
+   time or left unspecified until runtime.  In either case, the length
+   declares the number of bytes, not the number of elements, in the
+   vector.  The syntax for specifying a new type, T', that is a fixed-
+   length vector of type T is
+      T T'[n];
+   Here, T' occupies n bytes in the data stream, where n is a multiple
+   of the size of T.  The length of the vector is not included in the
+   encoded stream.
+
+
+
+   In the following example, Datum is defined to be three consecutive
+   bytes that the protocol does not interpret, while Data is three
+   consecutive Datum, consuming a total of nine bytes.
+      opaque Datum[3];      /* three uninterpreted bytes */
+      Datum Data[9];        /* three consecutive 3-byte vectors */
+   Variable-length vectors are defined by specifying a subrange of legal
+   lengths, inclusively, using the notation <floor..ceiling>.  When
+   these are encoded, the actual length precedes the vector's contents
+   in the byte stream.  The length will be in the form of a number
+   consuming as many bytes as required to hold the vector's specified
+   maximum (ceiling) length.  A variable-length vector with an actual
+   length field of zero is referred to as an empty vector.
+      T T'<floor..ceiling>;
+   In the following example, "mandatory" is a vector that must contain
+   between 300 and 400 bytes of type opaque.  It can never be empty.
+   The actual length field consumes two bytes, a uint16, which is
+   sufficient to represent the value 400 (see [Section 3.3](https://www.rfc-editor.org/rfc/rfc8446.html#section-3.3)).  Similarly,
+   "longer" can represent up to 800 bytes of data, or 400 uint16
+   elements, and it may be empty.  Its encoding will include a two-byte
+   actual length field prepended to the vector.  The length of an
+   encoded vector must be an exact multiple of the length of a single
+   element (e.g., a 17-byte vector of uint16 would be illegal).
+      opaque mandatory<300..400>;
+            /* length field is two bytes, cannot be empty */
+      uint16 longer<0..800>;
+            /* zero to 400 16-bit unsigned integers */
+
+[3.5](https://www.rfc-editor.org/rfc/rfc8446.html#section-3.5).  Enumerateds
+
+   An additional sparse data type, called "enum" or "enumerated", is
+   available.  Each definition is a different type.  Only enumerateds of
+   the same type may be assigned or compared.  Every element of an
+   enumerated must be assigned a value, as demonstrated in the following
+   example.  Since the elements of the enumerated are not ordered, they
+   can be assigned any unique value, in any order.
+      enum { e1(v1), e2(v2), ... , en(vn) [[, (n)]] } Te;
+   Future extensions or additions to the protocol may define new values.
+   Implementations need to be able to parse and ignore unknown values
+   unless the definition of the field states otherwise.
+
+
+
+   An enumerated occupies as much space in the byte stream as would its
+   maximal defined ordinal value.  The following definition would cause
+   one byte to be used to carry fields of type Color.
+      enum { red(3), blue(5), white(7) } Color;
+   One may optionally specify a value without its associated tag to
+   force the width definition without defining a superfluous element.
+   In the following example, Taste will consume two bytes in the data
+   stream but can only assume the values 1, 2, or 4 in the current
+   version of the protocol.
+      enum { sweet(1), sour(2), bitter(4), (32000) } Taste;
+   The names of the elements of an enumeration are scoped within the
+   defined type.  In the first example, a fully qualified reference to
+   the second element of the enumeration would be Color.blue.  Such
+   qualification is not required if the target of the assignment is well
+   specified.
+      Color color = Color.blue;     /* overspecified, legal */
+      Color color = blue;           /* correct, type implicit */
+   The names assigned to enumerateds do not need to be unique.  The
+   numerical value can describe a range over which the same name
+   applies.  The value includes the minimum and maximum inclusive values
+   in that range, separated by two period characters.  This is
+   principally useful for reserving regions of the space.
+      enum { sad(0), meh(1..254), happy(255) } Mood;
+
+[3.6](https://www.rfc-editor.org/rfc/rfc8446.html#section-3.6).  Constructed Types
+
+   Structure types may be constructed from primitive types for
+   convenience.  Each specification declares a new, unique type.  The
+   syntax used for definitions is much like that of C.
+      struct {
+          T1 f1;
+          T2 f2;
+          ...
+          Tn fn;
+      } T;
+   Fixed- and variable-length vector fields are allowed using the
+   standard vector syntax.  Structures V1 and V2 in the variants example
+   ([Section 3.8](https://www.rfc-editor.org/rfc/rfc8446.html#section-3.8)) demonstrate this.
+
+
+
+   The fields within a structure may be qualified using the type's name,
+   with a syntax much like that available for enumerateds.  For example,
+   T.f2 refers to the second field of the previous declaration.
+
+[3.7](https://www.rfc-editor.org/rfc/rfc8446.html#section-3.7).  Constants
+
+   Fields and variables may be assigned a fixed value using "=", as in:
+      struct {
+          T1 f1 = 8;  /* T.f1 must always be 8 */
+          T2 f2;
+      } T;
+
+[3.8](https://www.rfc-editor.org/rfc/rfc8446.html#section-3.8).  Variants
+
+   Defined structures may have variants based on some knowledge that is
+   available within the environment.  The selector must be an enumerated
+   type that defines the possible variants the structure defines.  Each
+   arm of the select (below) specifies the type of that variant's field
+   and an optional field label.  The mechanism by which the variant is
+   selected at runtime is not prescribed by the presentation language.
+      struct {
+          T1 f1;
+          T2 f2;
+          ....
+          Tn fn;
+          select (E) {
+              case e1: Te1 [[fe1]];
+              case e2: Te2 [[fe2]];
+              ....
+              case en: Ten [[fen]];
+          };
+      } Tv;
+
+
+
+   For example:
+      enum { apple(0), orange(1) } VariantTag;
+      struct {
+          uint16 number;
+          opaque string<0..10>; /* variable length */
+      } V1;
+      struct {
+          uint32 number;
+          opaque string[10];    /* fixed length */
+      } V2;
+      struct {
+          VariantTag type;
+          select (VariantRecord.type) {
+              case apple:  V1;
+              case orange: V2;
+          };
+      } VariantRecord;
 
 ---
 
@@ -348,20 +798,16 @@ client发送自己支持的椭圆曲线类型，然后等待server选择后，�
 
 ### 4.2.9. PSK交换模式(Pre-Shared Key Exchange Modes)
 
-   为了使用 PSKs, 客户端必需发送 `psk_key_exchange_modes` 扩展。
-   这个扩展的意义是表明客户端只支持该扩展中列出的PSK模式。
-   这会限制 `ClientHello` 和 `NewSessionTicket` 消息中PSK的使用。
-   which restricts both the use of PSKs offered in this ClientHello and
-   those which the server might supply via NewSessionTicket.
+为了使用 PSKs, 客户端必需在发送 `ClientHello` 消息时附带 `psk_key_exchange_modes` 扩展。
+这个扩展的意义是表明客户端只支持该扩展中列出的PSK模式。
+这会限制 `ClientHello` 和 `NewSessionTicket` 消息中PSK的使用。
 
-   如果客户端提供了 `pre_shared_key` 扩展, 那么必需提供 `psk_key_exchange_modes` 扩展， 否则服务端必须终止握手。
-   服务端不能选择客户端没有列出的交换模式。
-   该扩展会影响 PSK恢复(session复用)，服务端不能通过`NewSessionTicket`消息发送模式不兼容的 ticket .
-   如果服务端这么做了,那么影响支持客户端尝试PSK恢复失败。
-   Servers SHOULD NOT send NewSessionTicket with tickets that are not compatible with the advertised modes; 
-   however, if a server does so, the impact will just be that the client's attempts at resumption fail.
+如果客户端提供了 `pre_shared_key` 扩展, 那么必需提供 `psk_key_exchange_modes` 扩展， 否则服务端必须终止握手。
+服务端不能选择客户端没有列出的交换模式。
+该扩展会影响 PSK恢复(session复用)，服务端不能通过 `NewSessionTicket` 消息发送模式不兼容的 ticket .
+如果服务端这么做了,那么造成的影响是客户端尝试PSK恢复失败(即session复用失败)。
 
-   服务端不允许发送 `psk_key_exchange_modes` 扩展.
+服务端不允许发送 `psk_key_exchange_modes` 扩展.
 
 ```c
 enum { 
@@ -375,14 +821,25 @@ struct {
 } PskKeyExchangeModes;
 ```
 
-   psk_ke:  PSK-only key establishment.  In this mode, the server MUST NOT supply a "key_share" value.
+**psk_ke**:  PSK-only key establishment.  
+这个模式下, `ServerHello` 不能有 `key_share` 扩展.
 
-   psk_dhe_ke:  PSK with (EC)DHE key establishment.  In this mode, the client and server MUST supply "key_share" values as described in Section 4.2.8.
+**psk_dhe_ke**: PSK with (EC)DHE key establishment.  
+这个模式下, `ClientHello` 和 `ServerHello` 中都必需提供 `key_share` 扩展。
 
-   Any future values that are allocated must ensure that the transmitted
-   protocol messages unambiguously identify which mode was selected by
-   the server; at present, this is indicated by the presence of the
-   "key_share" in the `ServerHello`.
+![psk exchange mode](_sources/psk_exchange_mode.png)
+
+分配的任何未来值必须确保传输的协议消息明确标识服务器选择了哪种模式； 
+目前，这是通过`ServerHello` 中`key_share`的存在来表示的。
+
+Any future values that are allocated must ensure that the transmitted protocol messages unambiguously identify which mode was selected by the server; at present, this is indicated by the presence of the "key_share" in the `ServerHello`.
+
+
+
+
+
+
+
 
 ---
 

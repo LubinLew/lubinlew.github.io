@@ -203,13 +203,9 @@ TLS  uses the same set of messages every time that certificate-based authenticat
   endpoint's identity to the exchanged keys, and in PSK mode also
   authenticates the handshake.  [[Section 4.4.4](https://www.rfc-editor.org/rfc/rfc8446.html#section-4.4.4)]
 
-
-
  Upon receiving the server's messages, the client responds with its
    Authentication messages, namely Certificate and CertificateVerify (if
    requested), and Finished.
-
-
 
  到此，握手就结束了, and the client and server
    derive the keying material required by the record layer to exchange
@@ -219,8 +215,6 @@ TLS  uses the same set of messages every time that certificate-based authenticat
    server may send Application Data prior to receiving the client's
    Authentication messages, any data sent at that point is, of course,
    being sent to an unauthenticated peer.
-
-
 
 ## 2.1.  Incorrect DHE Share
 
@@ -247,16 +241,12 @@ TLS  uses the same set of messages every time that certificate-based authenticat
         {CertificateVerify*}
         {Finished}              -------->
         [Application Data]      <------->        [Application Data]
-
-
 ```
 
 Note: The handshake transcript incorporates the initial ClientHello/HelloRetryRequest exchange; 
 
 it is not reset with the  new ClientHello.
 TLS also allows several optimized variants of the basic handshake, as  described in the following sections.
-
-
 
 ## 2.2 Resumption and Pre-Shared Key (PSK)
 
@@ -336,8 +326,6 @@ When PSKs are provisioned out of band, the PSK identity and the KDF
       prevent an attacker that can observe the handshake from performing
       a brute-force attack on the password/pre-shared key.
 
-
-
 ## 2.3 0-RTT Data
 
 When clients and servers share a PSK (either obtained externally or  via a previous handshake), 
@@ -389,8 +377,6 @@ IMPORTANT NOTE: The security properties for 0-RTT data are weaker
    (because it is protected with different keys).  [Appendix E.5](https://www.rfc-editor.org/rfc/rfc8446.html#appendix-E.5) contains
    a description of potential attacks, and [Section 8](https://www.rfc-editor.org/rfc/rfc8446.html#section-8) describes
    mechanisms which the server can use to limit the impact of replay.
-   
-   
 
 ----
 
@@ -411,8 +397,6 @@ IMPORTANT NOTE: The security properties for 0-RTT data are weaker
               ... | byte[n-1];
    This byte ordering for multi-byte values is the commonplace network
    byte order or big-endian format.
-
-
 
 [3.2](https://www.rfc-editor.org/rfc/rfc8446.html#section-3.2).  Miscellaneous
 
@@ -450,8 +434,6 @@ IMPORTANT NOTE: The security properties for 0-RTT data are weaker
    Here, T' occupies n bytes in the data stream, where n is a multiple
    of the size of T.  The length of the vector is not included in the
    encoded stream.
-
-
 
    In the following example, Datum is defined to be three consecutive
    bytes that the protocol does not interpret, while Data is three
@@ -493,8 +475,6 @@ IMPORTANT NOTE: The security properties for 0-RTT data are weaker
    Implementations need to be able to parse and ignore unknown values
    unless the definition of the field states otherwise.
 
-
-
    An enumerated occupies as much space in the byte stream as would its
    maximal defined ordinal value.  The following definition would cause
    one byte to be used to carry fields of type Color.
@@ -534,8 +514,6 @@ IMPORTANT NOTE: The security properties for 0-RTT data are weaker
    standard vector syntax.  Structures V1 and V2 in the variants example
    ([Section 3.8](https://www.rfc-editor.org/rfc/rfc8446.html#section-3.8)) demonstrate this.
 
-
-
    The fields within a structure may be qualified using the type's name,
    with a syntax much like that available for enumerateds.  For example,
    T.f2 refers to the second field of the previous declaration.
@@ -568,8 +546,6 @@ IMPORTANT NOTE: The security properties for 0-RTT data are weaker
               case en: Ten [[fen]];
           };
       } Tv;
-
-
 
    For example:
       enum { apple(0), orange(1) } VariantTag;
@@ -834,14 +810,32 @@ struct {
 
 Any future values that are allocated must ensure that the transmitted protocol messages unambiguously identify which mode was selected by the server; at present, this is indicated by the presence of the "key_share" in the `ServerHello`.
 
+---
 
-
-
-
-
-
+## 
 
 ---
+
+# 7. Cryptographic Computations
+
+   The TLS handshake establishes one or more input secrets which are
+   combined to create the actual working keying material, as detailed
+   below.  The key derivation process incorporates both the input
+   secrets and the handshake transcript.  Note that because the
+   handshake transcript includes the random values from the Hello
+   messages, any given handshake will have different traffic secrets,
+   even if the same input secrets are used, as is the case when the same
+   PSK is used for multiple connections.
+
+
+
+
+
+
+
+----
+
+
 
 ## TLS v1.3
 

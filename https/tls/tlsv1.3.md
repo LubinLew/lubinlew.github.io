@@ -55,8 +55,6 @@ TLS 1.3 取代并废弃了先前版本的 TLS，包括 1.2 版 [RFC5246]。 它�
 | sender      | An endpoint that is transmitting records                                                                                                   |        |
 | server      | The endpoint that did not initiate the TLS connection                                                                                      |        |
 
-
-
 ## 1.2. TLS 1.3 与 TLS 1.2 的主要区别
 
 以下是 TLS 1.2 和 TLS 1.3 之间主要功能差异的列表。 它并不详尽无遗，并且许多细微差别并未列出。
@@ -202,12 +200,12 @@ TLS  uses the same set of messages every time that certificate-based authenticat
   handshake.  This message provides key confirmation, binds the
   endpoint's identity to the exchanged keys, and in PSK mode also
   authenticates the handshake.  [[Section 4.4.4](https://www.rfc-editor.org/rfc/rfc8446.html#section-4.4.4)]
-
- Upon receiving the server's messages, the client responds with its
+  
+  Upon receiving the server's messages, the client responds with its
    Authentication messages, namely Certificate and CertificateVerify (if
    requested), and Finished.
-
- 到此，握手就结束了, and the client and server
+  
+  到此，握手就结束了, and the client and server
    derive the keying material required by the record layer to exchange
    application-layer data protected through authenticated encryption.
    Application Data MUST NOT be sent prior to sending the Finished
@@ -635,10 +633,10 @@ client发送自己支持的椭圆曲线类型，然后等待server选择后，�
   如果服务端不选择一个 PSK, 那么前三个选项时完全正交(orthogonal)的:
   服务端独立的选择一个密码套件、一个 (EC)DHE group 、 key share for key establishment,
   和 a signature algorithm/certificate pair to authenticate itself to the client.
-
+  
   如果客户端发送的 "supported_groups" 与服务端支持的 groups 没有重叠,
   那么服务端必须终止握手,并发送 `handshake_failure` 或者 `insufficient_security` alert.
-
+  
   If the server selects a PSK, then it MUST also select a key
   establishment mode from the set indicated by the client's
   "psk_key_exchange_modes" extension (at present, PSK alone or with
@@ -815,26 +813,250 @@ Any future values that are allocated must ensure that the transmitted protocol m
 
 ---
 
-# 7. Cryptographic Computations
+# 7. 密码计算(Cryptographic Computations)
 
-   The TLS handshake establishes one or more input secrets which are
-   combined to create the actual working keying material, as detailed
-   below.  The key derivation process incorporates both the input
-   secrets and the handshake transcript.  Note that because the
-   handshake transcript includes the random values from the Hello
-   messages, any given handshake will have different traffic secrets,
-   even if the same input secrets are used, as is the case when the same
-   PSK is used for multiple connections.
+TLS 握手建立一个或多个输入秘密(secret)，这些秘密被组合起来以创建实际的工作密钥材料，如下详述。 密钥推导过程包含输入秘密和握手记录。 请注意，由于握手记录包含来自 Hello 消息的随机值，因此任何给定的握手都将具有不同的流量秘密，即使使用相同的输入秘密，就像将相同的 PSK 用于多个连接时的情况一样。
 
+## 7.1.  Key Schedule
 
+密钥派生过程使用为 HKDF [RFC5869] 定义的 HKDF-Extract 和 HKDF-Expand 函数，以及以下定义的函数：
 
+```c
+// HkdfLabel is specified as:
+struct {
+    uint16 length = Length;
+    opaque label<7..255> = "tls13 " + Label;
+    opaque context<0..255> = Context;
+} HkdfLabel;
 
+HKDF-Expand-Label(Secret, Label, Context, Length) = HKDF-Expand(Secret, HkdfLabel, Length)
 
+Derive-Secret(Secret, Label, Messages) = HKDF-Expand-Label(Secret, Label, Transcript-Hash(Messages), Hash.length)
+```
 
+Transcript-Hash 和 HKDF 使用的哈希函数是密码套件哈希算法。
+Hash.length 是以字节为单位的输出长度。
+Messages 是所指示的握手消息的串联，包括握手消息类型和长度字段，但不包括记录层头。
+请注意，在某些情况下，将零长度上下文（由“”表示）传递给 HKDF-Expand-Label。
+本文档中指定的标签都是 ASCII 字符串，不包括尾随 NUL 字节。
+
+注意：对于常见的散列函数，任何长度超过 12 个字符的标签都需要额外的散列函数迭代来计算。
+本规范中的标签均经过选择以符合此限制。
+
+密钥是使用 HKDF-Extract 和 Derive-Secret 函数从两个输入机密派生的。
+添加新机密的一般模式是使用 HKDF-Extract，其中 Salt 是当前机密状态，输入密钥材料 (IKM) 是要添加的新机密。
+在此版本的 TLS 1.3 中，两个输入机密是：
+
+- PSK (a pre-shared key established externally or derived from the
+     resumption_master_secret value from a previous connection)
+- (EC)DHE shared secret (Section 7.4)
+
+这将生成一个完整的密钥派生时间表，如下图所示。 在此图中，以下格式约定适用：
+
+- HKDF-Extract is drawn as taking the Salt argument from the top and
+  the IKM argument from the left, with its output to the bottom and
+  the name of the output on the right.
+
+- Derive-Secret's Secret argument is indicated by the incoming
+  arrow.  For instance, the Early Secret is the Secret for
+  generating the client_early_traffic_secret.
+
+- "0" indicates a string of Hash.length bytes set to zero.
+
+```txt
+         0
+             |
+             v
+   PSK ->  HKDF-Extract = Early Secret
+             |
+             +-----> Derive-Secret(., "ext binder" | "res binder", "")
+             |                     = binder_key
+             |
+             +-----> Derive-Secret(., "c e traffic", ClientHello)
+             |                     = client_early_traffic_secret
+             |
+             +-----> Derive-Secret(., "e exp master", ClientHello)
+             |                     = early_exporter_master_secret
+             v
+       Derive-Secret(., "derived", "")
+             |
+             v
+   (EC)DHE -> HKDF-Extract = Handshake Secret
+             |
+             +-----> Derive-Secret(., "c hs traffic",
+             |                     ClientHello...ServerHello)
+             |                     = client_handshake_traffic_secret
+             |
+             +-----> Derive-Secret(., "s hs traffic",
+             |                     ClientHello...ServerHello)
+             |                     = server_handshake_traffic_secret
+             v
+       Derive-Secret(., "derived", "")
+             |
+             v
+   0 -> HKDF-Extract = Master Secret
+             |
+             +-----> Derive-Secret(., "c ap traffic",
+             |                     ClientHello...server Finished)
+             |                     = client_application_traffic_secret_0
+             |
+             +-----> Derive-Secret(., "s ap traffic",
+             |                     ClientHello...server Finished)
+             |                     = server_application_traffic_secret_0
+             |
+             +-----> Derive-Secret(., "exp master",
+             |                     ClientHello...server Finished)
+             |                     = exporter_master_secret
+             |
+             +-----> Derive-Secret(., "res master",
+                                   ClientHello...client Finished)
+                                   = resumption_master_secret
+```
+
+这里的一般模式是图表左侧显示的秘密只是没有上下文的原始熵，而右侧的秘密包括握手上下文，因此可用于派生工作密钥而无需额外的上下文。请注意，即使使用相同的秘密，对 Derive-Secret 的不同调用也可能采用不同的 Messages 参数。在 0-RTT 交换中，Derive-Secret 使用四个不同的转录本被调用；在 1-RTT-only 交换中，它被称为三个不同的转录本。如果给定的秘密不可用，则使用由设置为零的 Hash.length 字节字符串组成的 0 值。请注意，这并不意味着跳过轮次，因此如果未使用 PSK，Early Secret 仍将是 HKDF-Extract(0, 0)。对于 binder_key 的计算，外部 PSK（在 TLS 之外提供的那些）的标签是“ext binder”，而恢复 PSK（那些作为先前握手的恢复主密钥提供的）的标签是“res binder”。不同的标签防止用一种类型的 PSK 替换另一种。根据服务器最终选择的 PSK，有多个潜在的 Early Secret 值。客户端需要为每个潜在的 PSK 计算一个；如果没有选择 PSK，则需要计算对应于零 PSK 的 Early Secret。一旦计算出从给定秘密导出的所有值，就应该删除该秘密。
+
+## 7.2.  Updating Traffic Secrets
+
+   Once the handshake is complete, it is possible for either side to
+   update its sending traffic keys using the KeyUpdate handshake message
+   defined in Section 4.6.3.  The next generation of traffic keys is
+   computed by generating client_/server_application_traffic_secret_N+1
+   from client_/server_application_traffic_secret_N as described in this
+   section and then re-deriving the traffic keys as described in
+   Section 7.3.
+
+   The next-generation application_traffic_secret is computed as:
+
+       application_traffic_secret_N+1 =
+           HKDF-Expand-Label(application_traffic_secret_N,
+                             "traffic upd", "", Hash.length)
+
+   Once client_/server_application_traffic_secret_N+1 and its associated
+   traffic keys have been computed, implementations SHOULD delete
+   client_/server_application_traffic_secret_N and its associated
+   traffic keys.
+
+## 7.3.  Traffic Key Calculation
+
+   The traffic keying material is generated from the following input values:
+
+- A secret value
+
+- A purpose value indicating the specific value being generated
+
+- The length of the key being generated
+  
+  The traffic keying material is generated from an input traffic secret value using:
+  
+  [sender]_write_key = HKDF-Expand-Label(Secret, "key", "", key_length)
+  [sender]_write_iv  = HKDF-Expand-Label(Secret, "iv", "", iv_length)
+  
+  [sender] denotes the sending side.  The value of Secret for each
+  record type is shown in the table below.
+  
+   +-------------------+---------------------------------------+
+   | Record Type       | Secret                                |
+   +-------------------+---------------------------------------+
+   | 0-RTT Application | client_early_traffic_secret           |
+   |                   |                                       |
+   | Handshake         | [sender]_handshake_traffic_secret     |
+   |                   |                                       |
+   | Application Data  | [sender]_application_traffic_secret_N |
+   +-------------------+---------------------------------------+
+  
+  All the traffic keying material is recomputed whenever the underlying
+  Secret changes (e.g., when changing from the handshake to Application
+  Data keys or upon a key update).
+
+## 7.4. (EC)DHE Shared Secret Calculation
+
+### 7.4.1.  Finite Field Diffie-Hellman
+
+   For finite field groups, a conventional Diffie-Hellman [DH76]
+   computation is performed.  The negotiated key (Z) is converted to a
+   byte string by encoding in big-endian form and left-padded with zeros
+   up to the size of the prime.  This byte string is used as the shared
+   secret in the key schedule as specified above.
+
+   Note that this construction differs from previous versions of TLS
+   which removed leading zeros.
+
+### 7.4.2. Elliptic Curve Diffie-Hellman
+
+   For secp256r1, secp384r1, and secp521r1, ECDH calculations (including
+   parameter and key generation as well as the shared secret
+   calculation) are performed according to [IEEE1363] using the
+   ECKAS-DH1 scheme with the identity map as the key derivation function
+   (KDF), so that the shared secret is the x-coordinate of the ECDH
+   shared secret elliptic curve point represented as an octet string.
+   Note that this octet string ("Z" in IEEE 1363 terminology) as output
+   by FE2OSP (the Field Element to Octet String Conversion Primitive)
+   has constant length for any given field; leading zeros found in this
+   octet string MUST NOT be truncated.
+
+   (Note that this use of the identity KDF is a technicality.  The
+   complete picture is that ECDH is employed with a non-trivial KDF
+   because TLS does not directly use this secret for anything other than
+   for computing other secrets.)
+
+   For X25519 and X448, the ECDH calculations are as follows:
+
+- The public key to put into the KeyShareEntry.key_exchange
+  structure is the result of applying the ECDH scalar multiplication
+  function to the secret key of appropriate length (into scalar
+  input) and the standard public basepoint (into u-coordinate point
+  input).
+
+- The ECDH shared secret is the result of applying the ECDH scalar
+  multiplication function to the secret key (into scalar input) and
+  the peer's public key (into u-coordinate point input).  The output
+  is used raw, with no processing.
+  
+  For these curves, implementations SHOULD use the approach specified
+  in [RFC7748] to calculate the Diffie-Hellman shared secret.
+  Implementations MUST check whether the computed Diffie-Hellman shared
+  secret is the all-zero value and abort if so, as described in
+  Section 6 of [RFC7748].  If implementors use an alternative
+  implementation of these elliptic curves, they SHOULD perform the
+  additional checks specified in Section 7 of [RFC7748].
+
+## 7.5. Exporters
+
+   [RFC5705] defines keying material exporters for TLS in terms of the
+   TLS pseudorandom function (PRF).  This document replaces the PRF with
+   HKDF, thus requiring a new construction.  The exporter interface
+   remains the same.
+
+   The exporter value is computed as:
+
+   TLS-Exporter(label, context_value, key_length) =
+       HKDF-Expand-Label(Derive-Secret(Secret, label, ""),
+                         "exporter", Hash(context_value), key_length)
+
+   Where Secret is either the early_exporter_master_secret or the
+   exporter_master_secret.  Implementations MUST use the
+   exporter_master_secret unless explicitly specified by the
+   application.  The early_exporter_master_secret is defined for use in
+   settings where an exporter is needed for 0-RTT data.  A separate
+   interface for the early exporter is RECOMMENDED; this avoids the
+   exporter user accidentally using an early exporter when a regular one
+   is desired or vice versa.
+
+   If no context is provided, the context_value is zero length.
+   Consequently, providing no context computes the same value as
+   providing an empty context.  This is a change from previous versions
+   of TLS where an empty context produced a different output than an
+   absent context.  As of this document's publication, no allocated
+   exporter label is used both with and without a context.  Future
+   specifications MUST NOT define a use of exporters that permit both an
+   empty context and no context with the same label.  New uses of
+   exporters SHOULD provide a context in all exporter computations,
+   though the value could be empty.
+
+   Requirements for the format of exporter labels are defined in
+   Section 4 of [RFC5705].
 
 ----
-
-
 
 ## TLS v1.3
 

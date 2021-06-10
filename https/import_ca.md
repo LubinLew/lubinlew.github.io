@@ -1,5 +1,7 @@
 # 导入自签发CA证书
 
+> https://docs.docker.com/registry/insecure/
+
 ## Windows
 
 双击证书 -> 安装证书 -> 当前用户/本地计算机 ->将所有的整证书都放入下面存储 - > 浏览 -> 受信任的根证书颁发机构 -> 确定

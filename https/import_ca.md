@@ -17,7 +17,9 @@ yum -y install ca-certificates
 证书是PEM格式 crt 后缀
 
 ```bash
-/usr/share/pki/ca-trust-source/anchors/
+/etc/pki/ca-trust/source/anchors/
+
+# /usr/share/pki/ca-trust-source/anchors/
 ```
 
 ### 更新证书系统

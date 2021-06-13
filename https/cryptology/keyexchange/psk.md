@@ -8,9 +8,6 @@
 
 第4步，双方使用生成的共享密钥对消息加密传输，保证消息安全。
 
-
-
-
-## Reference 
+## Reference
 
 https://blog.csdn.net/mrpre/article/details/81532469

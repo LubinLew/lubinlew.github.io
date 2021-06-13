@@ -33,4 +33,6 @@ ciphers)。
 
 ##### GCM
 
+![CTR_E](_resources/GCM-Galois_Counter_Mode_with_IV.svg)
+
 ##### CCB

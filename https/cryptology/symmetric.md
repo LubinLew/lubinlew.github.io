@@ -29,6 +29,8 @@ ciphers)。
 
 ##### CTR
 
+![CTR_E](_resources/CTR_encryption.svg)
+
 ##### GCM
 
 ##### CCB

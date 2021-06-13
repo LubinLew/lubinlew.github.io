@@ -1,346 +1,1122 @@
-<!DOCTYPE html>
-<html class="client-nojs" lang="en" dir="ltr">
-<head>
-<meta charset="UTF-8"/>
-<title>File:CFB decryption.svg - Wikipedia</title>
-<script>document.documentElement.className="client-js";RLCONF={"wgBreakFrames":!1,"wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgRequestId":"95e7fd5a-b6ae-4363-b982-4c2e63a7876e","wgCSPNonce":!1,"wgCanonicalNamespace":"File","wgCanonicalSpecialPageName":!1,"wgNamespaceNumber":6,"wgPageName":"File:CFB_decryption.svg","wgTitle":"CFB decryption.svg","wgCurRevisionId":0,"wgRevisionId":0,"wgArticleId":0,"wgIsArticle":!0,"wgIsRedirect":!1,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgRelevantPageName":"File:CFB_decryption.svg","wgRelevantArticleId":0,"wgIsProbablyEditable":!1,"wgRelevantPageIsProbablyEditable":!1,"wgRestrictionCreate":[],"wgRestrictionUpload":[],"wgFlaggedRevsParams":{"tags":{"status":{
-"levels":-1}}},"wgMediaViewerOnClick":!0,"wgMediaViewerEnabledByDefault":!0,"wgPopupsFlags":10,"wgVisualEditor":{"pageLanguageCode":"en","pageLanguageDir":"ltr","pageVariantFallbacks":"en"},"wgMFDisplayWikibaseDescriptions":{"search":!0,"nearby":!0,"watchlist":!0,"tagline":!1},"wgWMESchemaEditAttemptStepOversample":!1,"wgULSCurrentAutonym":"English","wgNoticeProject":"wikipedia","wgCentralAuthMobileDomain":!1,"wgEditSubmitButtonLabelPublish":!0,"wgULSPosition":"interlanguage","wgGENewcomerTasksGuidanceEnabled":!0,"wgGEAskQuestionEnabled":!1,"wgGELinkRecommendationsFrontendEnabled":!1};RLSTATE={"ext.globalCssJs.user.styles":"ready","site.styles":"ready","noscript":"ready","user.styles":"ready","ext.globalCssJs.user":"ready","user":"ready","user.options":"loading","filepage":"ready","mediawiki.action.view.filepage":"ready","skins.vector.styles.legacy":"ready","ext.visualEditor.desktopArticleTarget.noscript":"ready","ext.uls.interlanguage":"ready",
-"ext.wikimediaBadges":"ready"};RLPAGEMODULES=["mediawiki.action.view.metadata","site","mediawiki.page.ready","skins.vector.legacy.js","ext.gadget.ReferenceTooltips","ext.gadget.charinsert","ext.gadget.extra-toolbar-buttons","ext.gadget.refToolbar","ext.gadget.switcher","ext.centralauth.centralautologin","mmv.head","mmv.bootstrap.autostart","ext.popups","ext.visualEditor.desktopArticleTarget.init","ext.visualEditor.targetLoader","ext.eventLogging","ext.wikimediaEvents","ext.navigationTiming","ext.uls.compactlinks","ext.uls.interface","ext.cx.eventlogging.campaigns","ext.centralNotice.geoIP","ext.centralNotice.startUp"];</script>
-<script>(RLQ=window.RLQ||[]).push(function(){mw.loader.implement("user.options@1hzgi",function($,jQuery,require,module){/*@nomin*/mw.user.tokens.set({"patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});
-});});</script>
-<link rel="stylesheet" href="/w/load.php?lang=en&amp;modules=ext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediaBadges%7Cfilepage%7Cmediawiki.action.view.filepage%7Cskins.vector.styles.legacy&amp;only=styles&amp;skin=vector"/>
-<script async="" src="/w/load.php?lang=en&amp;modules=startup&amp;only=scripts&amp;raw=1&amp;skin=vector"></script>
-<link rel="stylesheet" href="https://commons.wikimedia.org/w/index.php?title=MediaWiki:Filepage.css&amp;action=raw&amp;ctype=text/css"/>
-<meta name="ResourceLoaderDynamicStyles" content=""/>
-<link rel="stylesheet" href="/w/load.php?lang=en&amp;modules=site.styles&amp;only=styles&amp;skin=vector"/>
-<meta name="generator" content="MediaWiki 1.37.0-wmf.9"/>
-<meta name="referrer" content="origin"/>
-<meta name="referrer" content="origin-when-crossorigin"/>
-<meta name="referrer" content="origin-when-cross-origin"/>
-<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/CFB_decryption.svg/1200px-CFB_decryption.svg.png"/>
-<meta property="og:title" content="File:CFB decryption.svg - Wikipedia"/>
-<meta property="og:type" content="website"/>
-<link rel="preconnect" href="//upload.wikimedia.org"/>
-<link rel="preconnect" href="//upload.wikimedia.org"/>
-<link rel="alternate" media="only screen and (max-width: 720px)" href="//en.m.wikipedia.org/wiki/File:CFB_decryption.svg"/>
-<link rel="apple-touch-icon" href="/static/apple-touch/wikipedia.png"/>
-<link rel="shortcut icon" href="/static/favicon/wikipedia.ico"/>
-<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="Wikipedia (en)"/>
-<link rel="EditURI" type="application/rsd+xml" href="//en.wikipedia.org/w/api.php?action=rsd"/>
-<link rel="license" href="//creativecommons.org/licenses/by-sa/3.0/"/>
-<link rel="canonical" href="https://commons.wikimedia.org/wiki/File:CFB_decryption.svg"/>
-<link rel="dns-prefetch" href="//login.wikimedia.org"/>
-<link rel="dns-prefetch" href="//meta.wikimedia.org" />
-</head>
-<body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-6 ns-subject mw-editable page-File_CFB_decryption_svg rootpage-File_CFB_decryption_svg skin-vector action-view skin-vector-legacy"><div id="mw-page-base" class="noprint"></div>
-<div id="mw-head-base" class="noprint"></div>
-<div id="content" class="mw-body" role="main">
-	<a id="top"></a>
-	<div id="siteNotice"><!-- CentralNotice --></div>
-	<div class="mw-indicators">
-	<div id="mw-indicator-commons-icon" class="mw-indicator"><a href="https://commons.wikimedia.org/wiki/File:CFB_decryption.svg" title="This is a file from the Wikimedia Commons"><img alt="This is a file from the Wikimedia Commons" src="//upload.wikimedia.org/wikipedia/en/thumb/4/4a/Commons-logo.svg/15px-Commons-logo.svg.png" decoding="async" width="15" height="20" srcset="//upload.wikimedia.org/wikipedia/en/thumb/4/4a/Commons-logo.svg/22px-Commons-logo.svg.png 1.5x, //upload.wikimedia.org/wikipedia/en/thumb/4/4a/Commons-logo.svg/30px-Commons-logo.svg.png 2x" data-file-width="1024" data-file-height="1376" /></a></div>
-	</div>
-	<h1 id="firstHeading" class="firstHeading" >File:CFB decryption.svg</h1>
-	<div id="bodyContent" class="vector-body">
-		<div id="siteSub" class="noprint">From Wikipedia, the free encyclopedia</div>
-		<div id="contentSub"></div>
-		<div id="contentSub2"></div>
-		
-		<div id="jump-to-nav"></div>
-		<a class="mw-jump-link" href="#mw-head">Jump to navigation</a>
-		<a class="mw-jump-link" href="#searchInput">Jump to search</a>
-		<div id="mw-content-text" class="mw-body-content"><ul id="filetoc"><li><a href="#file">File</a></li>
-<li><a href="#filehistory">File history</a></li>
-<li><a href="#filelinks">File usage</a></li>
-<li><a href="#globalusage">Global file usage</a></li>
-<li><a href="#metadata">Metadata</a></li></ul><div class="fullImageLink" id="file"><a href="//upload.wikimedia.org/wikipedia/commons/5/57/CFB_decryption.svg"><img alt="File:CFB decryption.svg" src="//upload.wikimedia.org/wikipedia/commons/thumb/5/57/CFB_decryption.svg/601px-CFB_decryption.svg.png" decoding="async" width="601" height="242" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/5/57/CFB_decryption.svg/902px-CFB_decryption.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/5/57/CFB_decryption.svg/1202px-CFB_decryption.svg.png 2x" data-file-width="601" data-file-height="242" /></a><div class="mw-filepage-resolutioninfo">Size of this PNG preview of this SVG file: <a href="//upload.wikimedia.org/wikipedia/commons/thumb/5/57/CFB_decryption.svg/601px-CFB_decryption.svg.png" class="mw-thumbnail-link">601 × 242 pixels</a>. <span class="mw-filepage-other-resolutions">Other resolutions: <a href="//upload.wikimedia.org/wikipedia/commons/thumb/5/57/CFB_decryption.svg/320px-CFB_decryption.svg.png" class="mw-thumbnail-link">320 × 129 pixels</a> | <a href="//upload.wikimedia.org/wikipedia/commons/thumb/5/57/CFB_decryption.svg/640px-CFB_decryption.svg.png" class="mw-thumbnail-link">640 × 258 pixels</a> | <a href="//upload.wikimedia.org/wikipedia/commons/thumb/5/57/CFB_decryption.svg/800px-CFB_decryption.svg.png" class="mw-thumbnail-link">800 × 322 pixels</a> | <a href="//upload.wikimedia.org/wikipedia/commons/thumb/5/57/CFB_decryption.svg/1024px-CFB_decryption.svg.png" class="mw-thumbnail-link">1,024 × 412 pixels</a> | <a href="//upload.wikimedia.org/wikipedia/commons/thumb/5/57/CFB_decryption.svg/1280px-CFB_decryption.svg.png" class="mw-thumbnail-link">1,280 × 515 pixels</a> | <a href="//upload.wikimedia.org/wikipedia/commons/thumb/5/57/CFB_decryption.svg/2560px-CFB_decryption.svg.png" class="mw-thumbnail-link">2,560 × 1,031 pixels</a>.</span></div></div>
-<div class="fullMedia"><p><a href="//upload.wikimedia.org/wikipedia/commons/5/57/CFB_decryption.svg" class="internal" title="CFB decryption.svg">Original file</a> &#8206;<span class="fileInfo">(SVG file, nominally 601 × 242 pixels, file size: 46 KB)</span>
-</p></div><div class="sharedUploadNotice">
-<table id="mw-sharedupload" class="plainlinks fmbox fmbox-system" role="presentation"><tbody><tr><td class="mbox-image"><img alt="" src="//upload.wikimedia.org/wikipedia/en/thumb/4/4a/Commons-logo.svg/30px-Commons-logo.svg.png" decoding="async" title="Wikimedia Commons logo" width="30" height="40" class="noviewer" srcset="//upload.wikimedia.org/wikipedia/en/thumb/4/4a/Commons-logo.svg/45px-Commons-logo.svg.png 1.5x, //upload.wikimedia.org/wikipedia/en/thumb/4/4a/Commons-logo.svg/59px-Commons-logo.svg.png 2x" data-file-width="1024" data-file-height="1376" /></td><td class="mbox-text" style="text-align: center;">This is a file from the <a href="https://commons.wikimedia.org/wiki/Main_Page" class="extiw" title="commons:Main Page">Wikimedia Commons</a>. Information from its <b><a href="https://commons.wikimedia.org/wiki/File:CFB_decryption.svg" class="extiw" title="commons:File:CFB decryption.svg">description page there</a></b> is shown below.<br /><span style="font-size: smaller;">Commons is a freely licensed media file repository. <a href="https://commons.wikimedia.org/wiki/Commons:Welcome" class="extiw" title="commons:Commons:Welcome">You can help</a>.</span></td></tr></tbody></table>
-</div>
-<div id="shared-image-desc"><div class="mw-parser-output"><h2><span class="mw-headline" id="Summary">Summary</span></h2>
-<div class="hproduct commons-file-information-table">
-<table class="fileinfotpl-type-information toccolours vevent mw-content-ltr" style="width: 100%; direction: ltr;" cellpadding="4">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
 
-<tbody><tr style="vertical-align: top">
-<td id="fileinfotpl_desc" class="fileinfo-paramfield" lang="en">Description<span class="summary fn" style="display:none">CFB decryption.svg</span></td>
-<td class="description">
-<div class="description mw-content-ltr en" dir="ltr" lang="en"><span class="language en" title="English"><b>English&#58; </b></span> Decryption using the Cipher Feedback (CFB) mode.</div></td>
-</tr>
-
-<tr style="vertical-align: top">
-<td id="fileinfotpl_date" class="fileinfo-paramfield" lang="en">Date</td>
-<td lang="en">
-<span style="white-space:nowrap"><time class="dtstart" datetime="2013-06-01 03:45:39">1 June 2013, 03:45:39</time></span></td>
-</tr>
-
-<tr style="vertical-align: top">
-<td id="fileinfotpl_src" class="fileinfo-paramfield" lang="en">Source</td>
-<td>
-<a href="//commons.wikimedia.org/wiki/File:Cfb_decryption.png" title="File:Cfb decryption.png">PNG version</a></td>
-</tr>
-
-<tr style="vertical-align: top">
-<td id="fileinfotpl_aut" class="fileinfo-paramfield" lang="en">Author</td>
-<td>
-Gwenda (PNG version), <a href="//commons.wikimedia.org/wiki/User:WhiteTimberwolf" title="User:WhiteTimberwolf">WhiteTimberwolf</a> (SVG version)</td>
-</tr>
-
-
-</tbody></table>
-</div>
-<h2><span class="mw-headline" id="Licensing">Licensing</span></h2>
-<table class="licensetpl" style="display:none">
-<tbody><tr>
-<td><span class="licensetpl_short">Public domain</span><span class="licensetpl_long">Public domain</span><span class="licensetpl_link_req">false</span><span class="licensetpl_attr_req">false</span>
-</td></tr></tbody></table>
-<table style="width:100%; clear:both; margin:0.5em auto; background-color:#f7f8ff; border:2px solid #8888aa; direction: ltr; border-spacing: 8px; padding: 0px;" class="layouttemplate mw-content-ltr" lang="en">
-<tbody><tr>
-<td><img alt="PD-icon.svg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/PD-icon.svg/64px-PD-icon.svg.png" decoding="async" width="64" height="64" srcset="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/PD-icon.svg/96px-PD-icon.svg.png 1.5x, https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/PD-icon.svg/128px-PD-icon.svg.png 2x" data-file-width="196" data-file-height="196" />
-</td>
-<td><i>This work is <b>ineligible for <a href="https://en.wikipedia.org/wiki/copyrights" class="extiw" title="w:copyrights">copyright</a></b> and therefore in the <b><a href="https://en.wikipedia.org/wiki/public_domain" class="extiw" title="w:public domain">public domain</a></b> because it consists entirely of information that is <a href="//commons.wikimedia.org/wiki/Commons:Threshold_of_originality" title="Commons:Threshold of originality">common property and contains no original authorship</a>.</i><hr /><div style="font-size:smaller;">In case this file would pass the threshold of originality, the copyright holder allows the use of this file with the following conditions:
-<span style="white-space:nowrap">&#123;&#123;<a href="//commons.wikimedia.org/wiki/Template:PD-self" title="Template:PD-self">PD-self</a>&#125;&#125;</span></div>
-</td></tr></tbody></table>
-<!-- 
-NewPP limit report
-Parsed by mw1395
-Cached time: 20210528032349
-Cache expiry: 1814400
-Reduced expiry: false
-Complications: []
-CPU time usage: 0.078 seconds
-Real time usage: 0.143 seconds
-Preprocessor visited node count: 300/1000000
-Post‐expand include size: 8129/2097152 bytes
-Template argument size: 570/2097152 bytes
-Highest expansion depth: 11/40
-Expensive parser function count: 2/500
-Unstrip recursion depth: 0/20
-Unstrip post‐expand size: 0/5000000 bytes
-Lua time usage: 0.035/10.000 seconds
-Lua memory usage: 870813/52428800 bytes
-Number of Wikibase entities loaded: 1/400
--->
-<!--
-Transclusion expansion time report (%,ms,calls,template)
-100.00%  114.665      1 -total
- 53.33%   61.150      1 Template:Information
- 46.41%   53.218      1 Template:PD-ineligible
- 43.24%   49.576      1 Template:Autotranslate
- 25.32%   29.034      1 Template:PD-ineligible/layout
- 14.66%   16.815      1 Template:PD-Layout
- 11.80%   13.534      1 Template:En
-  9.37%   10.749      1 Template:Description
-  5.90%    6.765      2 Template:Dir
-  5.40%    6.195      1 Template:Tlp
--->
-<h1 class="mw-slot-header"><mediainfoslotheader /></h1><mediainfoview style="display: none"><mediainfoviewcaptions><div class='wbmi-entityview-captionsPanel oo-ui-layout oo-ui-panelLayout oo-ui-panelLayout-framed'><h3 class='wbmi-entityview-captions-header'>Captions</h3><div class='wbmi-entityview-caption oo-ui-layout oo-ui-horizontalLayout'><label aria-disabled='false' class='wbmi-language-label oo-ui-widget oo-ui-widget-enabled oo-ui-labelElement-label oo-ui-labelElement oo-ui-labelWidget'>English</label><div lang='en' dir='ltr' class='wbmi-caption-value wbmi-entityview-emptyCaption'>Add a one-line explanation of what this file represents</div></div></div></mediainfoviewcaptions><mediainfoviewstatements><div id='P180' data-property='P180' data-statements='[]' data-formatvalue='[]' class='wbmi-entityview-statementsGroup wbmi-entityview-statementsGroup-P180 oo-ui-layout oo-ui-panelLayout oo-ui-panelLayout-framed'><div class='wbmi-statements-widget'><div class='wbmi-statement-header'><div class='wbmi-entity-data'><div class='wbmi-entity-title'><h3 class='wbmi-statements-title'>Items portrayed in this file</h3><h4 class='wbmi-entity-label'><bdi><a target="_blank" title="d:Special:EntityPage/P180" href="https://www.wikidata.org/wiki/Special:EntityPage/P180">depicts</a></bdi></h4></div></div></div><div class='wbmi-content-items-group'></div></div></div><div id='P571' data-property='P571' data-statements='[{"mainsnak":{"snaktype":"value","property":"P571","datavalue":{"value":{"time":"+2013-06-01T00:00:00Z","timezone":0,"before":0,"after":0,"precision":11,"calendarmodel":"http:\/\/www.wikidata.org\/entity\/Q1985727"},"type":"time"}},"type":"statement","id":"M26434097$6c46cd06-7716-11ea-8c8d-7cdd905973f3","rank":"normal"}]' data-formatvalue='{"{\"value\":{\"entity-type\":\"property\",\"numeric-id\":571,\"id\":\"P571\"},\"type\":\"wikibase-entityid\"}":{"text\/html":{"en":{"":"&lt;a target=\"_blank\" title=\"d:Special:EntityPage\/P571\" href=\"https:\/\/www.wikidata.org\/wiki\/Special:EntityPage\/P571\"&gt;inception&lt;\/a&gt;"}},"text\/plain":{"en":{"":"inception"}}},"{\"value\":{\"time\":\"+2013-06-01T00:00:00Z\",\"timezone\":0,\"before\":0,\"after\":0,\"precision\":11,\"calendarmodel\":\"http:\\\/\\\/www.wikidata.org\\\/entity\\\/Q1985727\"},\"type\":\"time\"}":{"text\/html":{"en":{"P571":"1 June 2013"}},"text\/plain":{"en":{"P571":"1 June 2013"}}}}' class='wbmi-entityview-statementsGroup wbmi-entityview-statementsGroup-P571 oo-ui-layout oo-ui-panelLayout oo-ui-panelLayout-framed'><div class='wbmi-statements-widget'><div class='wbmi-statement-header'><div class='wbmi-entity-data'><div class='wbmi-entity-title'><h4 class='wbmi-entity-label'><bdi><a target="_blank" title="d:Special:EntityPage/P571" href="https://www.wikidata.org/wiki/Special:EntityPage/P571">inception</a></bdi></h4></div></div></div><div class='wbmi-content-items-group'><div class='wbmi-item wbmi-item-read'><div data-guid='M26434097$6c46cd06-7716-11ea-8c8d-7cdd905973f3' class='wbmi-item-container'><div class='wbmi-entity-header'><div class='wbmi-entity-data'><div class='wbmi-entity-title'><h4 class='wbmi-entity-label'><bdi>1 June 2013</bdi></h4></div></div></div></div></div></div></div></div></mediainfoviewstatements></mediainfoview>
-<!-- Saved in parser cache with key commonswiki:pcache:idhash:26434097-1!wb=3 and timestamp 20210528032348 and revision id 409304563. Serialized with JSON.
- -->
-</div></div>
-<h2 id="filehistory">File history</h2>
-<div id="mw-imagepage-section-filehistory">
-<p>Click on a date/time to view the file as it appeared at that time.
-</p>
-<table class="wikitable filehistory">
-<tr><th></th><th>Date/Time</th><th>Thumbnail</th><th>Dimensions</th><th>User</th><th>Comment</th></tr>
-<tr><td>current</td><td class='filehistory-selected' style='white-space: nowrap;'><a href="//upload.wikimedia.org/wikipedia/commons/5/57/CFB_decryption.svg">02:18, 1 June 2013</a></td><td><a href="//upload.wikimedia.org/wikipedia/commons/5/57/CFB_decryption.svg"><img alt="Thumbnail for version as of 02:18, 1 June 2013" src="//upload.wikimedia.org/wikipedia/commons/thumb/5/57/CFB_decryption.svg/120px-CFB_decryption.svg.png" decoding="async" width="120" height="48" data-file-width="601" data-file-height="242" /></a></td><td>601 × 242 <span style="white-space: nowrap;">(46 KB)</span></td><td>WhiteTimberwolf</td><td dir="ltr">move label to match CFB encryption.svg</td></tr>
-<tr><td></td><td  style='white-space: nowrap;'><a href="//upload.wikimedia.org/wikipedia/commons/archive/5/57/20130601021809%21CFB_decryption.svg">01:58, 1 June 2013</a></td><td><a href="//upload.wikimedia.org/wikipedia/commons/archive/5/57/20130601021809%21CFB_decryption.svg"><img alt="Thumbnail for version as of 01:58, 1 June 2013" src="//upload.wikimedia.org/wikipedia/commons/thumb/archive/5/57/20130601021809%21CFB_decryption.svg/120px-CFB_decryption.svg.png" decoding="async" width="120" height="48" data-file-width="601" data-file-height="242" /></a></td><td>601 × 242 <span style="white-space: nowrap;">(46 KB)</span></td><td>WhiteTimberwolf</td><td dir="ltr">User created page with UploadWizard</td></tr>
-</table>
-
-</div>
-<h2 id="filelinks">File usage</h2>
-<div id='mw-imagepage-section-linkstoimage'>
-<div class="linkstoimage" id="linkstoimage">The following pages on the English Wikipedia use this file (pages on other projects are not listed):</div><ul class="mw-imagepage-linkstoimage">
-<li class="mw-imagepage-linkstoimage-ns0"><a href="/wiki/Block_cipher_mode_of_operation" title="Block cipher mode of operation">Block cipher mode of operation</a></li>
-</ul>
-</div>
-<h2 id="globalusage">Global file usage</h2>
-<div id="mw-imagepage-section-globalusage"><p>The following other wikis use this file:
-</p><ul>
-<li class='mw-gu-onwiki-de_wikipedia_org'>Usage on de.wikipedia.org
-<ul>	<li><a class="external" href="https://de.wikipedia.org/wiki/Cipher_Feedback_Mode">Cipher Feedback Mode</a></li>
-</ul></li>
-<li class='mw-gu-onwiki-id_wikipedia_org'>Usage on id.wikipedia.org
-<ul>	<li><a class="external" href="https://id.wikipedia.org/wiki/Mode_operasi_penyandian_blok">Mode operasi penyandian blok</a></li>
-</ul></li>
-<li class='mw-gu-onwiki-ja_wikipedia_org'>Usage on ja.wikipedia.org
-<ul>	<li><a class="external" href="https://ja.wikipedia.org/wiki/%E6%9A%97%E5%8F%B7%E5%88%A9%E7%94%A8%E3%83%A2%E3%83%BC%E3%83%89">暗号利用モード</a></li>
-</ul></li>
-<li class='mw-gu-onwiki-pl_wikipedia_org'>Usage on pl.wikipedia.org
-<ul>	<li><a class="external" href="https://pl.wikipedia.org/wiki/Wikipedystka:Kamilla%C5%9A/Tryby_pracy_szyfr%C3%B3w_blokowych">Wikipedystka:KamillaŚ/Tryby pracy szyfrów blokowych</a></li>
-</ul></li>
-<li class='mw-gu-onwiki-tr_wikipedia_org'>Usage on tr.wikipedia.org
-<ul>	<li><a class="external" href="https://tr.wikipedia.org/wiki/Blok_%C5%9Fifre_%C3%A7al%C4%B1%C5%9Fma_kipleri">Blok şifre çalışma kipleri</a></li>
-</ul></li>
-</ul>
-</div><h2 id="metadata">Metadata</h2>
-<div class="mw-imagepage-section-metadata"><p>This file contains additional information, probably added from the digital camera or scanner used to create or digitize it.
-</p><p>
-If the file has been modified from its original state, some details may not fully reflect the modified file.</p><table id="mw_metadata" class="mw_metadata collapsed">
-<tbody><tr class="exif-imagewidth mw-metadata-collapsible"><th>Width</th><td>601</td></tr><tr class="exif-imagelength mw-metadata-collapsible"><th>Height</th><td>242</td></tr></tbody></table>
-</div><noscript><img src="//en.wikipedia.org/wiki/Special:CentralAutoLogin/start?type=1x1" alt="" title="" width="1" height="1" style="border: none; position: absolute;" /></noscript>
-<div class="printfooter">Retrieved from "<a dir="ltr" href="https://en.wikipedia.org/wiki/File:CFB_decryption.svg">https://en.wikipedia.org/wiki/File:CFB_decryption.svg</a>"</div></div>
-		<div id="catlinks" class="catlinks catlinks-allhidden" data-mw="interface"></div>
-	</div>
-</div>
-<div id='mw-data-after-content'>
-	<div class="read-more-container"></div>
-</div>
-
-<div id="mw-navigation">
-	<h2>Navigation menu</h2>
-	<div id="mw-head">
-		<nav id="p-personal" class="mw-portlet mw-portlet-personal vector-user-menu-legacy vector-menu" aria-labelledby="p-personal-label" role="navigation" 
-	 >
-	<h3 id="p-personal-label" class="vector-menu-heading">
-		<span>Personal tools</span>
-	</h3>
-	<div class="vector-menu-content">
-		<ul class="vector-menu-content-list"><li id="pt-anonuserpage">Not logged in</li><li id="pt-anontalk"><a href="/wiki/Special:MyTalk" title="Discussion about edits from this IP address [n]" accesskey="n">Talk</a></li><li id="pt-anoncontribs"><a href="/wiki/Special:MyContributions" title="A list of edits made from this IP address [y]" accesskey="y">Contributions</a></li><li id="pt-createaccount"><a href="/w/index.php?title=Special:CreateAccount&amp;returnto=File%3ACFB+decryption.svg" title="You are encouraged to create an account and log in; however, it is not mandatory">Create account</a></li><li id="pt-login"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=File%3ACFB+decryption.svg" title="You&#039;re encouraged to log in; however, it&#039;s not mandatory. [o]" accesskey="o">Log in</a></li></ul>
-		
-	</div>
-</nav>
-
-		<div id="left-navigation">
-			<nav id="p-namespaces" class="mw-portlet mw-portlet-namespaces vector-menu vector-menu-tabs" aria-labelledby="p-namespaces-label" role="navigation" 
-	 >
-	<h3 id="p-namespaces-label" class="vector-menu-heading">
-		<span>Namespaces</span>
-	</h3>
-	<div class="vector-menu-content">
-		<ul class="vector-menu-content-list"><li id="ca-nstab-image" class="selected"><a href="/wiki/File:CFB_decryption.svg" title="View the file page [c]" accesskey="c">File</a></li><li id="ca-talk" class="new"><a href="/w/index.php?title=File_talk:CFB_decryption.svg&amp;action=edit&amp;redlink=1" rel="discussion" title="Discuss improvements to the content page (page does not exist) [t]" accesskey="t">Talk</a></li></ul>
-		
-	</div>
-</nav>
-
-			<nav id="p-variants" class="mw-portlet mw-portlet-variants emptyPortlet vector-menu vector-menu-dropdown" aria-labelledby="p-variants-label" role="navigation" 
-	 >
-	<input type="checkbox" class="vector-menu-checkbox" aria-labelledby="p-variants-label" />
-	<h3 id="p-variants-label" class="vector-menu-heading">
-		<span>Variants</span>
-	</h3>
-	<div class="vector-menu-content">
-		<ul class="vector-menu-content-list"></ul>
-		
-	</div>
-</nav>
-
-		</div>
-		<div id="right-navigation">
-			<nav id="p-views" class="mw-portlet mw-portlet-views vector-menu vector-menu-tabs" aria-labelledby="p-views-label" role="navigation" 
-	 >
-	<h3 id="p-views-label" class="vector-menu-heading">
-		<span>Views</span>
-	</h3>
-	<div class="vector-menu-content">
-		<ul class="vector-menu-content-list"><li id="ca-view" class="selected"><a href="/wiki/File:CFB_decryption.svg">Read</a></li><li id="ca-view-foreign"><a href="https://commons.wikimedia.org/wiki/File:CFB_decryption.svg">View on Commons</a></li></ul>
-		
-	</div>
-</nav>
-
-			<nav id="p-cactions" class="mw-portlet mw-portlet-cactions emptyPortlet vector-menu vector-menu-dropdown" aria-labelledby="p-cactions-label" role="navigation" 
-	 >
-	<input type="checkbox" class="vector-menu-checkbox" aria-labelledby="p-cactions-label" />
-	<h3 id="p-cactions-label" class="vector-menu-heading">
-		<span>More</span>
-	</h3>
-	<div class="vector-menu-content">
-		<ul class="vector-menu-content-list"></ul>
-		
-	</div>
-</nav>
-
-			<div id="p-search" role="search" >
-	<h3 >
-		<label for="searchInput">Search</label>
-	</h3>
-	<form action="/w/index.php" id="searchform">
-		<div id="simpleSearch" data-search-loc="header-navigation">
-			<input type="search" name="search" placeholder="Search Wikipedia" autocapitalize="sentences" title="Search Wikipedia [f]" accesskey="f" id="searchInput"/>
-			<input type="hidden" name="title" value="Special:Search"/>
-			<input type="submit" name="fulltext" value="Search" title="Search Wikipedia for this text" id="mw-searchButton" class="searchButton mw-fallbackSearchButton"/>
-			<input type="submit" name="go" value="Go" title="Go to a page with this exact name if it exists" id="searchButton" class="searchButton"/>
-		</div>
-	</form>
-</div>
-
-		</div>
-	</div>
-	
-<div id="mw-panel">
-	<div id="p-logo" role="banner">
-		<a class="mw-wiki-logo" href="/wiki/Main_Page"
-			title="Visit the main page"></a>
-	</div>
-	<nav id="p-navigation" class="mw-portlet mw-portlet-navigation vector-menu vector-menu-portal portal" aria-labelledby="p-navigation-label" role="navigation" 
-	 >
-	<h3 id="p-navigation-label" class="vector-menu-heading">
-		<span>Navigation</span>
-	</h3>
-	<div class="vector-menu-content">
-		<ul class="vector-menu-content-list"><li id="n-mainpage-description"><a href="/wiki/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li><li id="n-contents"><a href="/wiki/Wikipedia:Contents" title="Guides to browsing Wikipedia">Contents</a></li><li id="n-currentevents"><a href="/wiki/Portal:Current_events" title="Articles related to current events">Current events</a></li><li id="n-randompage"><a href="/wiki/Special:Random" title="Visit a randomly selected article [x]" accesskey="x">Random article</a></li><li id="n-aboutsite"><a href="/wiki/Wikipedia:About" title="Learn about Wikipedia and how it works">About Wikipedia</a></li><li id="n-contactpage"><a href="//en.wikipedia.org/wiki/Wikipedia:Contact_us" title="How to contact Wikipedia">Contact us</a></li><li id="n-sitesupport"><a href="https://donate.wikimedia.org/wiki/Special:FundraiserRedirector?utm_source=donate&amp;utm_medium=sidebar&amp;utm_campaign=C13_en.wikipedia.org&amp;uselang=en" title="Support us by donating to the Wikimedia Foundation">Donate</a></li></ul>
-		
-	</div>
-</nav>
-
-	<nav id="p-interaction" class="mw-portlet mw-portlet-interaction vector-menu vector-menu-portal portal" aria-labelledby="p-interaction-label" role="navigation" 
-	 >
-	<h3 id="p-interaction-label" class="vector-menu-heading">
-		<span>Contribute</span>
-	</h3>
-	<div class="vector-menu-content">
-		<ul class="vector-menu-content-list"><li id="n-help"><a href="/wiki/Help:Contents" title="Guidance on how to use and edit Wikipedia">Help</a></li><li id="n-introduction"><a href="/wiki/Help:Introduction" title="Learn how to edit Wikipedia">Learn to edit</a></li><li id="n-portal"><a href="/wiki/Wikipedia:Community_portal" title="The hub for editors">Community portal</a></li><li id="n-recentchanges"><a href="/wiki/Special:RecentChanges" title="A list of recent changes to Wikipedia [r]" accesskey="r">Recent changes</a></li><li id="n-upload"><a href="/wiki/Wikipedia:File_Upload_Wizard" title="Add images or other media for use on Wikipedia">Upload file</a></li></ul>
-		
-	</div>
-</nav>
-<nav id="p-tb" class="mw-portlet mw-portlet-tb vector-menu vector-menu-portal portal" aria-labelledby="p-tb-label" role="navigation" 
-	 >
-	<h3 id="p-tb-label" class="vector-menu-heading">
-		<span>Tools</span>
-	</h3>
-	<div class="vector-menu-content">
-		<ul class="vector-menu-content-list"><li id="t-whatlinkshere"><a href="/wiki/Special:WhatLinksHere/File:CFB_decryption.svg" title="List of all English Wikipedia pages containing links to this page [j]" accesskey="j">What links here</a></li><li id="t-upload"><a href="/wiki/Wikipedia:File_Upload_Wizard" title="Upload files [u]" accesskey="u">Upload file</a></li><li id="t-specialpages"><a href="/wiki/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li><li id="t-print"><a href="javascript:print();" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li><li id="t-info"><a href="/w/index.php?title=File:CFB_decryption.svg&amp;action=info" title="More information about this page">Page information</a></li></ul>
-		
-	</div>
-</nav>
-
-	<nav id="p-lang" class="mw-portlet mw-portlet-lang vector-menu vector-menu-portal portal" aria-labelledby="p-lang-label" role="navigation" 
-	 >
-	<h3 id="p-lang-label" class="vector-menu-heading">
-		<span>Languages</span>
-	</h3>
-	<div class="vector-menu-content">
-		<ul class="vector-menu-content-list"></ul>
-		<div class="after-portlet after-portlet-lang"><span class="uls-after-portlet-link"></span></div>
-	</div>
-</nav>
-
-</div>
-
-</div>
-<footer id="footer" class="mw-footer" role="contentinfo" >
-	<ul id="footer-info" >
-</ul>
-
-	<ul id="footer-places" >
-	<li id="footer-places-privacy"><a href="https://foundation.wikimedia.org/wiki/Privacy_policy" class="extiw" title="wmf:Privacy policy">Privacy policy</a></li>
-	<li id="footer-places-about"><a href="/wiki/Wikipedia:About" title="Wikipedia:About">About Wikipedia</a></li>
-	<li id="footer-places-disclaimer"><a href="/wiki/Wikipedia:General_disclaimer" title="Wikipedia:General disclaimer">Disclaimers</a></li>
-	<li id="footer-places-contact"><a href="//en.wikipedia.org/wiki/Wikipedia:Contact_us">Contact Wikipedia</a></li>
-	<li id="footer-places-mobileview"><a href="//en.m.wikipedia.org/w/index.php?title=File:CFB_decryption.svg&amp;mobileaction=toggle_view_mobile" class="noprint stopMobileRedirectToggle">Mobile view</a></li>
-	<li id="footer-places-developers"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/How_to_contribute">Developers</a></li>
-	<li id="footer-places-statslink"><a href="https://stats.wikimedia.org/#/en.wikipedia.org">Statistics</a></li>
-	<li id="footer-places-cookiestatement"><a href="https://foundation.wikimedia.org/wiki/Cookie_statement">Cookie statement</a></li>
-</ul>
-
-	<ul id="footer-icons" class="noprint">
-	<li id="footer-copyrightico"><a href="https://wikimediafoundation.org/"><img src="/static/images/footer/wikimedia-button.png" srcset="/static/images/footer/wikimedia-button-1.5x.png 1.5x, /static/images/footer/wikimedia-button-2x.png 2x" width="88" height="31" alt="Wikimedia Foundation" loading="lazy" /></a></li>
-	<li id="footer-poweredbyico"><a href="https://www.mediawiki.org/"><img src="/static/images/footer/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" srcset="/static/images/footer/poweredby_mediawiki_132x47.png 1.5x, /static/images/footer/poweredby_mediawiki_176x62.png 2x" width="88" height="31" loading="lazy"/></a></li>
-</ul>
-
-</footer>
-
-
-<script>(RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgBackendResponseTime":162,"wgHostname":"mw1330"});});</script>
-</body></html>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="601"
+   height="242"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="CFB decryption.svg">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Mend"
+       style="overflow:visible;">
+      <path
+         id="path4488"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;"
+         transform="scale(0.4) rotate(180) translate(10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker11421"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path11423"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.4,0,0,-0.4,-4,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker16569"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path16571"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.4,0,0,-0.4,-4,0)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2"
+     inkscape:cx="290.52239"
+     inkscape:cy="126.4744"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer2"
+     showgrid="true"
+     inkscape:window-width="1918"
+     inkscape:window-height="1056"
+     inkscape:window-x="0"
+     inkscape:window-y="22"
+     inkscape:window-maximized="0"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3175"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       originx="0.5px"
+       originy="0.5px" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="vectors"
+     style="display:inline">
+    <g
+       id="g3514"
+       transform="translate(-32,-6)">
+      <text
+         sodipodi:linespacing="125%"
+         id="text3216"
+         y="904.67273"
+         x="137.96094"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"
+         transform="translate(0,-810.36218)"><tspan
+           y="904.67273"
+           x="137.96094"
+           id="tspan3218"
+           sodipodi:role="line">block cipher</tspan><tspan
+           id="tspan3220"
+           y="919.67273"
+           x="137.96094"
+           sodipodi:role="line"
+           style="font-weight:bold">encryption</tspan></text>
+      <rect
+         y="80.5"
+         x="89.5"
+         height="36"
+         width="98"
+         id="rect3214"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <g
+       id="g3496"
+       transform="translate(-34,-12)">
+      <rect
+         y="48.5"
+         x="88.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="96.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="104.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="112.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="120.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="128.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="136.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="144.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="152.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="160.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="168.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="176.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-0"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="184.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-0-7"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:Sans"
+       x="-0.35697174"
+       y="95.625977"
+       id="text3562"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3564"
+         x="-0.35697174"
+         y="95.625977">Key</tspan></text>
+    <g
+       id="g3496-2-8"
+       transform="translate(-34,117)">
+      <rect
+         y="48.5"
+         x="88.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-7-1"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="96.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-9-7"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="104.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-7-3"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="112.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-61-8"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="120.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-4-0"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="128.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-0-4"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="136.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-4-1"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="144.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-0-3"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="152.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-4-0"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="160.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-9-6"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="168.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-8-5"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="176.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-0-5-9"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="184.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-0-7-7-9"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:Sans"
+       x="106.30957"
+       y="190.5"
+       id="text3566-6"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3568-9"
+         x="106.30957"
+         y="190.5"
+         style="text-align:center;text-anchor:middle">Plaintext</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       d="m 106.5,113.5 0,47"
+       id="path3705"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       d="m 25.5,92.5 27,0"
+       id="path4919"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       d="m 106.5,51.5 0,19"
+       id="path5103"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       x="106.05762"
+       y="27.5"
+       id="text3520-1-3"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="106.05762"
+         y="27.5"
+         id="tspan3528-0-6"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Initialization Vector (IV)</tspan></text>
+    <g
+       transform="translate(-32,6)"
+       style="display:inline"
+       id="g5291">
+      <path
+         transform="translate(-2,0)"
+         d="m 146.5,133.5 c 0,3.31371 -2.68629,6 -6,6 -3.31371,0 -6,-2.68629 -6,-6 0,-3.31371 2.68629,-6 6,-6 3.31371,0 6,2.68629 6,6 z"
+         sodipodi:ry="6"
+         sodipodi:rx="6"
+         sodipodi:cy="133.5"
+         sodipodi:cx="140.5"
+         id="path5287"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         sodipodi:type="arc" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path5289"
+         d="m 132.5,133.5 12,0"
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker11421)"
+       d="m 170.5,115.5 0,-72 120,0 0,26"
+       id="path12496"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <g
+       style="display:inline"
+       id="g3514-7"
+       transform="translate(152,-6.000002)">
+      <text
+         sodipodi:linespacing="125%"
+         id="text3216-5"
+         y="904.67273"
+         x="137.96094"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"
+         transform="translate(0,-810.36218)"><tspan
+           y="904.67273"
+           x="137.96094"
+           id="tspan3218-3"
+           sodipodi:role="line">block cipher</tspan><tspan
+           id="tspan3220-8"
+           y="919.67273"
+           x="137.96094"
+           sodipodi:role="line"
+           style="font-weight:bold">encryption</tspan></text>
+      <rect
+         y="80.5"
+         x="89.5"
+         height="36"
+         width="98"
+         id="rect3214-8"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:Sans"
+       x="183.64304"
+       y="95.625977"
+       id="text3562-8"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3564-0"
+         x="183.64304"
+         y="95.625977">Key</tspan></text>
+    <g
+       style="display:inline"
+       id="g3496-2-8-6"
+       transform="translate(150,117)">
+      <rect
+         y="48.5"
+         x="88.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-7-1-2"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="96.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-9-7-9"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="104.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-7-3-3"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="112.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-61-8-9"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="120.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-4-0-3"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="128.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-0-4-5"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="136.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-4-1-0"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="144.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-0-3-4"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="152.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-4-0-4"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="160.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-9-6-7"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="168.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-8-5-9"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="176.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-0-5-9-2"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="184.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-0-7-7-9-6"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:Sans"
+       x="290.30957"
+       y="190.5"
+       id="text3566-6-0"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3568-9-6"
+         x="290.30957"
+         y="190.5"
+         style="text-align:center;text-anchor:middle">Plaintext</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend);display:inline"
+       d="m 290.5,113.5 0,47"
+       id="path3705-1"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend);display:inline"
+       d="m 209.5,92.499997 27,0"
+       id="path4919-4"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <g
+       style="display:inline"
+       id="g3514-7-6"
+       transform="translate(336,-6.000003)">
+      <text
+         sodipodi:linespacing="125%"
+         id="text3216-5-0"
+         y="904.67273"
+         x="137.96094"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"
+         transform="translate(0,-810.36218)"><tspan
+           y="904.67273"
+           x="137.96094"
+           id="tspan3218-3-6"
+           sodipodi:role="line">block cipher</tspan><tspan
+           id="tspan3220-8-8"
+           y="919.67273"
+           x="137.96094"
+           sodipodi:role="line"
+           style="font-weight:bold">encryption</tspan></text>
+      <rect
+         y="80.5"
+         x="89.5"
+         height="36"
+         width="98"
+         id="rect3214-8-6"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:Sans"
+       x="367.64304"
+       y="95.625977"
+       id="text3562-8-4"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3564-0-9"
+         x="367.64304"
+         y="95.625977">Key</tspan></text>
+    <g
+       style="display:inline"
+       id="g3496-2-8-6-8"
+       transform="translate(334,117)">
+      <rect
+         y="48.5"
+         x="88.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-7-1-2-6"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="96.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-9-7-9-4"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="104.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-7-3-3-3"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="112.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-61-8-9-3"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="120.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-4-0-3-8"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="128.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-0-4-5-8"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="136.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-4-1-0-8"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="144.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-0-3-4-6"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="152.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-4-0-4-3"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="160.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-9-6-7-6"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="168.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-8-5-9-8"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="176.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-0-5-9-2-0"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="184.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-0-7-7-9-6-4"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:Sans"
+       x="474.30957"
+       y="190.5"
+       id="text3566-6-0-4"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3568-9-6-2"
+         x="474.30957"
+         y="190.5"
+         style="text-align:center;text-anchor:middle">Plaintext</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend);display:inline"
+       d="m 474.5,113.5 0,47"
+       id="path3705-1-5"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend);display:inline"
+       d="m 393.5,92.499996 27,0"
+       id="path4919-4-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <g
+       transform="translate(152,6)"
+       style="display:inline"
+       id="g5291-9">
+      <path
+         transform="translate(-2,0)"
+         d="m 146.5,133.5 c 0,3.31371 -2.68629,6 -6,6 -3.31371,0 -6,-2.68629 -6,-6 0,-3.31371 2.68629,-6 6,-6 3.31371,0 6,2.68629 6,6 z"
+         sodipodi:ry="6"
+         sodipodi:rx="6"
+         sodipodi:cy="133.5"
+         sodipodi:cx="140.5"
+         id="path5287-3"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         sodipodi:type="arc" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path5289-7"
+         d="m 132.5,133.5 12,0"
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+    <g
+       style="display:inline"
+       id="g3496-4-8"
+       transform="translate(38,85.999998)">
+      <rect
+         y="48.5"
+         x="88.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-53-8"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="96.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-1-0"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="104.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-2-5"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="112.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-4-4"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="120.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-5-9"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="128.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-3-6"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="136.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-9-5"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="144.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-30-6"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="152.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-9-2"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="160.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-8-9"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="168.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-5-6"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="176.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-0-9-2"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="184.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-0-7-2-7"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       x="178.30957"
+       y="129.25"
+       id="text11634-4"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan11636-0"
+         x="178.30957"
+         y="129.25">Ciphertext</tspan></text>
+    <g
+       transform="translate(336,6)"
+       style="display:inline"
+       id="g5291-9-1">
+      <path
+         transform="translate(-2,0)"
+         d="m 146.5,133.5 c 0,3.31371 -2.68629,6 -6,6 -3.31371,0 -6,-2.68629 -6,-6 0,-3.31371 2.68629,-6 6,-6 3.31371,0 6,2.68629 6,6 z"
+         sodipodi:ry="6"
+         sodipodi:rx="6"
+         sodipodi:cy="133.5"
+         sodipodi:cx="140.5"
+         id="path5287-3-5"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         sodipodi:type="arc" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path5289-7-8"
+         d="m 132.5,133.5 12,0"
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+    <g
+       style="display:inline"
+       id="g3496-4-8-32"
+       transform="translate(222,85.999998)">
+      <rect
+         y="48.5"
+         x="88.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-53-8-46"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="96.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-1-0-0"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="104.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-2-5-4"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="112.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-4-4-5"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="120.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-5-9-1"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="128.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-3-6-0"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="136.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-9-5-9"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="144.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-30-6-0"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="152.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-9-2-7"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="160.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-8-9-1"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="168.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-5-6-4"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="176.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-0-9-2-5"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="184.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-0-7-2-7-4"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <g
+       style="display:inline"
+       id="g3496-4-8-32-0"
+       transform="translate(406,85.999996)">
+      <rect
+         y="48.5"
+         x="88.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-53-8-46-7"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="96.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-1-0-0-6"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="104.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-2-5-4-0"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="112.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-4-4-5-2"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="120.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-5-9-1-4"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="128.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-3-6-0-6"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="136.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-9-5-9-3"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="144.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-30-6-0-7"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="152.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-9-2-7-1"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="160.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-8-9-1-1"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="168.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-5-6-4-3"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="176.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-0-9-2-5-5"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="48.5"
+         x="184.5"
+         height="10"
+         width="7.9999995"
+         id="rect3222-4-8-5-6-0-9-3-3-6-5-0-7-2-7-4-7"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       x="362.30957"
+       y="129.25"
+       id="text11634-4-2"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan11636-0-6"
+         x="362.30957"
+         y="129.25">Ciphertext</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       x="546.30957"
+       y="129.25"
+       id="text11634-4-2-9"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan11636-0-6-4"
+         x="546.30957"
+         y="129.25">Ciphertext</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker16569)"
+       d="m 123.5,139.5 -8,0"
+       id="path16961"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker16569);display:inline"
+       d="m 307.5,139.5 -8,0"
+       id="path16961-1"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker16569);display:inline"
+       d="m 491.5,139.5 -8,0"
+       id="path16961-1-9"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker11421);display:inline"
+       d="m 354.5,115.5 0,-72 120,0 0,26"
+       id="path12496-0"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       x="310.73828"
+       y="226"
+       id="text3188-8"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3190-4"
+         x="310.73828"
+         y="226">Cipher Feedback (CFB) mode decryption</tspan></text>
+  </g>
+</svg>

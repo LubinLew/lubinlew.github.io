@@ -21,18 +21,25 @@ ciphers)。
 
 ##### ECB(Electronic codebook)
 
+电码本模式是将待处理信息被分为大小合适的分组，然后分别对每一分组独立进行加密或解密处理。具有操作简单，易于实现的特点。同时由于其分组的独立性，利于实现并行处理，并且能很好地防止误差传播。
+
 ![ECB_E](_resources/ECB_encryption.svg)
 
-##### CBC
+另一方面由于所有分组的加密方式一致，明文中的重复内容会在密文中有所体现，因此难以抵抗统计分析攻击。因此，ECB模式一般只适用于小数据量的字符信息的安全性保护。
+
+![ECB_S](_resources/ECB_security.png）
+
+##### CBC(Cipher block chaining)
 
 ![CBC_E](_resources/CBC_encryption.svg)
 
-##### CTR
+##### CTR(Counter)
 
 ![CTR_E](_resources/CTR_encryption.svg)
 
-##### GCM
+##### GCM(Galois/counter)
 
 ![CTR_E](_resources/GCM-Galois_Counter_Mode_with_IV.svg)
 
-##### CCB
+##### CCM(Counter with cipher block chaining message authentication code)
+

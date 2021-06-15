@@ -20,6 +20,10 @@
 
 - 数字签名
 
-### 随机数
 
-### 哈希(HASH)
+本章节主要是围绕TLS来介绍密码学。
+TLS中的算法分为4类，
+- authentication (认证)算法
+- key exchange(密钥交换)算法
+- encryption(加密)算法
+- message authentication code (消息认证码 简称MAC)算法 

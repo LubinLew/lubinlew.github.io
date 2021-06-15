@@ -23,6 +23,10 @@ Hypertext Transfer Protocol Secure
 
 Hypertext Transfer Protocol over Secure Socket Layer
 
+
+
+HSTS协议，网站可要求浏览器必须使用HTTPS
+
 ## Reference
 
 BOOK: 深入浅出HTTPS从原理到实践

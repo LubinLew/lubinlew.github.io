@@ -1,6 +1,12 @@
 # 密钥交换算法
 
-密钥交换的握手过程中最引人入胜的部分。在TLS中，会话安全性取决于称为主密钥（master secret）的48字节共享密钥。密钥交换的目的是计算另一个值，即预主密钥（premaster secret）。这个值是组成主密钥的来源。
+密钥协商(key establishment)包括“密钥传输”(key transmission)和“密钥交换”(key exchange)。
+
+在TLS中，会话安全性取决于称为主密钥（master secret）的48字节共享密钥。密钥交换的目的是计算另一个值，即预主密钥（premaster secret）。这个值是组成主密钥的来源。
+
+RSA和DH两种算法都被用于密钥协商。密钥协商(key establishment)包括“密钥传输”(key transmission)和“密钥交换”(key exchange)。TLS是广泛用于日常生活中的https协议的一部分。以下答案针对这两个算法在TLS ciphersuite中的应用，即TLS_RSA_XXX 以及 TLS_DHE_XXX，此处的key指的是接下来在实际传输数据时使用的session key,安全性的结论在答案末尾。区RSA起的作用是Key Transmission，也就是说，用于产生Session Key的“种子”是由客户端决定，用服务器的公钥加密并再次传输到服务器端。（见下图的C,最下方的德语的意思是TLS Record Layer: 用密钥k进行加密）
+DH起的作用是key exchange
+
 
 TLS支持许多密钥交换算法，能够支持各种证书类型、公钥算法和密钥生成协议。它们之中有一些在TLS协议主规格书中定义，但更多的则是在其他规格说明中定义。
 

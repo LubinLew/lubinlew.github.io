@@ -20,7 +20,7 @@
      - [5. 国密简介](https/cryptology/sm.md)
   - [二、PKI](https/pki/README.md)
      - [密钥和证书管理](https/pki/cert_and_key.md)
-     - [证书签名请求](https/pki/csr.md)
+     - [CSR:证书签名请求](https/pki/csr.md)
      - [自建CA签发证书](https/pki/ca.md)
      - [安装自签发CA证书](https/pki/import_ca.md)
      - [共享系统证书](https/cactl.md)

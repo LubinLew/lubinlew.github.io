@@ -1,10 +1,9 @@
 # 私钥
 
-OpenSSL支持 RSA、DSA、ECDSA、ECC 算法生成私钥,
+OpenSSL支持 RSA、DSA、ECDSA 算法生成私钥,
 - DSA 密钥实际上被限制为 1024 位（Internet Explorer 不支持任何更强的）,TLSv1.3 协议中已不支持DSA证书
-- ECDSA未被所有CA机构广泛支持
 - 目前大部分证书都是 RSA 的
-- 以后的趋势是 ECC 证书逐步替代 RSA 证书
+- 以后的趋势是 ECDSA 证书逐步替代 RSA 证书
 
 ### RSA
 
@@ -25,7 +24,21 @@ sZ0yU78qGnV92L6tujVZ2C4BDj8Bl2x7N0/AIOt/BTCmki1Tt/o=
 
 ```
 
-### ECC
+
+### DSA
+
+```bash
+openssl dsaparam -genkey -noout -out dsa.key 2048
+
+-----BEGIN DSA PRIVATE KEY-----
+MIIDVQIBAAKCAQEAkTL2EtWrC1rXl+mUd43BQiCJC/dhacgnEzTjTdsx8LmcZYDH
+...省略
+fd/45oY+8wIgNR1Hpfc7318oJFkwtxigjppnqF8rgUA9HSYEsOsyKoA=
+-----END DSA PRIVATE KEY-----
+
+```
+
+### ECDSA
 
 椭圆曲线算法的优点是秘钥长度比RSA短
 
@@ -60,22 +73,4 @@ openssl ecparam -in ecc.key -check -name secp384r1 -text
   -----BEGIN EC PARAMETERS-----
   BgUrgQQAIg==
   -----END EC PARAMETERS-----
-```
-
-### DSA
-
-```bash
-openssl dsaparam -genkey -noout -out dsa.key 2048
-
------BEGIN DSA PRIVATE KEY-----
-MIIDVQIBAAKCAQEAkTL2EtWrC1rXl+mUd43BQiCJC/dhacgnEzTjTdsx8LmcZYDH
-...省略
-fd/45oY+8wIgNR1Hpfc7318oJFkwtxigjppnqF8rgUA9HSYEsOsyKoA=
------END DSA PRIVATE KEY-----
-
-```
-
-### ECDSA
-
-
 ```

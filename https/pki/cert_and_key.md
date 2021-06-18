@@ -4,7 +4,7 @@
 
 **下面主要描述的是怎样使用OpenSSL命令来生成搭建HTTPS Web Server需要的私钥和证书**。环境自然是Linux。
 
-通常分为以下几个步骤：　　
+通常分为以下几个步骤:
 
 - **生成私钥文件**
 - **生成证书签名请求(CSR)文件**
@@ -362,3 +362,14 @@ subjectAltName = DNS:*.test.com, DNS:test.com
 PXF转PEM后`certificate.cer`文件包含认证证书和私钥，需要把它们分开存储才能使用。
 
 
+### References
+
+https://support.citrix.com/article/CTX135602
+
+https://access.redhat.com/solutions/28965
+
+https://security.stackexchange.com/questions/150078/missing-x509-extensions-with-an-openssl-generated-certificate
+
+https://www.openssl.org/docs/man1.1.0/man1/x509.html#BUGS
+
+https://www.openssl.org/docs/man1.1.0/man5/x509v3_config.html

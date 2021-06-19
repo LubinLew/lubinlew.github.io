@@ -81,8 +81,6 @@ pkcs11:id=%d1%09%d0%e9%d7%ce%79%74%54%f9%3a%30%b3%f4%6d%2c%03%03%1b%68;type=cert
     trust: anchor
     category: authority
 ....
-
-
 ```
 
 ```bash
@@ -125,7 +123,6 @@ pkcs11:id=%9a%d8%00%30%00%e7%6b%7f%85%18%ee%8b%b6%ce%8a%0c%f8%11%e1%bb;type=cert
     trust: anchor
     category: authority
 ....
-
 ```
 
 #### 添加证书
@@ -141,5 +138,3 @@ pkcs11:id=%9a%d8%00%30%00%e7%6b%7f%85%18%ee%8b%b6%ce%8a%0c%f8%11%e1%bb;type=cert
 `trust anchor --remove path.to/certificate.crt`
 
 `trust anchor --remove "pkcs11:id=%AA%BB%CC%DD%EE;type=cert"`
-
-

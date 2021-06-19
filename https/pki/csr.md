@@ -1,6 +1,5 @@
 # CSR 证书签名请求
 
-
 ### 生成CSR文件
 
 ```bash
@@ -13,7 +12,7 @@ openssl req -new -key mydomain.com.key -out mydomain.com.csr
 ```bash
 openssl asn1parse -i -in mydomain.com.csr
 ```
- 
+
 ### CSR格式转换
 
 将 CSR 文件从 pem 转换为 der 格式
@@ -22,13 +21,11 @@ openssl asn1parse -i -in mydomain.com.csr
 openssl req -inform pem -outform der -in mydomain.com.csr -out mydomain.com.der.csr
 ```
 
-
 可以使用下面命令查看 
 
 ```bash
 openssl asn1parse -inform der  -i -in mydomain.com.der.csr
 ```
-
 
 ### References
 

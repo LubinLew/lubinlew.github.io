@@ -1,4 +1,5 @@
 * [Linux下C编程](linux_c_programming/)
+* [shell](shell/)
 * [k8s](k8s/)
 * [HTTP](http/)
 * [HTTPS](https/)

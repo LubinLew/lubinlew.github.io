@@ -8,7 +8,7 @@
 * [OpenResty](openresty/)
 * [Python](python/)
 * [HyperScan](hyperscan/)
-* [网络](network/)
+* [网络编程](network_programming/)
 * [网络安全](network_security/)
 * [虚拟化](virtualization/)
 * [docker](docker/)

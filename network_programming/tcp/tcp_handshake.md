@@ -6,7 +6,7 @@
 
 
 
-![三次握手](_sources/tcp_handshake.svg)
+![三次握手](_resources/tcp_handshake.svg)
 
 ### 三次握手中的TCP状态
 

@@ -21,4 +21,6 @@
 - [部署模式](nginx/mode/README.md)
   - [Web服务器](nginx/mode/web_server.md)
   - [镜像模式](nginx/mode/mirror.md)
+  - [正向代理](nginx/mode/proxy.md)
   - [反向代理](nginx/mode/reverse_proxy.md)
+  - [负载均衡](nginx/mode/load_balance)

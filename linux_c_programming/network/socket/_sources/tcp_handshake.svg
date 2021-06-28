@@ -1,78 +1,136 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="613" height="531" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 613 531">
+<svg xmlns="http://www.w3.org/2000/svg" width="707" xmlns:xlink="http://www.w3.org/1999/xlink" height="600" viewBox="0 0 707 600">
     <defs/>
-    <g transform="translate(-66.00,-75.50)">
-        <g id="table1" transform="translate(134.00,76.00)">
-            <g>
-                <path fill="#4cdae6" stroke="#42c0ca" d="M.0,.0L114.0,.0L114.0,33.0L.0,33.0L.0,.0z"/>
-                <text style="fill:#ffffff;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
-                    <tspan x="45.0" y="22.0">TCP</tspan>
-                </text>
-            </g>
-            <g>
-                <path fill="#ffffff" stroke="#42c0ca" d="M.0,33.0L114.0,33.0L114.0,82.9L.0,82.9L.0,33.0z"/>
-                <text style="fill:#454545;font-family:Microsoft YaHei;font-size:12.00pt" xml:space="preserve">
-                    <tspan x="33.0" y="64.5">客户端</tspan>
-                </text>
-            </g>
-        </g>
-        <g id="table2" transform="translate(508.26,76.00)">
-            <g>
-                <path fill="#4cdae6" stroke="#000000" d="M.0,.0L114.0,.0L114.0,33.0L.0,33.0L.0,.0z"/>
-                <text style="fill:#ffffff;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
-                    <tspan x="45.0" y="22.0">TCP</tspan>
-                </text>
-            </g>
-            <g>
-                <path fill="#fa945d" stroke="#000000" d="M.0,33.0L114.0,33.0L114.0,82.9L.0,82.9L.0,33.0z"/>
-                <text style="fill:#454545;font-family:Microsoft YaHei;font-size:12.00pt" xml:space="preserve">
-                    <tspan x="33.0" y="64.5">服务端</tspan>
-                </text>
-            </g>
-        </g>
-        <g id="shape3" transform="translate(193.00,208.00)">
-            <path fill="none" stroke="#303030" d="M.0,.0L362.1,47.2"/>
-            <path stroke-width="1" fill="#303030" stroke="#303030" stroke-linecap="round" d="M362.4,44.2L368.0,48.0L361.7,50.2L362.4,44.2"/>
-            <rect x="179.5" fill="#ffffff" y="15.5" width="27.0" height="19.0"/>
-            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
-                <tspan x="179.5" y="30.5">SYN</tspan>
+    <g transform="translate(-182.00,-70.00)">
+        <g transform="translate(183.00,285.50)" id="shape1">
+            <path stroke-dasharray="11,5,2.5,5" d="M11.0,.0L656.0,.0C662.1,.0,667.0,4.9,667.0,11.0L667.0,273.0C667.0,279.1,662.1,284.0,656.0,284.0L11.0,284.0C4.9,284.0,.0,279.1,.0,273.0L.0,11.0C.0,4.9,4.9,.0,11.0,.0z" fill-rule="nonzero" stroke="#323232" fill="#ffffff"/>
+            <text xml:space="preserve" style="fill:#ff00ff;font-family:Microsoft YaHei;font-size:19.00pt">
+                <tspan x="563.0" y="30.0">三次握手</tspan>
             </text>
         </g>
-        <path fill="none" id="shape4" stroke="#191919" transform="translate(191.00,159.00)" d="M.0,.0L.0,446.0"/>
-        <path fill="none" id="shape5" stroke="#191919" transform="translate(565.26,159.00)" d="M.0,.0L.0,446.0"/>
-        <g id="shape6" transform="translate(565.00,300.00)">
-            <path fill="none" stroke="#303030" d="M.0,.0L-366.1,56.1"/>
-            <path stroke-width="1" fill="#303030" stroke="#303030" stroke-linecap="round" d="M-365.6,59.1L-372.0,57.0L-366.5,53.1L-365.6,59.1"/>
-            <rect x="-221.6" fill="#ffffff" y="20.2" width="57.0" height="19.0"/>
-            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
-                <tspan x="-221.6" y="35.2">SYN ACK</tspan>
+        <g transform="translate(290.00,71.00)" id="shape2">
+            <path d="M100.0,53.0L100.0,7.0C100.0,3.1,96.9,.0,93.0,.0L7.0,.0C3.1,.0,.0,3.1,.0,7.0L.0,53.0C.0,56.9,3.1,60.0,7.0,60.0L93.0,60.0C96.9,60.0,100.0,56.9,100.0,53.0z" fill-rule="nonzero" stroke="#323232" fill="#83ebdc"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:微软雅黑;font-size:10.00pt;font-weight:bold">
+                <tspan x="30.5" y="35.5">客户端</tspan>
             </text>
         </g>
-        <g id="shape7" transform="translate(193.00,405.00)">
-            <path fill="none" stroke="#303030" d="M.0,.0L360.8,65.9"/>
-            <path stroke-width="1" fill="#303030" stroke="#303030" stroke-linecap="round" d="M361.4,63.0L366.7,67.0L360.3,68.9L361.4,63.0"/>
-            <rect x="179.3" fill="#ffffff" y="25.5" width="26.0" height="19.0"/>
-            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
-                <tspan x="179.3" y="40.5">ACK</tspan>
+        <g transform="translate(567.00,71.00)" id="shape3">
+            <path d="M100.0,53.0L100.0,7.0C100.0,3.1,96.9,.0,93.0,.0L7.0,.0C3.1,.0,.0,3.1,.0,7.0L.0,53.0C.0,56.9,3.1,60.0,7.0,60.0L93.0,60.0C96.9,60.0,100.0,56.9,100.0,53.0z" fill-rule="nonzero" stroke="#323232" fill="#8acf57"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:微软雅黑;font-size:10.00pt;font-weight:bold">
+                <tspan x="30.5" y="35.5">服务端</tspan>
             </text>
         </g>
-        <g id="shape8" transform="translate(67.00,172.00)">
-            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
-                <tspan x="14.0" y="24.5">connect( ) 阻塞</tspan>
+        <path d="M.0,.0L.0,531.5" transform="translate(340.00,131.00)" id="shape4" stroke="#191919" fill="none"/>
+        <path d="M.0,.0L.0,531.5" transform="translate(617.00,131.00)" id="shape5" stroke="#191919" fill="none"/>
+        <g transform="translate(198.00,258.00)" id="shape6">
+            <text xml:space="preserve" style="fill:#191919;font-family:微软雅黑;font-size:10.00pt">
+                <tspan x="5.5" y="45.5">调用</tspan>
+                <tspan x="31.5" style="fill:#ff0000;font-style:italic;font-weight:bold">connect()</tspan>
+                <tspan x="93.5"> 后阻塞</tspan>
             </text>
         </g>
-        <g id="shape9" transform="translate(558.00,262.00)">
-            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
-                <tspan x="18.5" y="24.5">accept( ) 阻塞</tspan>
+        <g transform="translate(340.00,306.00)" id="shape7">
+            <path d="M.0,.0L268.1,46.0" stroke="#191919" fill="none"/>
+            <path stroke-linecap="round" d="M268.6,43.0L274.0,47.0L267.6,48.9L268.6,43.0" stroke="#191919" fill="#191919" stroke-width="1"/>
+            <rect width="35.0" x="118.8" y="13.7" fill="#ffffff" height="19.0"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:微软雅黑;font-size:10.00pt;font-weight:bold">
+                <tspan x="118.8" y="28.7"> SYN </tspan>
             </text>
         </g>
-        <g id="shape10" transform="translate(67.00,362.85)">
-            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
-                <tspan x="14.0" y="24.5">connect( ) 返回</tspan>
+        <g transform="translate(615.00,178.00)" id="shape8">
+            <text xml:space="preserve" style="fill:#191919;font-family:微软雅黑;font-size:10.00pt">
+                <tspan x="4.5" y="22.0">调用</tspan>
+                <tspan x="30.5" style="fill:#ff0000;font-style:italic;font-weight:bold">listen()</tspan>
+                <tspan x="75.5"> 监听端口</tspan>
             </text>
         </g>
-        <g id="shape11" transform="translate(558.00,472.00)">
-            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
-                <tspan x="18.5" y="24.5">accept( ) 返回</tspan>
+        <g transform="translate(614.00,241.00)" id="shape9">
+            <text xml:space="preserve" style="fill:#191919;font-family:微软雅黑;font-size:10.00pt">
+                <tspan x="4.0" style="fill:#000000" y="21.0">调用</tspan>
+                <tspan x="30.0" style="fill:#ff0000;font-style:italic;font-weight:bold">accept()</tspan>
+                <tspan x="84.0"> 函数阻塞等待链接到来</tspan>
+            </text>
+        </g>
+        <g transform="translate(614.00,390.00)" id="shape10">
+            <path d="M.0,.0L-268.1,44.0" stroke="#191919" fill="none"/>
+            <path stroke-linecap="round" d="M-267.6,47.0L-274.0,45.0L-268.6,41.1L-267.6,47.0" stroke="#191919" fill="#191919" stroke-width="1"/>
+            <rect width="71.0" x="-175.5" y="13.7" fill="#ffffff" height="19.0"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:微软雅黑;font-size:10.00pt;font-weight:bold">
+                <tspan x="-175.5" y="28.7">  SYN ACK </tspan>
+            </text>
+        </g>
+        <g transform="translate(198.00,416.00)" id="shape11">
+            <text xml:space="preserve" style="fill:#191919;font-family:微软雅黑;font-size:10.00pt">
+                <tspan x="20.0" y="23.0">函数</tspan>
+                <tspan x="46.0" style="fill:#ff0000;font-style:italic;font-weight:bold">connect()</tspan>
+                <tspan x="108.0"> 返回</tspan>
+            </text>
+        </g>
+        <g transform="translate(340.00,454.00)" id="shape12">
+            <path d="M.0,.0L268.1,54.8" stroke="#191919" fill="none"/>
+            <path stroke-linecap="round" d="M268.7,51.9L274.0,56.0L267.5,57.7L268.7,51.9" stroke="#191919" fill="#191919" stroke-width="1"/>
+            <rect width="36.0" x="118.3" y="18.1" fill="#ffffff" height="19.0"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:微软雅黑;font-size:10.00pt;font-weight:bold">
+                <tspan x="118.3" y="33.1"> ACK </tspan>
+            </text>
+        </g>
+        <g transform="translate(616.00,499.00)" id="shape13">
+            <text xml:space="preserve" style="fill:#191919;font-family:微软雅黑;font-size:10.00pt">
+                <tspan x="4.0" style="fill:#000000" y="21.0">函数</tspan>
+                <tspan x="30.0" style="fill:#ff0000;font-style:italic;font-weight:bold"> accept()</tspan>
+                <tspan x="88.0"> 返回</tspan>
+            </text>
+        </g>
+        <g transform="translate(220.00,305.00)" id="shape14">
+            <text xml:space="preserve" style="fill:#0000ff;font-family:Microsoft YaHei;font-size:10.00pt;font-weight:bold">
+                <tspan x="49.0" y="22.0">SYN_SENT</tspan>
+            </text>
+        </g>
+        <g transform="translate(618.00,200.00)" id="shape15">
+            <text xml:space="preserve" style="fill:#0000ff;font-family:Microsoft YaHei;font-size:10.00pt;font-weight:bold">
+                <tspan x="4.0" y="22.0">LISTEN</tspan>
+            </text>
+        </g>
+        <g transform="translate(614.00,357.00)" id="shape16">
+            <text xml:space="preserve" style="fill:#0000ff;font-family:Microsoft YaHei;font-size:10.00pt;font-weight:bold">
+                <tspan x="4.0" y="22.0">SYN_RCVD</tspan>
+            </text>
+        </g>
+        <g transform="translate(220.00,439.00)" id="shape17">
+            <text xml:space="preserve" style="fill:#0000ff;font-family:Microsoft YaHei;font-size:10.00pt;font-weight:bold">
+                <tspan x="27.0" y="22.0">ESTABLISHED</tspan>
+            </text>
+        </g>
+        <g transform="translate(618.00,525.50)" id="shape18">
+            <text xml:space="preserve" style="fill:#0000ff;font-family:Microsoft YaHei;font-size:10.00pt;font-weight:bold">
+                <tspan x="4.0" y="22.0">ESTABLISHED</tspan>
+            </text>
+        </g>
+        <g transform="translate(258.00,586.00)" id="shape19">
+            <text xml:space="preserve" style="fill:#ff0000;font-family:Microsoft YaHei;font-size:10.00pt;font-style:italic;font-weight:bold">
+                <tspan x="34.0" y="22.5">write()</tspan>
+            </text>
+        </g>
+        <g transform="translate(618.00,635.50)" id="shape20">
+            <text xml:space="preserve" style="fill:#ff0000;font-family:Microsoft YaHei;font-size:10.00pt;font-style:italic;font-weight:bold">
+                <tspan x="4.0" y="22.5">read()</tspan>
+            </text>
+        </g>
+        <g transform="translate(340.00,605.00)" id="shape21">
+            <path d="M.0,.0L268.1,46.0" stroke="#191919" fill="none"/>
+            <path stroke-linecap="round" d="M268.6,43.0L274.0,47.0L267.6,48.9L268.6,43.0" stroke="#191919" fill="#191919" stroke-width="1"/>
+            <rect width="52.0" x="110.3" y="13.7" fill="#ffffff" height="19.0"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan x="110.3" y="28.7">请求数据</tspan>
+            </text>
+        </g>
+        <g transform="translate(222.00,127.00)" id="shape22">
+            <text xml:space="preserve" style="fill:#0000ff;font-family:Microsoft YaHei;font-size:10.00pt;font-weight:bold">
+                <tspan x="64.0" y="22.0">CLOSED</tspan>
+            </text>
+        </g>
+        <g transform="translate(616.00,127.00)" id="shape23">
+            <text xml:space="preserve" style="fill:#0000ff;font-family:Microsoft YaHei;font-size:10.00pt;font-weight:bold">
+                <tspan x="4.0" y="22.0">CLOSED</tspan>
             </text>
         </g>
     </g>

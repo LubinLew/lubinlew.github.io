@@ -12,3 +12,4 @@
 - [SSH登录慢的问题解决](others/ssh_slow_login.md)
 - [DNS记录的类型](others/dns_record.md)
 - [发布的类型](others/release.md)
+- [云原生](others/cloud-native.md)

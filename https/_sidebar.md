@@ -24,6 +24,7 @@
      - [证书签名请求(CSR)](https/pki/csr.md)
      - [自建CA签发证书](https/pki/ca.md)
      - [安装自签发CA证书](https/pki/import_ca.md)
+     - [证书链](https/pki/cert_chain.md)
      - [共享系统证书](https/cactl.md)
   - [三、SSL/TLS](https/tls/README.md)
      - [TLSv1.3](https/tls/tlsv1.3.md)

@@ -72,5 +72,3 @@ openssl rsautl -verify -inkey publickey.pem -pubin -keyform PEM -in signature
 #### 验签(RSA)
 
 > [xbps/verifysig.c at master · void-linux/xbps · GitHub](https://github.com/void-linux/xbps/blob/master/lib/verifysig.c)
-
-

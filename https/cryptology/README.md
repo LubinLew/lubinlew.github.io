@@ -40,3 +40,8 @@ TLS中的算法分为4类，
 - key exchange(密钥交换)算法
 - encryption(加密)算法
 - message authentication code (消息认证码 简称MAC)算法 
+
+
+### References
+
+> https://www.bilibili.com/video/BV1tz4y197hm?from=search&seid=12387077708171018816

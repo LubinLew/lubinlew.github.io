@@ -12,8 +12,6 @@ int RSA_public_decrypt(int flen, const unsigned char *from,
     unsigned char *to, RSA *rsa, int padding);
 ```
 
-
-
 ### 例子
 
 > [lzhaoruoxu/lochsemusamples/MyCrypto/MyCrypto/rsatest.cpp · GitHub](https://github.com/zhaoruoxu/lochsemusamples/blob/master/MyCrypto/MyCrypto/rsatest.cpp)
@@ -90,7 +88,6 @@ int main(int argc, const char *argv[])
     printf("=== SUCCESS !!!\n");
     exit(EXIT_SUCCESS);
 }
-
 ```
 
 #### 公钥解密
@@ -157,5 +154,4 @@ int main(int argc, const char *argv[])
     exit(EXIT_SUCCESS);
 
 }
-
 ```

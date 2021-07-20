@@ -16,6 +16,10 @@
 
 ![flow](_resources/digital_signature.png)
 
+
+
+![flow2](_resources/digital_signature2.svg)
+
 ---
 
 ### 使用 OpenSSL 命令

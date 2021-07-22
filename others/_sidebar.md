@@ -15,3 +15,4 @@
 - [CentOS-7上安装 MariaDB](others/mariadb_centos7.md)
 - [CentOS-7上安装 MySQL8](others/mysql_centos7.md)
 - [CentOS-7上安装 PostgreSQL](others/postgresql.md)
+- [RPM和DEB包的操作](others/linux_package.md)

@@ -1,8 +1,8 @@
-公钥加密，私钥解密时，因为加入随机数，每次得到的加密信息不固定。私钥加密，公钥解密时，得到的加密信息固定。 `openssl rsautl` 只支持公钥加密私钥解密;不支持私钥加密公钥解密, 因为这种方式是不安全的。
-
 # RSA
 
 1977年，三位数学家Rivest、Shamir 和 Adleman 设计了一种算法，可以实现非对称加密。这种算法用他们三个人的名字命名，叫做RSA算法。从那时直到现在，RSA算法一直是最广为使用的"非对称加密算法"。这种算法非常可靠，密钥越长，它就越难破解。随着计算机算力提升，目前普遍认为 2048位的密钥是安全的。
+
+[PKCS #1: RSA Cryptography Specifications Version 2.2, RFC8017](https://datatracker.ietf.org/doc/html/rfc8017)
 
 > ```bash
 > # 生成 RSA 私钥（2048位）

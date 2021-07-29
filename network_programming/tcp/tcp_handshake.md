@@ -2,10 +2,6 @@
 
 > Three-Way Handshake, [RFC793](https://www.ietf.org/rfc/rfc793.txt)
 
-
-
-
-
 ![三次握手](_resources/tcp_handshake.svg)
 
 ### 三次握手中的TCP状态

@@ -1,3 +1,0 @@
-- [简介](network_programming/socket/README.md)
-- [惊群效应](network_programming/socket/thundering_herd.md)
-- [reuseport](network_programming/socket/reuseport.md)

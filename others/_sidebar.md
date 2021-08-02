@@ -16,4 +16,6 @@
 - [CentOS-7上安装 MySQL8](others/mysql_centos7.md)
 - [CentOS-7上安装 PostgreSQL](others/postgresql.md)
 - [RPM和DEB包的操作](others/linux_package.md)
+- [QR Code 简介](others/qrcode.md)
+- [Pyinstaller](others/pyInstaller.md)
 - [修改器作弊码](others/cheat_code_format.md)

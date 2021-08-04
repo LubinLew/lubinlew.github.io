@@ -78,6 +78,27 @@ After:
 
 ```
 
+### 向后字节搜索(设置指针)
+
+```txt
+8TCCXXXX YYYYYYYY
+*Other Code Here, Use Specific Offset Type*
+
+T = 偏移类型(Offset Type)
+​    0 : 后面的 XXXXXX 表示的是绝对地址(从文件开头的偏移字节数)
+    8 : 后面的 XXXXXX 从指针(上面其他语句产生的结果,后面会讲)偏移的字节数
+
+C = Amount of Times to Find until Pointer Set
+X = 搜索的字节数(小端, 即安照文件中字节顺序)
+Y = 搜索的字节内容, 可以写多行, 最后一行不足16个字节时补 0
+
+Example 1:
+80010004 12345678 - 从文件开头搜索4个字节 "12345678", 并设置指针(指针的位置为12所在的字节) 
+28000010 7FFFFFFF - 从指针的位置偏移 16(0x10)个字节, 写入四个字节 7FFFFFFF
+
+```
+
+
 ### Reference
 
 https://playersquared.com/forums/81-save-wizard-quick-codes/3012-save-wizard-custom-quick-code-formats.html

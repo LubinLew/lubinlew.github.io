@@ -1,8 +1,23 @@
 # RSA
 
-1977年，三位数学家Rivest、Shamir 和 Adleman 设计了一种算法，可以实现非对称加密。这种算法用他们三个人的名字命名，叫做RSA算法。从那时直到现在，RSA算法一直是最广为使用的"非对称加密算法"。这种算法非常可靠，密钥越长，它就越难破解。随着计算机算力提升，目前普遍认为 2048位的密钥是安全的。
+1977年，三位数学家Rivest、Shamir 和 Adleman 设计了一种算法，可以实现非对称加密。这种算法用他们三个人的名字命名，叫做RSA算法。
 
-[PKCS #1: RSA Cryptography Specifications Version 2.2, RFC8017](https://datatracker.ietf.org/doc/html/rfc8017)
+从那时直到现在，RSA算法一直是最广为使用的"非对称加密算法"。
+
+这种算法非常可靠，密钥越长，它就越难破解。随着计算机算力提升，目前普遍认为 2048位的密钥是安全的。
+
+RSA 算法对应标准的是[RFC8017](https://datatracker.ietf.org/doc/html/rfc8017), 即 PKCS #1: RSA Cryptography Specifications Version 2.2。
+
+#### 常用术语
+
+| 英文               | 中文    | 说明                |
+| ---------------- | ----- | ----------------- |
+| Modulus          | 模数    |                   |
+| Exponent         | 指数    |                   |
+| Prime Number     | 素数，质数 | 只能被1和其自身整除        |
+| Modulo Operation | 模运算   | 下文中的 mod 即为模运算的简写 |
+
+#### 生成RSA密钥对
 
 > ```bash
 > # 生成 RSA 私钥（2048位）
@@ -17,9 +32,9 @@
 
 基本原理：对于两个质数相乘容易， 而将其乘积分解很难，即 `n = p1 * P2`, 已知 p1 和 p2 求 n 简单, 但是已知 n 求 p1 和 p2 很难。
 
-RSA加密的原理：<mark>c = m<sup>e</sup> mod n</mark>  c 表示密文，m 表示明文，e 和 n 为公钥。已知 m、e 、n 求 c 简单，但是 已知 e、n、c 求 m 很难。
+RSA加密的原理：<mark>c = m<sup>e</sup> mod n</mark>  ，c 表示密文，m 表示明文，e 和 n 为公钥。已知 m、e 、n 求 c 简单，但是 已知 e、n、c 求 m 很难。
 
-RSA解密的原理：<mark>m = c<sup>d </sup>mod n</mark>  解密需要 私钥 d 
+RSA解密的原理：<mark>m = c<sup>d </sup>mod n</mark>  ，解密需要 私钥 d 
 
 > n 为随机选取的两个质数p1 和  p2的乘积, e为一个随机整数但是要与 φ(n) (欧拉公式)互为质数.
 

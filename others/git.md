@@ -1,7 +1,35 @@
 # GIT命令的使用
 
 **目录**
-=================
+
+<!-- TOC -->
+
+- [GIT命令的使用](#git命令的使用)
+  - [基本设置](#基本设置)
+    - [设置用户名称和邮箱](#设置用户名称和邮箱)
+    - [保存仓库的账号密码](#保存仓库的账号密码)
+    - [颜色显示设置](#颜色显示设置)
+      - [默认颜色](#默认颜色)
+      - [具体设置](#具体设置)
+  - [基本操作](#基本操作)
+    - [Branch操作](#branch操作)
+      - [查看branch](#查看branch)
+      - [切换Branch](#切换branch)
+      - [新建Branch](#新建branch)
+      - [删除Branch](#删除branch)
+      - [删除远程Branch](#删除远程branch)
+      - [从Tag创建新的Brach](#从tag创建新的brach)
+    - [TAG操作](#tag操作)
+      - [查看tag](#查看tag)
+      - [新建tag](#新建tag)
+      - [删除tag](#删除tag)
+        - [删除所有tag](#删除所有tag)
+  - [进阶操作](#进阶操作)
+    - [删除所有提交记录](#删除所有提交记录)
+    - [同步fork项目](#同步fork项目)
+    - [gitlab 同步 github 项目](#gitlab-同步-github-项目)
+
+<!-- /TOC -->
 
 * [基本设置](#基本设置)
   - [设置用户名称和邮箱](#设置用户名称和邮箱)
@@ -21,8 +49,6 @@
   - [删除所有提交记录](#删除所有提交记录)
   - [同步fork项目](#同步fork项目)
   - [gitlab 同步 github 项目](#gitlab-同步-github-项目)
-
-
 
 ---
 
@@ -96,6 +122,18 @@ git branch <name>
 git branch -d <name>
 # 删除远程分支
 git push origin --delete <name>
+```
+
+#### 删除远程Branch
+
+```bash
+git push origin --delete branch_name
+```
+
+#### 从Tag创建新的Brach
+
+```bash
+git branch <new-branch-name> <tag-name>
 ```
 
 ----
@@ -213,4 +251,3 @@ git remote add --mirror=fetch github https://github.com/greenbone/gsa.git
 git pull --all
 git push --all
 ```
-

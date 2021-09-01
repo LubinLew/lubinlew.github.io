@@ -17,7 +17,7 @@
    可用性（Availability）
 
 
-二、网络攻击的防护
+### 二、网络攻击的防护
 
 1. 攻击的种类(说明及举例)、原理、防御措施 https://www.kaspersky.com.cn/resource-center/definitions/what-is-cyber-security
 服务可用性（DDos 、CC、慢速攻击等） 
@@ -30,9 +30,21 @@ OWASP TOP10 web 攻击
  - 加密机（https://zhuanlan.zhihu.com/p/29038992）
  - IDS（NIDS、HIDS（EDR））
  - IPS
- - FW(防火墙)
+ - WAF
+ - FW(防火墙)/NGFW(下一代防火墙)
  - 数据库审计
+ - 日志审计
  - 。。。。
 
+### 三、安全厂商
 
-
+ - [mitre](network_security/mitre/README.md) - 安全资讯
+ - [Palo Alto Networks](https://www.paloaltonetworks.com/) - 防火墙等设备
+ - [fortinet|飞塔](https://www.fortinet.com/) - 防火墙等设备
+ - [SANGFOR|深信服](https://www.sangfor.com.cn)
+ - [nsfocus|绿盟](https://www.nsfocus.com.cn/)
+ - [Venus|启明星辰](https://www.venustech.com.cn/)
+ - [TOPSEC|天融信](http://www.topsec.com.cn/)
+ - [DPtech|迪普科技](http://www.dptech.com/)
+ - [奇安信](https://www.qianxin.com/)
+ - [青藤云](https://www.qingteng.cn/) - 主机安全(HIDS/EDR)

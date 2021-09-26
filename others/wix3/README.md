@@ -13,19 +13,19 @@ WiX supports a broad spectrum of Windows Installer features. In addition, WiX al
 
 ### How does WiX work?
 
-The WiX source code is written in XML format with a .wxs file extension. The WiX tools follow the traditional compile and link model used to create executables from source code. At build time, the WiX source files are validated against the core WiX schema, then processed by a preprocessor, compiler, and linker to create the final result. There are a set of WiX tools that can be used to produce different output types. For a complete list of file types and tools in WiX, see the [File Types](https://wixtoolset.org/documentation/manual/v3/overview/files.html) and the [List of Tools](https://wixtoolset.org/documentation/manual/v3/overview/alltools.html) sections.
+The WiX source code is written in XML format with a .wxs file extension. The WiX tools follow the traditional compile and link model used to create executables from source code. At build time, the WiX source files are validated against the core WiX schema, then processed by a preprocessor, compiler, and linker to create the final result. There are a set of WiX tools that can be used to produce different output types. For a complete list of file types and tools in WiX, see the [File Types](others/wix3/overview/files.html) and the [List of Tools](others/wix3/overview/alltools.html) sections.
 
 See the following topics for more detailed information:
 
-- [Fundamental Tools and Concepts](https://wixtoolset.org/documentation/manual/v3/overview/index.html)
-- [Creating Installation Package Bundles](https://wixtoolset.org/documentation/manual/v3/bundle/index.html)
-- [Working in Visual Studio](https://wixtoolset.org/documentation/manual/v3/votive/index.html)
-- [Working with MSBuild](https://wixtoolset.org/documentation/manual/v3/msbuild/index.html)
-- [How To Guides](https://wixtoolset.org/documentation/manual/v3/howtos/index.html)
-- [Standard Custom Actions](https://wixtoolset.org/documentation/manual/v3/customactions/index.html)
-- [Creating an Installation Patch](https://wixtoolset.org/documentation/manual/v3/patching/index.html)
-- [WiX Schema Reference](https://wixtoolset.org/documentation/manual/v3/xsd/index.html)
-- [Developing for WiX](https://wixtoolset.org/documentation/manual/v3/wixdev/index.html)
+- [Fundamental Tools and Concepts](others/wix3/overview/index.html)
+- [Creating Installation Package Bundles](others/wix3/bundle/index.html)
+- [Working in Visual Studio](others/wix3/votive/index.html)
+- [Working with MSBuild](others/wix3/msbuild/index.html)
+- [How To Guides](others/wix3/howtos/index.html)
+- [Standard Custom Actions](others/wix3/customactions/index.html)
+- [Creating an Installation Patch](others/wix3/patching/index.html)
+- [WiX Schema Reference](others/wix3/xsd/index.html)
+- [Developing for WiX](others/wix3/wixdev/index.html)
 
 ### WiX system requirements
 

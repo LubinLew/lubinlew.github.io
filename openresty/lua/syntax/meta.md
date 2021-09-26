@@ -16,6 +16,4 @@ setmetatable(table, metatable)
 getmetatable(object)
 ```
 
-
-
 查找元方法的顺序：如果第一个值有元表且元表中存在所需的元方法，那么就是使用这个元方法；如果第二个值有元表且元表中存在所需的元方法，则使用这个元方法；否则Lua会抛出异常。

@@ -234,6 +234,8 @@ git remote add upstream https://github.com/openresty/lua-nginx-module.git
 
 ```bash
 git fetch upstream
+# 只下载某个tag
+# git fetch upstream refs/tags/v4.2.1
 git merge upstream/master
 git push
 ```

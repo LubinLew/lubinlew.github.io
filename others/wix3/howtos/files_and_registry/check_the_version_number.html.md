@@ -1,36 +1,46 @@
----
-title: How To: Check the Version Number of a File During Installation
-layout: documentation
----
-# How To: Check the Version Number of a File During Installation
-Installers often need to look up the version number of a file on disk during the installation process. The check is often used in advance of a conditional statement later in install, such as to block the user from installing if a file is missing, or to display custom installation UI depending on whether the file version is high enough. This how to demonstrates verifying the version of a file on disk, then using the resulting property to block the application&apos;s installation if the file version is lower than expected.
+# 安装过程中检查版本号
 
-## Step 1: Determine the version of the file
-File versions are determined using the [&lt;Property&gt;](../../xsd/wix/property.html), [&lt;DirectorySearch&gt;](../../xsd/wix/directorysearch.html) and [&lt;FileSearch&gt;](../../xsd/wix/filesearch.html) elements. The following snippet looks for the user32.dll file in the machine&apos;s System32 directory and checks to see if it is at least version 6.0.6001.1751.
+在安装过程中, 经常需要查找硬盘上某个文件的版本号。该检查通常在稍后安装的条件语句(Condition)之前使用。
+例如当某些文件不存在时阻止用户安装， 或者根据文件版本是否足够高来显示自定义安装 UI。
+本文会演示如何验证磁盘上文件的版本，如果文件版本低于预期，则使用结果[<Property>](others/wix3/xsd/wix/property.html.md)属性阻止应用程序的安装。
 
-<pre>
-&lt;<font size="2" color="#A31515">Property</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"USER32VERSION"</font><font size="2" color="#0000FF">&gt;
-    &lt;</font><font size="2" color="#A31515">DirectorySearch</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"SystemFolderDriverVersion"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Path</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">[SystemFolder]</font><font size="2">"</font><font size="2" color="#0000FF">&gt;
-        &lt;</font><font size="2" color="#A31515">FileSearch</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Name</font><font size="2" color="#0000FF">=</font><font size="2">"user32.dll"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">MinVersion</font><font size="2" color="#0000FF">=</font><font size="2">"6.0.6001.1750"</font><font size="2" color="#0000FF">/&gt;
-    &lt;/</font><font size="2" color="#A31515">DirectorySearch</font><font size="2" color="#0000FF">&gt;
-&lt;/</font><font size="2" color="#A31515">Property</font><font size="2" color="#0000FF">&gt;</font>
-</pre>
 
-Searching for a file is accomplished by describing the directories to search, and then specifying the file to look up in that directory.
 
-The Property element defines the Id for the results of the file search. This Id is used later in the WiX project, for example in conditions. The DirectorySearch element is used to build the directory hierarchy to search for the file. In this case it is given a unique Id, and the path is set to the Windows Installer defined <a href="http://msdn.microsoft.com/library/aa372055.aspx" target="_blank">SystemFolder</a> property which points to the user&apos;s **Windows\System32** directory. The FileSearch element specifies the name of the file to look for in the parent DirectorySearch folder. The MinVersion attribute specifies the minimum version of the file to find.
+## Step 1: 决定文件的版本号
 
-If the file is found successfully the USER32VERSION property will be set to the full path to the user32.dll file.
+文件版本是使用 [<Property>](others/wix3/xsd/wix/property.html.md), [<DirectorySearch>](others/wix3/xsd/wix/directorysearch.html.md) 和 [<FileSearch>](others/wix3/xsd/wix/filesearch.html.md) 元素来确定的。
+以下示例代码演示的是在机器的 System32 目录中查找 user32.dll 文件，并检查它是否至少为 6.0.6001.1751 版本。
 
-**Important:** When doing a locale-neutral search for a file, **you must set the MinVersion property to one revision number lower than the actual version you want to search for**. In this example, while we want to find file version 6.0.6001.1751, the MinVersion is set to 6.0.6001.1750. This is because of a quirk in how the Windows Installer matches file versions. <a href="http://msdn.microsoft.com/library/aa371853.aspx" target="_blank">More information</a> is available in the Windows Installer documentation.
+```xml
+<Property Id="USER32VERSION">
+    <DirectorySearch Id="SystemFolderDriverVersion" Path="[SystemFolder]">
+        <FileSearch Name="user32.dll" MinVersion="6.0.6001.1750"/>
+    </DirectorySearch>
+</Property>
+```
 
-## Step 2: Use the property in a condition
-Once you have determined whether the file exists with the requested version you can use the property in a condition. The following is a simple example that prevents installation of the application if the user32.dll file version is too low.
+搜索文件是通过描述要搜索的目录来完成的，然后指定要在该目录中查找的文件。
+[<Property>](others/wix3/xsd/wix/property.html.md)元素定义文件搜索结果的 Id。此 ID 稍后在 WiX 项目中使用，例如在条件(Condition)中。
+DirectorySearch 元素用于构建目录层次结构以搜索文件。
 
-<pre>
-<font size="2" color="#0000FF">&lt;</font><font size="2" color="#A31515">Condition</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Message</font><font size="2" color="#0000FF">=</font><font size="2">"The installed version of user32.dll is not high enough to support this installer."</font><font size="2" color="#0000FF">&gt;
-    &lt;![CDATA[</font><font size="2" color="#808080">Installed OR USER32VERSION</font><font size="2" color="#0000FF">]]&gt;
-&lt;/</font><font size="2" color="#A31515">Condition</font><font size="2" color="#0000FF">&gt;</font>
-</pre>
+在这种情况下，它被赋予一个唯一的 ID，并且路径被设置为 Windows 安装程序定义的 [SystemFolder](http://msdn.microsoft.com/library/aa372055.aspx) 属性，该属性指向用户的 Windows\System32 目录。 
+FileSearch 元素指定要在父 DirectorySearch 文件夹中查找的文件的名称。 MinVersion 属性指定要查找的文件的最低版本。
 
-<a href="http://msdn.microsoft.com/library/aa369297.aspx" target="_blank">Installed</a> is a Windows Installer property that ensures the check is only done when the user is installing the application, rather than on a repair or remove. The USER32VERSION part will pass if the property is set to anything, and will fail if it is not set. The file check in Step 1 will set the property to the full path of the user32.dll file if it is found with an appropriate file version, and will not set it otherwise.
+如果成功找到该文件，则 USER32VERSION 属性将设置为 user32.dll 文件的完整路径。
+
+重要提示：对文件进行区域设置中立搜索时，必须将 MinVersion 属性设置为比要搜索的实际版本低一个修订号。 
+在此示例中，虽然我们要查找文件版本为 6.0.6001.1751，但 MinVersion 必须设置为 6.0.6001.1750。 
+这是因为 Windows Installer 匹配文件版本的方式存在一个怪癖，详见[此链接](http://msdn.microsoft.com/library/aa371853.aspx)。
+
+## Step 2: 在 Condition 中使用该属性(property)
+
+一旦确定存在请求版本的文件，那么您就可以在条件中使用该属性。
+下面是一个简单的例子，如果 user32.dll 文件版本太低，它会阻止应用程序的安装。
+
+```xml
+<Condition Message="The installed version of user32.dll is not high enough to support this installer.">
+    <![CDATA[Installed OR USER32VERSION]]>
+</Condition>
+```
+
+[Installed](http://msdn.microsoft.com/library/aa369297.aspx) 是 Windows Installer 属性，可确保仅在用户安装应用程序时进行检查，而不是在修复或删除时进行。 如果USER32VERSION属性设置不为空， 则将通过，如果未设置，则将失败。 如果找到具有适当文件版本的 user32.dll 文件，则步骤 1 中的文件检查会将属性设置为该文件的完整路径，否则不会设置它。

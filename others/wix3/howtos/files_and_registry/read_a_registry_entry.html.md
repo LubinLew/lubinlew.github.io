@@ -1,36 +1,42 @@
----
-title: How To: Read a Registry Entry During Installation
-layout: documentation
----
-# How To: Read a Registry Entry During Installation
-Installers often need to look up the value of a registry entry during the installation process. The resulting registry value is often used in a conditional statement later in install, such as to install a specific component if a registry entry is not found. This how to demonstrates reading an integer value from the registry and verifying that it exists in a <a href="http://msdn.microsoft.com/library/aa369752.aspx" target="_blank">launch condition</a>.
+# 安装过程中读注册表
 
-## Step 1: Read the registry entry into a property
-Registry entries are read using the [&lt;RegistrySearch&gt;](../../xsd/wix/registrysearch.html) element. The following snippet looks for the the presence of the key that identifies the installation of .NET Framework 2.0 on the target machine*.
+安装程序通常需要在安装过程中查找注册表项的值。
+生成的注册表值通常用于稍后安装的条件语句中，
+例如在未找到注册表项的情况下安装特定组件。
+本文将演示如何从注册表中读取一个整数值并验证它是否存在于启动条件中。
 
-<pre>
-<font size="2" color="#0000FF">&lt;</font><font size="2" color="#A31515">Property</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">NETFRAMEWORK20</font><font size="2">"</font><font size="2" color="#0000FF">&gt;
-    &lt;</font><font size="2" color="#A31515">RegistrySearch</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">NetFramework20</font><font size="2">"
-                    </font><font size="2" color="#FF0000">Root</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">HKLM</font><font size="2">"
-                    </font><font size="2" color="#FF0000">Key</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">Software\Microsoft\NET Framework Setup\NDP\v2.0.50727</font><font size="2">"</font>
-<font size="2" color="#FF0000">             Name</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">Install</font><font size="2">"
-                    </font><font size="2" color="#FF0000">Type</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">raw</font><font size="2">"</font><font size="2" color="#0000FF"> /&gt;
-&lt;/</font><font size="2" color="#A31515">Property</font><font size="2" color="#0000FF">&gt;</font>
-</pre>
+## Step 1: 将注册表项读入属性
 
-The RegistrySearch element specifies a unique id, the root in the registry to search, and the key to look under. The name attribute specifies the specific value to query. The type attribute specifies how the value should be treated. Raw indicates that the value should be prefixed according to the data type of the value. In this case, since Install is a DWORD, the resulting value will be prepended with a #.
+使用 [<RegistrySearch>](others/wix3/xsd/wix/registrysearch.html.md) 元素读取注册表项。
+以下代码段查找标识在目标计算机上安装 .NET Framework 2.0 的注册表项是否存在。
 
-The above sample will set the NETFRAMEWORK20 property to &quot;#1&quot; if the registry key was found, and to nothing if it wasn&apos;t.
+```xml
+<Property Id="NETFRAMEWORK20">
+    <RegistrySearch Id="NetFramework20"
+                    Root="HKLM"
+                    Key="Software\Microsoft\NET Framework Setup\NDP\v2.0.50727"
+                    Name="Install"
+                    Type="raw" />
+</Property>
+```
+
+RegistrySearch 元素指定唯一的 id、要搜索的注册表中的根以及要查找的键。
+name 属性指定要查询的特定值。 type 属性指定应如何处理该值。
+Raw 表示该值应根据值的数据类型添加前缀。 在这种情况下，由于 Install 是一个 DWORD，结果值将在前面加上一个 #。
+如果找到注册表项，上面的示例会将 NETFRAMEWORK20 属性设置为“#1”，如果没有找到，则设置为空。
+
+![net_framework_2_install](resources/net_framework_2_install.png)
 
 ## Step 2: Use the property in a condition
-After the property is set you can use it in a condition anywhere in your WiX project. The following snippet demonstrates how to use it to block installation if .NET Framework 2.0 is not installed.
 
-<pre>
-<font size="2" color="#0000FF">&lt;</font><font size="2" color="#A31515">Condition</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Message</font><font size="2" color="#0000FF">=</font><font size="2">"This application requires .NET Framework 2.0. Please install the .NET Framework then run this installer again."</font><font size="2" color="#0000FF">&gt;
-    &lt;![CDATA[</font><font size="2" color="#808080">Installed OR</font> <font size="2" color="#0000FF">NETFRAMEWORK20]]&gt;
-&lt;/</font><font size="2" color="#A31515">Condition</font><font size="2" color="#0000FF">&gt;</font>
-</pre>
+设置属性后，您可以在 WiX 项目的任何位置使用它。
+以下代码段演示了如何在未安装 .NET Framework 2.0 的情况下使用它来阻止安装。
 
-<a href="http://msdn.microsoft.com/library/aa369297.aspx" target="_blank">Installed</a> is a Windows Installer property that ensures the check is only done when the user is installing the application, rather than on a repair or remove. The NETFRAMEWORK20 part of the condition will pass if the property was set. If it is not set the installer will display the error message then abort the installation process.
+```xml
+<Condition Message="This application requires .NET Framework 2.0. Please install the .NET Framework then run this installer again.">
+    <![CDATA[Installed OR NETFRAMEWORK20]]>
+</Condition>
+```
 
-\* This registry entry is used for sample purposes only. If you want to detect the installed version of .NET Framework you can use the built-in WiX support. For more information see [How To: Check for .NET Framework Versions](../../howtos/redistributables_and_install_checks/check_for_dotnet.html).
+Installed 是 Windows Installer 属性，可确保仅在用户安装应用程序时进行检查，而不是在修复或删除时进行。
+如果设置了该属性，则条件的 NETFRAMEWORK20 部分将通过。 如果未设置，安装程序将显示错误消息，然后中止安装过程。

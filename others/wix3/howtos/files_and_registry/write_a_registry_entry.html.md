@@ -1,39 +1,45 @@
----
-title: How To: Write a Registry Entry During Installation
-layout: documentation
----
-# How To: Write a Registry Entry During Installation
-Writing registry entries during installation is similar to writing files during installation. You describe the registry hierarchy you want to write into, specify the registry values to create, then add the component to your feature list.
+# 安装过程中写注册表
 
-## Step 1: Describe the registry layout and values
-The following example illustrates how to write two registry entries, one to a specific value and the other to the default value.
+在安装期间写入注册表项与在安装期间写入文件类似。 需要描述要写入的注册表层次结构，指定要创建的注册表值，然后将组件添加到您的功能列表中。
 
-<pre>
-<font size="2" color="#0000FF">&lt;</font><font size="2" color="#A31515">DirectoryRef</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">TARGETDIR</font><font size="2">"</font><font size="2" color="#0000FF">&gt;
-    &lt;</font><font size="2" color="#A31515">Component</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">RegistryEntries</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Guid</font><font size="2" color="#0000FF">=</font><font size="2">"<a href="../../howtos/general/generate_guids.html">PUT-GUID-HERE</a>"</font><font size="2" color="#0000FF">&gt;
-        &lt;</font><font size="2" color="#A31515">RegistryKey</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Root</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">HKCU</font><font size="2">"
-                     </font><font size="2" color="#FF0000">Key</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">Software\MyCompany\MyApplicationName</font><font size="2">"</font>
-<font size="2" color="#FF0000">              Action</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">createAndRemoveOnUninstall</font><font size="2">"</font><font size="2" color="#0000FF">&gt;
-            &lt;</font><font size="2" color="#A31515">RegistryValue</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Type</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">integer</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Name</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">SomeIntegerValue</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Value</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">1</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">KeyPath</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">yes</font><font size="2">"</font><font size="2" color="#0000FF">/&gt;
-            &lt;</font><font size="2" color="#A31515">RegistryValue</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Type</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">string</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Value</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">Default Value</font><font size="2">"</font><font size="2" color="#0000FF">/&gt;
-        &lt;/</font><font size="2" color="#A31515">RegistryKey</font><font size="2" color="#0000FF">&gt;
-    &lt;/</font><font size="2" color="#A31515">Component</font><font size="2" color="#0000FF">&gt;
-&lt;/</font><font size="2" color="#A31515">DirectoryRef</font><font size="2" color="#0000FF">&gt;</font>
-</pre>
+## Step 1: 描述注册表布局和值
 
-The snippet begins with a DirectoryRef that points to the <a href="http://msdn.microsoft.com/library/aa372064.aspx" target="_blank">TARGETDIR</a> directory defined by Windows Installer. This effectively means the registry entries should be installed to the target user&apos;s machine. Under the DirectoryRef is a Component element that groups together the registry entries to be installed. The component is given an id for reference later in the WiX project and a unique guid.
+下面的示例说明了如何将两个注册表项写入特定值，另一个写入默认值。
 
-The registry entries are created by first using the [&lt;RegistryKey&gt;](../../xsd/wix/registrykey.html) element to specify where in the registry the values should go. In this example the key is under **HKEY\_CURRENT\_USER\Software\MyCompany\MyApplicationName**. The optional Action attribute is used to tell Windows Installer that the key should be created (if necessary) on install, and that the key and all its sub-values should be removed on uninstall.
+```xml
+<DirectoryRef Id="TARGETDIR">
+    <Component Id="RegistryEntries" Guid="PUT-GUID-HERE">
+        <RegistryKey Root="HKCU"
+                     Key="Software\MyCompany\MyApplicationName"
+              Action="createAndRemoveOnUninstall">
+            <RegistryValue Type="integer" Name="SomeIntegerValue" Value="1" KeyPath="yes"/>
+            <RegistryValue Type="string" Value="Default Value"/>
+        </RegistryKey>
+    </Component>
+</DirectoryRef>
+```
 
-Under the RegistryKey element the [&lt;RegistryValue&gt;](../../xsd/wix/registryvalue.html) element is used to create the actual registry values. The first is the SomeIntegerValue value, which is of type integer and has a value of 1. It is also marked as the KeyPath for the component, which is used by the Windows Installer to determine whether this component is installed on the machine. The second RegistryValue element sets the default value for the key to a string value of Default Value.
+该代码段以指向 Windows Installer 定义的 [TARGETDIR](http://msdn.microsoft.com/library/aa372064.aspx) 目录的 DirectoryRef 开头。这实际上意味着注册表项应该安装到目标用户的机器上。 
+DirectoryRef 下是一个 Component 元素，它将要安装的注册表项组合在一起。 该组件被赋予一个 id 以供稍后在 WiX 项目中参考和一个唯一的 guid。
 
-The id attribute is omitted on the RegistryKey and RegistryValue elements because there is no need to refer to these items elsewhere in the WiX project file. WiX will auto-generate ids for the elements based on the registry key, value, and parent component name.
+注册表项是通过首先使用 [<RegistryKey>](others/wix3/xsd/wix/registrykey.html.md) 元素来指定值在注册表中的位置创建的。
+在此示例中，注册表项位于 `HKEY_CURRENT_USER\Software\MyCompany\MyApplicationName` 下。
+可选的 Action 属性用于告诉 Windows Installer 应在安装时创建该键（如有必要），并且应在卸载时删除该键及其所有子值。
 
-## Step 2: Tell Windows Installer to install the entries
-After defining the directory structure and listing the registry entries to package into the installer, the last step is to tell Windows Installer to actually install the registry entry. The [&lt;Feature&gt;](../../xsd/wix/feature.html) element is used to do this. The following snippet adds a reference to the registry entries component, and should be inserted inside a parent Feature element.
+在 RegistryKey 元素下，<RegistryValue> 元素用于创建实际的注册表值。
+第一个是名为 SomeIntegerValue 值，它是整数类型，值为 1。它也被标记为组件的 KeyPath，
+Windows 安装程序使用它来确定该组件是否安装在机器上。 
+第二个 RegistryValue 元素将键的默认值设置为 `Default Value` 的字符串值。
 
-<pre>
-<font size="2" color="#A31515">&lt;ComponentRef</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"RegistryEntries"</font><font size="2" color="#0000FF"> /&gt;</font>
-</pre>
+RegistryKey 和 RegistryValue 元素上的 id 属性被省略，因为不需要在 WiX 项目文件的其他地方引用这些项目。 WiX 将根据注册表项、值和父组件名称为元素自动生成 id。
 
-The [&lt;ComponentRef&gt;](../../xsd/wix/componentref.html) element is used to reference the component created in Step 1 via the Id attribute.
+## Step 2: 让 Windows Installer 安装条目
+
+定义目录结构并列出要打包到安装程序中的注册表项后，最后一步是告诉 Windows Installer 实际安装注册表项。 
+<Feature> 元素用于执行此操作。 以下代码段添加了对注册表项组件的引用，并且应插入到父 Feature 元素中。
+
+```xml
+<ComponentRef Id="RegistryEntries" />
+```
+
+The [<ComponentRef>](others/wix3/xsd/wix/componentref.html) 元素用于通过 Id 属性引用在步骤 1 中创建的组件。

@@ -1,99 +1,102 @@
----
-title: How To: Add a File to Your Installer
-layout: documentation
----
-# How To: Add a File To Your Installer
-Installing files is the most fundamental aspect of any installer, and is usually what leads people to build an installer in the first place. Learning how to place a file on disk using Windows Installer best practices not only ensures maintainability going forward, but also enables you to build patches later if necessary.
+# 向安装包中添加文件
 
-## Step 1: Define the directory structure
-Installers frequently have many files to install into a few locations on disk. To improve the readability of the WiX file, it is a good practice to define your installation directories first before listing the files you&apos;ll install. Directories are defined using the [&lt;Directory&gt;](../../xsd/wix/directory.html) element and describe the hierarchy of folders you would like to see on the target machine. The following sample defines a directory for the installation of the main application executable.
+安装文件是安装程序最基本的功能。 了解如何使用 Windows Installer 将文件放置在磁盘上不仅可以确保未来的可维护性，而且还方便在以后构建补丁（如有必要）。
 
-<pre>
-<font size="2" color="#0000FF">&lt;</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">TARGETDIR</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Name</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">SourceDir</font><font size="2">"</font><font size="2" color="#0000FF">&gt;
-    &lt;</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">ProgramFilesFolder</font><font size="2">"</font><font size="2" color="#0000FF">&gt;
-        &lt;</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"APPLICATIONROOTDIRECTORY"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Name</font><font size="2" color="#0000FF">=</font><font size="2">"My Application Name"/</font><font size="2" color="#0000FF">&gt;
-    &lt;/</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF">&gt;
-&lt;/</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF">&gt;</font>
-</pre>
+## Step 1: 定义目录结构
 
-The element with the id <a href="http://msdn.microsoft.com/library/aa372064.aspx" target="_blank">TARGETDIR</a> is required by the Windows Installer and is the root of all directory structures for your installation. Every WiX project will have this directory element. The second element, with the id <a href="http://msdn.microsoft.com/library/aa370881.aspx" target="_blank">ProgramFilesFolder</a>, uses a pre-defined Windows Installer property to reference the Program Files folder on the user&apos;s machine. In most cases this will resolve to <strong>c:\Program Files\\</strong>. The third directory element creates your application&apos;s folder under Program Files, and it is given the id APPLICATIONROOTDIRECTORY for later use in the WiX project. The id is in all capital letters to make it a <a href="http://msdn.microsoft.com/library/aa370912.aspx" target="_blank">public property</a> that can be set from UI or via the command line.
+安装程序通常是将许多文件安装到磁盘上的几个位置。 为了提高 WiX 文件的可读性，最好先定义安装目录，然后再列出将安装的文件。 目录是使用 [<Directory>](https://wixtoolset.org/documentation/manual/v3/xsd/wix/directory.html) 元素定义的，它描述了您希望在目标计算机上看到的文件夹层次结构。 以下示例定义了一个用于安装主应用程序可执行文件的目录。
+
+```xml
+<Directory Id="TARGETDIR" Name="SourceDir">
+    <Directory Id="ProgramFilesFolder">
+        <Directory Id="APPLICATIONROOTDIRECTORY" Name="My Application Name"/>
+    </Directory>
+</Directory>
+```
+
+Windows Installer 需要 `id` 为 [TARGETDIR](http://msdn.microsoft.com/library/aa372064.aspx) 的元素，它是安装的所有目录结构的根。 每个 WiX 项目都会有这个目录元素。
+
+ 第二个元素是 `id` 为  [ProgramFilesFolder](http://msdn.microsoft.com/library/aa370881.aspx) 的元素，使用预定义的 Windows Installer 属性来引用用户计算机上的 Program Files 文件夹。 在大多数情况下，这将解析为 `C:\Program Files\`。 
+
+第三个目录元素的作用是在 `Program Files` 下创建您的应用程序文件夹，其`id` 为 `APPLICATIONROOTDIRECTORY` 以供以后在 WiX 项目中使用。 `id` 全部为大写字母，使其成为可以从 UI 或通过命令行设置的公共属性。
 
 The result of these tags is a **c:\Program Files\My Application Name** folder on the target machine.
 
-## Step 2: Add files to your installer package
-A file is added to the installer using two elements: a [&lt;Component&gt;](../../xsd/wix/component.html) element to specify an atomic unit of installation and a [&lt;File&gt;](../../xsd/wix/file.html) element to specify the file that should be installed.
+## Step 2: 将文件添加到安装程序包
 
-The component element describes a set of resources (usually files, registry entries, and shortcuts) that need to be installed as a single unit. This is separate from whether the set of items consist of a logical feature the user can select to install which is discussed in Step 3. While it may not seem like a big deal when you are first authoring your installer, components play a critical role when you decide to build patches at a later date.
+使用两个元素将文件添加到安装程序：一个[<Component>](https://wixtoolset.org/documentation/manual/v3/xsd/wix/component.html) 元素指定安装的原子单元，一个  [<File>](https://wixtoolset.org/documentation/manual/v3/xsd/wix/file.html) 元素指定应该安装的文件。
 
-**In general, you should restrict yourself to a single file per component.** The Windows Installer is designed to support thousands of components in a single installer, so unless you have a very good reason, keep to one file per component. **Every component must have its own unique GUID**. Failure to follow these two basic rules can lead to many problems down the road when it comes to servicing.
+ [<Component>](https://wixtoolset.org/documentation/manual/v3/xsd/wix/component.html) 元素元素描述了需要作为一个分类(自定义)安装的一组资源（通常是文件、注册表项和快捷方式）。 这与项目集是否包含用户可以选择安装的逻辑功能是分开的，这在第 3 步中讨论过。虽然当您第一次编写安装程序时，这似乎不是什么大问题，但组件在以下情况下发挥着关键作用 您决定在以后构建补丁。**通常，您应该限制每个组件只有一个文件**。Windows Installer 在单个安装程序中支持数千个组件，因此除非您有充分的理由，否则每个组件都应只有一个文件。 **每个组件都必须有自己唯一的 GUID**。不遵守这两个基本规则可能会导致后续维护过程中出现许多问题。
 
-The following sample uses the directory structure defined in Step 1 to install two files: an application executable and a documentation file.
+以下示例使用步骤 1 中定义的目录结构来安装两个文件：一个应用程序可执行文件和一个文档文件。
 
-<pre>
-<font size="2" color="#0000FF">&lt;</font><font size="2" color="#A31515">DirectoryRef</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"APPLICATIONROOTDIRECTORY"</font><font size="2" color="#0000FF">&gt;
-    &lt;</font><font size="2" color="#A31515">Component</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">myapplication.exe</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Guid</font><font size="2" color="#0000FF">=</font><font size="2">"<a href="../../howtos/general/generate_guids.html">PUT-GUID-HERE</a>"</font><font size="2" color="#0000FF">&gt;
-        &lt;</font><font size="2" color="#A31515">File</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">myapplication.exe</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Source</font><font size="2" color="#0000FF">=</font><font size="2">"MySourceFiles</font><font size="2" color="#0000FF">\MyApplication.exe</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">KeyPath</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">yes</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Checksum</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">yes</font><font size="2">"</font><font size="2" color="#0000FF">/&gt;
-    &lt;/<font size="2" color="#A31515">Component</font>&gt;
-    &lt;<font size="2" color="#A31515">Component</font> <font size="2" color="#FF0000">Id</font>=<font size="2">"d</font>ocumentation.<font size="2">html"</font> <font size="2" color="#FF0000">Guid</font>=<font size="2">"</font></font><a href="../../howtos/general/generate_guids.html"><font size="2">PUT-GUID-HERE</font></a><font size="2" color="#0000FF"><font size="2">"</font>&gt;
-        &lt;</font><font size="2" color="#A31515">File</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">documentation.html</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Source</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">MySourceFiles\documentation.html</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">KeyPath</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">yes</font><font size="2">"</font><font size="2" color="#0000FF">/&gt;
-    &lt;/<font size="2" color="#A31515">Component</font>&gt;
-&lt;/</font><font size="2" color="#A31515">DirectoryRef</font><font size="2" color="#0000FF">&gt;</font>
-</pre>
+```xml
+<DirectoryRef Id="APPLICATIONROOTDIRECTORY">
+    <Component Id="myapplication.exe" Guid="PUT-GUID-HERE">
+        <File Id="myapplication.exe" Source="MySourceFiles\MyApplication.exe" KeyPath="yes" Checksum="yes"/>
+    </Component>
+    <Component Id="documentation.html" Guid="PUT-GUID-HERE">
+        <File Id="documentation.html" Source="MySourceFiles\documentation.html" KeyPath="yes"/>
+    </Component>
+</DirectoryRef>
+```
 
-The [&lt;DirectoryRef&gt;](../../xsd/wix/directoryref.html) element is used to refer to the directory structure created in step 1. By referencing the APPLICATIONROOTDIRECTORY directory, the files will be installed into the **c:\program files\My Application Name** folder. Underneath the DirectoryRef are two Component elements, one for each of the two files that will be installed. This is in keeping with the best practice of having one component per file. Each Component element is given an Id and a Guid. The Id is used to refer to the component later in the WiX project. The Guid is used later for patches and must be unique for each component. For information on generating GUIDs see [How To: Generate a GUID](../../howtos/general/generate_guids.html).
+[<DirectoryRef>](https://wixtoolset.org/documentation/manual/v3/xsd/wix/directoryref.html) 元素用于引用 `Step 1` 中的目录结构，所以文件会被安装到路径`c:\program files\My Application Name`文件夹下. 在 DirectoryRef 下面是两个 Component 元素, 每个Component元素都是一个需要被安装的文件. 每个 Component 元素都有一个 Id 和一个 Guid属性。Id 属性用于后续WiX项目中引用这个Component. Guid 用于稍后补丁，并且对于每个组件必须是唯一的. For information on generating GUIDs see [How To: Generate a GUID](https://wixtoolset.org/documentation/manual/v3/howtos/general/generate_guids.html).
 
-Beneath each component is a File element that does the actual work of packaging your source files into the installer. The Id is used to refer to the file elsewhere in the WiX project. The Source attribute specifies the location of the file on your machine, so WiX can find it and build it into the installer.
+每个组件下面是一个 File 元素，它执行将源文件打包到安装程序中的实际工作。 Id 用于引用 WiX 项目中其他位置的文件。 Source 属性指定文件在您机器上的位置，因此 WiX 可以找到它并将其构建到安装程序中。
 
-The KeyPath attribute is set to yes to tell the Windows Installer that this particular file should be used to determine whether the component is installed. If you do not set the KeyPath attribute, WiX will look at the child elements under the component in sequential order and try to automatically select one of them as a key path. Allowing WiX to automatically select a key path can be dangerous because adding or removing child elements under the component can inadvertantly cause the key path to change, which can lead to installation problems. In general, you should always set the KeyPath attribute to yes to ensure that the key path will not inadvertantly change if you update your setup authoring in the future.
+KeyPath 属性设置为 yes 以告诉 Windows 安装程序应该使用此特定文件来确定是否安装了该组件。 如果不设置 KeyPath 属性，WiX 会按顺序查看组件下的子元素，并尝试自动选择其中之一作为关键路径。 允许 WiX 自动选择关键路径可能很危险，因为在组件下添加或删除子元素可能会无意中导致关键路径发生变化，从而导致安装问题。 通常，您应该始终将 KeyPath 属性设置为 yes，以确保在您将来更新设置创作时不会无意中更改keyPath。
 
-The Checksum attribute should be set to yes for executable files that have a checksum value in the file header (this is generally true for all executables), and is used by the Windows Installer to verify the validity of the file on re-install.
+对于在文件头中具有校验和值的可执行文件（这通常适用于所有可执行文件），Checksum 属性应设置为 yes，Windows 安装程序使用它来验证重新安装时文件的有效性。
 
-## Step 3: Tell Windows Installer to install the files
-After defining the directory structure and listing the files to package into the installer, the last step is to tell Windows Installer to actually install the files. The [&lt;Feature&gt;](../../xsd/wix/feature.html) element is used to do this, and is where you break up your installer into logical pieces that the user can install independently. The following example creates a single feature that installs the application executable and documentation from Step 2.
+## Step 3: 让 Windows Installer 安装文件
 
-<pre>
-<font size="2" color="#0000FF">&lt;</font><font size="2" color="#A31515">Feature</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"MainApplication"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Title</font><font size="2" color="#0000FF">=</font><font size="2">"Main Application"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Level</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">1</font><font size="2">"</font><font size="2" color="#0000FF">&gt;
-    &lt;</font><font size="2" color="#A31515">ComponentRef</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">myapplication.exe</font><font size="2">"</font><font size="2" color="#0000FF"> /&gt;
-    &lt;</font><font size="2" color="#A31515">ComponentRef</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"documentation.html</font><font size="2">"</font><font size="2" color="#0000FF"> /&gt;
-&lt;/</font><font size="2" color="#A31515">Feature</font><font size="2" color="#0000FF">&gt;</font>
-</pre>
+定义目录结构并列出要打包到安装程序中的文件后，最后一步是告诉 Windows Installer 实际安装文件。  [<Feature>](https://wixtoolset.org/documentation/manual/v3/xsd/wix/feature.html) 元素用于执行此操作，您可以在其中将安装程序分解为用户可以独立安装的逻辑部分。 以下示例创建了一个功能，用于安装步骤 2 中的应用程序可执行文件和文档。
 
-The Feature is given a Id. If you are using an installer UI sequence that includes feature selection, the Title attribute contains the text displayed in the UI for the feature. The Level attribute should be set to 1 to enable the installation of the feature by default.
+```xml
+<Feature Id="MainApplication" Title="Main Application" Level="1">
+    <ComponentRef Id="myapplication.exe" />
+    <ComponentRef Id="documentation.html" />
+</Feature>
+```
 
-The [&lt;ComponentRef&gt;](../../xsd/wix/componentref.html) element is used to reference the components created in Step 2 via the Id attribute.
+Feature 被赋予一个 ID。 如果您使用包含功能选择的安装程序 UI 序列，则 Title 属性包含在 UI 中为该功能显示的文本。 Level 属性应设置为 1 以默认启用该功能的安装。
 
-## The Complete Sample
-The following is a complete sample that uses the above concepts. This example can be inserted into a WiX project and compiled, or compiled and linked from the command line, to generate an installer.
+ [<ComponentRef>](https://wixtoolset.org/documentation/manual/v3/xsd/wix/componentref.html) element 用于通过 Id 属性引用在步骤 2 中创建的组件。
 
-<pre>
-<font size="2" color="#0000FF">&lt;?</font><font size="2" color="#A31515">xml</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">version</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">1.0</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">encoding</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">UTF-8</font><font size="2">"</font><font size="2" color="#0000FF">?&gt;
-&lt;<font size="2" color="#A31515">Wix</font> <font size="2" color="#FF0000">xmlns</font>=<font size="2">"</font>http://schemas.microsoft.com/wix/2006/wi<font size="2">"</font>&gt;
-    &lt;<font size="2" color="#A31515">Product</font> <font size="2" color="#FF0000">Id</font>=<font size="2">"*"</font> <font size="2" color="#FF0000">UpgradeCode</font>=<font size="2">"</font></font><a href="../../howtos/general/generate_guids.html"><font size="2">PUT-GUID-HERE</font></a><font size="2" color="#0000FF"><font size="2">"</font> <font size="2" color="#FF0000">Version</font>=<font size="2">"1.0.0.0" </font><font size="2" color="#FF0000">Language</font>=<font size="2">"</font>1033<font size="2">" </font><font size="2" color="#FF0000">Name</font>=<font size="2">"My Application Name" </font><font size="2" color="#FF0000">Manufacturer</font>=<font size="2">"My Manufacturer Name"</font>&gt;
-        &lt;<font size="2" color="#A31515">Package</font> <font size="2" color="#FF0000">InstallerVersion</font>=<font size="2">"</font>300<font size="2">"</font> <font size="2" color="#FF0000">Compressed</font>=<font size="2">"</font>yes<font size="2">"</font>/&gt;
-        &lt;<font size="2" color="#A31515">Media</font> <font size="2" color="#FF0000">Id</font>=<font size="2">"</font>1<font size="2">"</font> <font size="2" color="#FF0000">Cabinet</font>=<font size="2">"myapplication</font>.cab<font size="2">"</font> <font size="2" color="#FF0000">EmbedCab</font>=<font size="2">"</font>yes<font size="2">"</font> /&gt;
+## 完整的例子
 
-        &lt;!--</font><font size="2" color="#008000"> Step 1: Define the directory structure </font><font size="2" color="#0000FF">--&gt;
-        &lt;</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">TARGETDIR</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Name</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">SourceDir</font><font size="2">"</font><font size="2" color="#0000FF">&gt;
-            &lt;</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">ProgramFilesFolder</font><font size="2">"</font><font size="2" color="#0000FF">&gt;
-                &lt;</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"APPLICATIONROOTDIRECTORY"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Name</font><font size="2" color="#0000FF">=</font><font size="2">"My Application Name"</font><font size="2" color="#0000FF">/&gt;
-            &lt;/</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF">&gt;
-        &lt;/</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF">&gt;
+以下是使用上述概念的完整示例。 此示例可以插入到 WiX 项目并编译，或从命令行编译和链接，以生成安装程序。
 
-        &lt;!--</font><font size="2" color="#008000"> Step 2: Add files to your installer package </font><font size="2" color="#0000FF">--&gt;
-        &lt;</font><font size="2" color="#A31515">DirectoryRef</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"APPLICATIONROOTDIRECTORY"</font><font size="2" color="#0000FF">&gt;
-            &lt;</font><font size="2" color="#A31515">Component</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">myapplication.exe</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Guid</font><font size="2" color="#0000FF">=</font><font size="2">"<a href="../../howtos/general/generate_guids.html">PUT-GUID-HERE</a>"</font><font size="2" color="#0000FF">&gt;
-                &lt;</font><font size="2" color="#A31515">File</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">myapplication.exe</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Source</font><font size="2" color="#0000FF">=</font><font size="2">"MySourceFiles</font><font size="2" color="#0000FF">\MyApplication.exe</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">KeyPath</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">yes</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Checksum</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">yes</font><font size="2">"</font><font size="2" color="#0000FF">/&gt;
-            &lt;/<font size="2" color="#A31515">Component</font>&gt;
-            &lt;<font size="2" color="#A31515">Component</font> <font size="2" color="#FF0000">Id</font>=<font size="2">"d</font>ocumentation.<font size="2">html"</font> <font size="2" color="#FF0000">Guid</font>=<font size="2">"</font></font><a href="../../howtos/general/generate_guids.html"><font size="2">PUT-GUID-HERE</font></a><font size="2" color="#0000FF"><font size="2">"</font>&gt;
-                &lt;</font><font size="2" color="#A31515">File</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">documentation.html</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Source</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">MySourceFiles\documentation.html</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">KeyPath</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">yes</font><font size="2">"</font><font size="2" color="#0000FF">/&gt;
-            &lt;/<font size="2" color="#A31515">Component</font>&gt;
-        &lt;/</font><font size="2" color="#A31515">DirectoryRef</font><font size="2" color="#0000FF">&gt;
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="*" UpgradeCode="PUT-GUID-HERE" Version="1.0.0.0" Language="1033" Name="My Application Name" Manufacturer="My Manufacturer Name">
+        <Package InstallerVersion="300" Compressed="yes"/>
+        <Media Id="1" Cabinet="myapplication.cab" EmbedCab="yes" />
 
-        &lt;!--</font><font size="2" color="#008000"> Step 3: Tell WiX to install the files </font><font size="2" color="#0000FF">--&gt;
-        &lt;</font><font size="2" color="#A31515">Feature</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"MainApplication"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Title</font><font size="2" color="#0000FF">=</font><font size="2">"Main Application"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Level</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">1</font><font size="2">"</font><font size="2" color="#0000FF">&gt;
-            &lt;</font><font size="2" color="#A31515">ComponentRef</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">myapplication.exe</font><font size="2">"</font><font size="2" color="#0000FF"> /&gt;
-            &lt;</font><font size="2" color="#A31515">ComponentRef</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"documentation.html"</font><font size="2" color="#0000FF"> /&gt;
-        &lt;/</font><font size="2" color="#A31515">Feature</font><font size="2" color="#0000FF">&gt;
-    &lt;/</font><font size="2" color="#A31515">Product</font><font size="2" color="#0000FF">&gt;
-&lt;/</font><font size="2" color="#A31515">Wix</font><font size="2" color="#0000FF">&gt;</font>
-</pre>
+        <!-- Step 1: Define the directory structure -->
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder">
+                <Directory Id="APPLICATIONROOTDIRECTORY" Name="My Application Name"/>
+            </Directory>
+        </Directory>
+
+        <!-- Step 2: Add files to your installer package -->
+        <DirectoryRef Id="APPLICATIONROOTDIRECTORY">
+            <Component Id="myapplication.exe" Guid="PUT-GUID-HERE">
+                <File Id="myapplication.exe" Source="MySourceFiles\MyApplication.exe" KeyPath="yes" Checksum="yes"/>
+            </Component>
+            <Component Id="documentation.html" Guid="PUT-GUID-HERE">
+                <File Id="documentation.html" Source="MySourceFiles\documentation.html" KeyPath="yes"/>
+            </Component>
+        </DirectoryRef>
+
+        <!-- Step 3: Tell WiX to install the files -->
+        <Feature Id="MainApplication" Title="Main Application" Level="1">
+            <ComponentRef Id="myapplication.exe" />
+            <ComponentRef Id="documentation.html" />
+        </Feature>
+    </Product>
+</Wix>
+```

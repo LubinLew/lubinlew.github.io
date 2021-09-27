@@ -1,101 +1,117 @@
----
-title: How To: Create a Shortcut on the Start Menu
-layout: documentation
----
-# How To: Create a Shortcut on the Start Menu
-When installing applications it is a common requirement to place a shortcut on the user&apos;s Start Menu to provide a launching point for the program. This how to walks through how to create a shortcut on the start menu. It assumes you have a WiX source file based on the concepts described in [How To: Add a file to your installer](add_a_file.html).
+# 在开始菜单中创建快捷方式
 
-## Step 1: Define the directory structure
-Start Menu shortcuts are installed in a different directory than regular application files, so modifications to the installer&apos;s directory structure are required. The following WiX fragment should be placed inside a [&lt;Directory&gt;](../../xsd/wix/directory.html) element with the TARGETDIR ID and adds directory structure information for the Start Menu:
+安装应用程序时，通常需要在用户的 “开始” 菜单上放置快捷方式以提供程序的快速启动。 本文将演示如何在开始菜单上创建快捷方式。 
 
-<pre>
-<font size="2" color="#0000FF">&lt;</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">ProgramMenuFolder</font><font size="2">"</font><font size="2" color="#0000FF">&gt;
-    &lt;</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">ApplicationProgramsFolder</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Name</font><font size="2" color="#0000FF">=</font><font size="2">"My Application Name"</font><font size="2" color="#0000FF">/&gt;
-&lt;/</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF">&gt;</font>
-</pre>
 
-The <a href="http://msdn.microsoft.com/library/aa370882.aspx" target="_blank">ProgramMenuFolder</a> Id is a standard Windows Installer property that points to the Start Menu folder on the target machine. The second Directory element creates a subfolder on the Start Menu called My Application Name, and gives it an id for use later in the WiX project.
 
-## Step 2: Add the shortcut to your installer package
-A shortcut is added to the installer using three elements: a [&lt;Component&gt;](../../xsd/wix/component.html) element to specify an atomic unit of installation, a [&lt;Shortcut&gt;](../../xsd/wix/shortcut.html) element to specify the shortcut that should be installed, and a [&lt;RemoveFolder&gt;](../../xsd/wix/removefolder.html) element to ensure proper cleanup when your application is uninstalled.
+## Step 1: 定义目录结构
 
-The following sample uses the directory structure defined in Step 1 to create the Start Menu shortcut.
+开始菜单快捷方式安装在与常规应用程序文件不同的目录中，因此需要修改安装程序的目录结构。 以下代码片段应放置在具有 TARGETDIR ID 的 <Directory> 元素下。
 
-<pre>
-<font size="2" color="#0000FF">&lt;</font><font size="2" color="#A31515">DirectoryRef</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">ApplicationProgramsFolder</font><font size="2">"</font><font size="2" color="#0000FF">&gt;
-    &lt;</font><font size="2" color="#A31515">Component</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">ApplicationShortcut</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Guid</font><font size="2" color="#0000FF">=</font><font size="2">"<a href="../../howtos/general/generate_guids.html">PUT-GUID-HERE</a>"</font><font size="2" color="#0000FF">&gt;
-        &lt;</font><font size="2" color="#A31515">Shortcut</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">ApplicationStartMenuShortcut</font><font size="2">"</font><font size="2" color="#0000FF"> 
-                  </font><font size="2" color="#FF0000">Name</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">My Application Name</font><font size="2">"</font><font size="2" color="#FF0000">
-                  Description</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">My Application Description</font><font size="2">"
-                  </font><font size="2" color="#FF0000">Target</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">[#myapplication.exe]"
-                  </font><font size="2" color="#FF0000">WorkingDirectory</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">APPLICATIONROOTDIRECTORY</font><font size="2">"</font><font size="2" color="#0000FF">/&gt;
-        &lt;</font><font size="2" color="#A31515">RemoveFolder</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">CleanUpShortCut</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Directory</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">ApplicationProgramsFolder</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">On</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">uninstall</font><font size="2">"</font><font size="2" color="#0000FF">/&gt;
-        &lt;</font><font size="2" color="#A31515">RegistryValue</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Root</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">HKCU</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Key</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">Software\MyCompany\MyApplicationName</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Name</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">installed</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Type</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">integer</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Value</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">1</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">KeyPath</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">yes</font><font size="2">"</font><font size="2" color="#0000FF">/&gt;
-    &lt;/</font><font size="2" color="#A31515">Component</font><font size="2" color="#0000FF">&gt;
-&lt;/</font><font size="2" color="#A31515">DirectoryRef</font><font size="2" color="#0000FF">&gt;</font>
-</pre>
+```xml
+<Directory Id="ProgramMenuFolder">
+    <Directory Id="ApplicationProgramsFolder" Name="My Application Name"/>
+</Directory>
+```
 
-The [&lt;DirectoryRef&gt;](../../xsd/wix/directoryref.html) element is used to refer to the directory structure created in step 1. By referencing the ApplicationProgramsFolder directory the shortcut will be installed into the user&apos;s Start Menu inside the My Application Name folder.
+[ProgramMenuFolder](http://msdn.microsoft.com/library/aa370882.aspx) Id 是一个标准的 Windows Installer 属性，它指向目标机器上的开始菜单文件夹。 第二个 Directory 元素在“开始”菜单上创建一个名为“My Application Name”的子文件夹，并为其提供一个 ID，以便稍后在 WiX 项目中使用。
 
-Underneath the DirectoryRef is a single Component to group the elements used to install the Shortcut. The first element is Shortcut and it creates the actual shortcut in the Start Menu. The Id attribute is a unique id for the shortcut. The Name attribute is the text that will be displayed in the Start Menu. The description is an optional attribute for an additional application description. The Target attribute points to the executable to launch on disk. Notice how it references the full path using the `[#FileId]` syntax where [`myapplication.exe` was previously defined](add_a_file.html). The WorkingDirectory attribute sets the working directory for the shortcut.
 
-To set an optional icon for the shortcut you need to first include the icon in your installer using the [&lt;Icon&gt;](../../xsd/wix/icon.html) element, then reference it using the Icon attribute on the Shortcut element.
+## Step 2: 将快捷方式添加到安装程序包
 
-In addition to creating the shortcut the component contains two other important pieces. The first is a RemoveFolder element, which ensures the ApplicationProgramsFolder is correctly removed from the Start Menu when the user uninstalls the application. The second creates a registry entry on install that indicates the application is installed. This is required as a Shortcut cannot serve as the KeyPath for a component when installing non-advertised shortcuts for the current users. For more information on creating registry entries see [How To: Write a registry entry during installation](write_a_registry_entry.html).
+使用三个元素向安装程序添加一个快捷方式：
 
-## Step 3: Tell Windows Installer to install the shortcut
-After defining the directory structure and listing the shortcuts to package into the installer, the last step is to tell Windows Installer to actually install the shortcut. The [&lt;Feature&gt;](../../xsd/wix/feature.html) element is used to do this. The following snippet adds a reference to the shortcut component, and should be inserted inside a parent Feature element.
+- 一个 <Component> 元素指定安装的原子单元，
 
-<pre>
-<font size="2" color="#A31515">&lt;ComponentRef</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"ApplicationShortcut</font><font size="2">"</font><font size="2" color="#0000FF"> /&gt;</font>
-</pre>
+- 一个 <Shortcut> 元素指定应该安装的快捷方式，
 
-The [&lt;ComponentRef&gt;](../../xsd/wix/componentref.html) element is used to reference the component created in Step 2 via the Id attribute.
+- 一个 <RemoveFolder> 元素以确保应用程序卸载时正确清理。
 
-## The Complete Sample
-The following is a complete sample that uses the above concepts. This example can be inserted into a WiX project and compiled, or compiled and linked from the command line, to generate an installer.
+以下示例使用在步骤 1 中定义的目录结构来创建“开始”菜单快捷方式。
 
-<pre>
-<font size="2" color="#0000FF">&lt;?</font><font size="2" color="#A31515">xml</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">version</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">1.0</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">encoding</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">UTF-8</font><font size="2">"</font><font size="2" color="#0000FF">?&gt;
-&lt;<font size="2" color="#A31515">Wix</font> <font size="2" color="#FF0000">xmlns</font>=<font size="2">"</font>http://schemas.microsoft.com/wix/2006/wi<font size="2">"</font>&gt;
-    &lt;<font size="2" color="#A31515">Product</font> <font size="2" color="#FF0000">Id</font>=<font size="2">"*"</font> <font size="2" color="#FF0000">UpgradeCode</font>=<font size="2">"</font></font><font size="2"><a href="../../howtos/general/generate_guids.html">PUT-GUID-HERE</a></font><font size="2" color="#0000FF"><font size="2">"</font> <font size="2" color="#FF0000">Version</font>=<font size="2">"1.0.0.0" </font><font size="2" color="#FF0000">Language</font>=<font size="2">"</font>1033<font size="2">" </font><font size="2" color="#FF0000">Name</font>=<font size="2">"My Application Name" </font><font size="2" color="#FF0000">Manufacturer</font>=<font size="2">"My Manufacturer Name"</font>&gt;
-        &lt;<font size="2" color="#A31515">Package</font> <font size="2" color="#FF0000">InstallerVersion</font>=<font size="2">"</font>300<font size="2">"</font> <font size="2" color="#FF0000">Compressed</font>=<font size="2">"</font>yes<font size="2">"</font>/&gt;
-        &lt;<font size="2" color="#A31515">Media</font> <font size="2" color="#FF0000">Id</font>=<font size="2">"</font>1<font size="2">"</font> <font size="2" color="#FF0000">Cabinet</font>=<font size="2">"myapplication</font>.cab<font size="2">"</font> <font size="2" color="#FF0000">EmbedCab</font>=<font size="2">"</font>yes<font size="2">"</font> /&gt;
+```xml
+<DirectoryRef Id="ApplicationProgramsFolder">
+    <Component Id="ApplicationShortcut" Guid="PUT-GUID-HERE">
+        <Shortcut Id="ApplicationStartMenuShortcut" 
+                  Name="My Application Name"
+                  Description="My Application Description"
+                  Target="[#myapplication.exe]"
+                  WorkingDirectory="APPLICATIONROOTDIRECTORY"/>
+        <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\MyCompany\MyApplicationName" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+    </Component>
+</DirectoryRef>
+```
 
-        &lt;</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">TARGETDIR</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Name</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">SourceDir</font><font size="2">"</font><font size="2" color="#0000FF">&gt;
-            &lt;</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">ProgramFilesFolder</font><font size="2">"</font><font size="2" color="#0000FF">&gt;
-                &lt;</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">APPLICATIONROOTDIRECTORY</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Name</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">My Application Name</font><font size="2">"</font><font size="2" color="#0000FF">/&gt;
-            &lt;/</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF">&gt;
-            &lt;!--</font><font size="2" color="#008000"> Step 1: Define the directory structure </font><font size="2" color="#0000FF">--&gt;
-            &lt;</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">ProgramMenuFolder</font><font size="2">"</font><font size="2" color="#0000FF">&gt;
-                &lt;</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">ApplicationProgramsFolder</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Name</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">My Application Name</font><font size="2">"</font><font size="2" color="#0000FF">/&gt;
-            &lt;/</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF">&gt;
-        &lt;/</font><font size="2" color="#A31515">Directory</font><font size="2" color="#0000FF">&gt;
+<DirectoryRef> 元素用于引用在步骤 1 中创建的目录结构。通过引用 ApplicationProgramsFolder 目录，快捷方式将安装到用户的“开始”菜单中的“My Application Name”文件夹中。
 
-        &lt;</font><font size="2" color="#A31515">DirectoryRef</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">APPLICATIONROOTDIRECTORY</font><font size="2">"</font><font size="2" color="#0000FF">&gt;
-            &lt;</font><font size="2" color="#A31515">Component</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">myapplication.exe</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Guid</font><font size="2" color="#0000FF">=</font><font size="2">"<a href="../../howtos/general/generate_guids.html">PUT-GUID-HERE</a>"</font><font size="2" color="#0000FF">&gt;
-                &lt;</font><font size="2" color="#A31515">File</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">myapplication.exe</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Source</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">MySourceFiles\MyApplication.exe</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">KeyPath</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">yes</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Checksum</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">yes</font><font size="2">"</font><font size="2" color="#0000FF">/&gt;
-            &lt;/<font size="2" color="#A31515">Component</font>&gt;
-            &lt;<font size="2" color="#A31515">Component</font> <font size="2" color="#FF0000">Id</font>=<font size="2">"d</font>ocumentation.<font size="2">html"</font> <font size="2" color="#FF0000">Guid</font>=<font size="2">"</font></font><font size="2"><a href="../../howtos/general/generate_guids.html">PUT-GUID-HERE</a></font><font size="2" color="#0000FF"><font size="2">"</font>&gt;
-                &lt;</font><font size="2" color="#A31515">File</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">documentation.html</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Source</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">MySourceFiles\documentation.html</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">KeyPath</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">yes</font><font size="2">"</font><font size="2" color="#0000FF">/&gt;
-            &lt;/<font size="2" color="#A31515">Component</font>&gt;
-        &lt;/</font><font size="2" color="#A31515">DirectoryRef</font><font size="2" color="#0000FF">&gt;
+DirectoryRef 下面是一个单独的组件，用于对用于安装快捷方式的元素进行分组。第一个元素是快捷方式，它在开始菜单中创建实际的快捷方式。 Id 属性是快捷方式的唯一 ID。 Name 属性是将显示在“开始”菜单中的文本。Description 是附加应用程序描述的可选属性。 Target 属性指向要在磁盘上启动的可执行文件。请注意它如何使用 [#FileId] 语法引用完整路径，其中 myapplication.exe 是先前定义的。 WorkingDirectory 属性设置快捷方式的工作目录。
 
-        &lt;!--</font><font size="2" color="#008000"> Step 2: Add the shortcut to your installer package </font><font size="2" color="#0000FF">--&gt;
-        &lt;</font><font size="2" color="#A31515">DirectoryRef</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">ApplicationProgramsFolder</font><font size="2">"</font><font size="2" color="#0000FF">&gt;
-            &lt;</font><font size="2" color="#A31515">Component</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">ApplicationShortcut</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Guid</font><font size="2" color="#0000FF">=</font><font size="2">"<a href="../../howtos/general/generate_guids.html">PUT-GUID-HERE</a>"</font><font size="2" color="#0000FF">&gt;
-                &lt;</font><font size="2" color="#A31515">Shortcut</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">ApplicationStartMenuShortcut</font><font size="2">"</font><font size="2" color="#0000FF"> <br />                     </font><font size="2" color="#FF0000">Name</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">My Application Name</font><font size="2">"</font><font size="2" color="#0000FF"> <br />                   </font><font size="2" color="#FF0000">Description</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">My Application Description</font><font size="2">"<br />                    </font><font size="2" color="#FF0000">Target</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">[#myapplication.exe]</font><font size="2">"
-                          </font><font size="2" color="#FF0000">WorkingDirectory</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">APPLICATIONROOTDIRECTORY</font><font size="2">"</font><font size="2" color="#0000FF">/&gt;
-                &lt;</font><font size="2" color="#A31515">RemoveFolder</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">ApplicationProgramsFolder</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">On</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">uninstall</font><font size="2">"</font><font size="2" color="#0000FF">/&gt;
-                &lt;</font><font size="2" color="#A31515">RegistryValue</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Root</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">HKCU</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Key</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">Software\MyCompany\MyApplicationName</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Name</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">installed</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Type</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">integer</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Value</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">1</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">KeyPath</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">yes</font><font size="2">"</font><font size="2" color="#0000FF">/&gt;<br />           &lt;/</font><font size="2" color="#A31515">Component</font><font size="2" color="#0000FF">&gt;
-        &lt;/</font><font size="2" color="#A31515">DirectoryRef</font><font size="2" color="#0000FF">&gt;
+要为快捷方式设置可选图标，您需要首先使用 <Icon> 元素在安装程序中包含该图标，然后使用 Shortcut 元素上的 Icon 属性引用它。
 
-        &lt;</font><font size="2" color="#A31515">Feature</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">MainApplication</font><font size="2">"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Title</font><font size="2" color="#0000FF">=</font><font size="2">"Main Application"</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Level</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">1</font><font size="2">"</font><font size="2" color="#0000FF">&gt;
-            &lt;</font><font size="2" color="#A31515">ComponentRef</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">myapplication.exe</font><font size="2">"</font><font size="2" color="#0000FF"> /&gt;
-            &lt;</font><font size="2" color="#A31515">ComponentRef</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">documentation.html</font><font size="2">"</font><font size="2" color="#0000FF"> /&gt;
-            &lt;!--</font><font size="2" color="#008000"> Step 3: Tell WiX to install the shortcut </font><font size="2" color="#0000FF">--&gt;
-            &lt;</font><font size="2" color="#A31515">ComponentRef</font><font size="2" color="#0000FF"> </font><font size="2" color="#FF0000">Id</font><font size="2" color="#0000FF">=</font><font size="2">"</font><font size="2" color="#0000FF">ApplicationShortcut</font><font size="2">"</font><font size="2" color="#0000FF"> /&gt;   
-        &lt;/</font><font size="2" color="#A31515">Feature</font><font size="2" color="#0000FF">&gt;
-    &lt;/</font><font size="2" color="#A31515">Product</font><font size="2" color="#0000FF">&gt;
-&lt;/</font><font size="2" color="#A31515">Wix</font><font size="2" color="#0000FF">&gt;</font>
-</pre>
+除了创建快捷方式之外，该组件还包含另外两个重要的部分。第一个是 RemoveFolder 元素，它确保在用户卸载应用程序时从“开始”菜单中正确删除 ApplicationProgramsFolder。第二个在安装时创建一个注册表项，指示应用程序已安装。这是必需的，因为在为当前用户安装非广告快捷方式时，快捷方式不能用作组件的 KeyPath。有关创建注册表项的详细信息，请参阅如何：在安装过程中编写注册表项。
+
+
+
+## Step 3: 告诉 Windows Installer 安装快捷方式
+
+定义目录结构并列出要打包到安装程序中的快捷方式后，最后一步是告诉 Windows Installer 实际安装快捷方式。 <Feature> 元素用于执行此操作。 以下代码段添加了对快捷方式组件的引用，并且应插入到父 Feature 元素中。
+
+```xml
+<ComponentRef Id="ApplicationShortcut" />
+```
+
+<ComponentRef> 元素用于通过 Id 属性引用在步骤 2 中创建的组件。
+
+## 完整示例
+
+以下是使用上述概念的完整示例。 此示例可以插入到 WiX 项目并编译，或从命令行编译和链接，以生成安装程序。
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="*" UpgradeCode="PUT-GUID-HERE" Version="1.0.0.0" Language="1033" Name="My Application Name" Manufacturer="My Manufacturer Name">
+        <Package InstallerVersion="300" Compressed="yes"/>
+        <Media Id="1" Cabinet="myapplication.cab" EmbedCab="yes" />
+
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder">
+                <Directory Id="APPLICATIONROOTDIRECTORY" Name="My Application Name"/>
+            </Directory>
+            <!-- Step 1: Define the directory structure -->
+            <Directory Id="ProgramMenuFolder">
+                <Directory Id="ApplicationProgramsFolder" Name="My Application Name"/>
+            </Directory>
+        </Directory>
+
+        <DirectoryRef Id="APPLICATIONROOTDIRECTORY">
+            <Component Id="myapplication.exe" Guid="PUT-GUID-HERE">
+                <File Id="myapplication.exe" Source="MySourceFiles\MyApplication.exe" KeyPath="yes" Checksum="yes"/>
+            </Component>
+            <Component Id="documentation.html" Guid="PUT-GUID-HERE">
+                <File Id="documentation.html" Source="MySourceFiles\documentation.html" KeyPath="yes"/>
+            </Component>
+        </DirectoryRef>
+
+        <!-- Step 2: Add the shortcut to your installer package -->
+        <DirectoryRef Id="ApplicationProgramsFolder">
+            <Component Id="ApplicationShortcut" Guid="PUT-GUID-HERE">
+                <Shortcut Id="ApplicationStartMenuShortcut" 
+                     Name="My Application Name" 
+                   Description="My Application Description"
+                    Target="[#myapplication.exe]"
+                          WorkingDirectory="APPLICATIONROOTDIRECTORY"/>
+                <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
+                <RegistryValue Root="HKCU" Key="Software\MyCompany\MyApplicationName" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+           </Component>
+        </DirectoryRef>
+
+        <Feature Id="MainApplication" Title="Main Application" Level="1">
+            <ComponentRef Id="myapplication.exe" />
+            <ComponentRef Id="documentation.html" />
+            <!-- Step 3: Tell WiX to install the shortcut -->
+            <ComponentRef Id="ApplicationShortcut" />   
+        </Feature>
+    </Product>
+</Wix>
+```

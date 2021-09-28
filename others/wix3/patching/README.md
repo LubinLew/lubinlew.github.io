@@ -1,9 +1,3 @@
----
-title: Creating patches
-layout: documentation
-after: /customactions/
----
-
 # Creating patches
 
 Patches are updates to a product or products. WiX supports two different ways of creating them:

@@ -13,19 +13,19 @@ WiX supports a broad spectrum of Windows Installer features. In addition, WiX al
 
 ### How does WiX work?
 
-The WiX source code is written in XML format with a .wxs file extension. The WiX tools follow the traditional compile and link model used to create executables from source code. At build time, the WiX source files are validated against the core WiX schema, then processed by a preprocessor, compiler, and linker to create the final result. There are a set of WiX tools that can be used to produce different output types. For a complete list of file types and tools in WiX, see the [File Types](others/wix3/overview/files.html) and the [List of Tools](others/wix3/overview/alltools.html) sections.
+The WiX source code is written in XML format with a .wxs file extension. The WiX tools follow the traditional compile and link model used to create executables from source code. At build time, the WiX source files are validated against the core WiX schema, then processed by a preprocessor, compiler, and linker to create the final result. There are a set of WiX tools that can be used to produce different output types. For a complete list of file types and tools in WiX, see the [File Types](others/wix3/overview/files.html.md) and the [List of Tools](others/wix3/overview/alltools.html.md) sections.
 
 See the following topics for more detailed information:
 
-- [Fundamental Tools and Concepts](others/wix3/overview/index.html)
-- [Creating Installation Package Bundles](others/wix3/bundle/index.html)
-- [Working in Visual Studio](others/wix3/votive/index.html)
-- [Working with MSBuild](others/wix3/msbuild/index.html)
-- [How To Guides](others/wix3/howtos/index.html)
-- [Standard Custom Actions](others/wix3/customactions/index.html)
-- [Creating an Installation Patch](others/wix3/patching/index.html)
-- [WiX Schema Reference](others/wix3/xsd/index.html)
-- [Developing for WiX](others/wix3/wixdev/index.html)
+- [Fundamental Tools and Concepts](others/wix3/overview/index.html.md)
+- [Creating Installation Package Bundles](others/wix3/bundle/index.html.md)
+- [Working in Visual Studio](others/wix3/votive/index.html.md)
+- [Working with MSBuild](others/wix3/msbuild/index.html.md)
+- [How To Guides](others/wix3/howtos/index.html.md)
+- [Standard Custom Actions](others/wix3/customactions/index.html.md)
+- [Creating an Installation Patch](others/wix3/patching/index.html.md)
+- [WiX Schema Reference](others/wix3/xsd/index.html.md)
+- [Developing for WiX](others/wix3/wixdev/index.html.md)
 
 ### WiX system requirements
 

@@ -18,6 +18,8 @@
    - [HIDS](network_security/device/hids/README.md)
      - [Wazuh](network_security/device/hids/wazuh/)
      - [osquery](network_security/device/hids/osquery/)
+     - [OpenSCAP](network_security/device/hids/openscap)
+     - [SCA](network_security/device/hids/sca)
 
    - [扫描器](network_security/device/scanner/README.md)
      - [OpenVAS](network_security/device/scanner/openvas/)

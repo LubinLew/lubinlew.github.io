@@ -253,3 +253,13 @@ git remote add --mirror=fetch github https://github.com/greenbone/gsa.git
 git pull --all
 git push --all
 ```
+
+只同步tag的情况
+
+```bash
+git fetch github --tags                 # 下载所有github上的所有 tag
+git push origin refs/tags/v4.2.3        # 只推送 v4.2.3 版本到 gitlab上
+
+```
+
+

@@ -1,23 +1,97 @@
 # 智能指针
 
-
 在现代 C++ 编程中，标准库实现了智能指针，用于帮助确保程序没有内存和资源泄漏，并且发生异常时仍然是安全的。
 智能指针在 std 命名空间的 <memory> 头文件中定义。
 RAII（Resource Acquisition Is Initialization）是一种利用对象生命周期来控制程序资源（如内存、文件句柄、网络连接、互斥量等等）的简单技术。
 
-- atuo_ptr (c++98)
-- unique_ptr (c++11)
-- shared_ptr (c++11)
-- weak_ptr (c++11)
-- make_unique (c++14)
-- make_shared (c++14)
+| Categories  | Standard        | Type           | Description                 |
+| ----------- | --------------- | -------------- | --------------------------- |
+| unique_ptr  | C++11           | class template | 具有唯一对象所有权语义的智能指针            |
+| make_unique | C++14           | class template |                             |
+| shared_ptr  | C++11           | class template | 具有共享对象所有权语义的智能指针            |
+| make_shared | C++11           | class template |                             |
+| weak_ptr    | C++11           | class template | 对 std::shared_ptr 管理的对象的弱引用 |
+| atuo_ptr    | c++98, 被C++17废弃 | class template | 具有严格对象所有权语义的智能指针            |
+|             |                 |                |                             |
+|             |                 |                |                             |
+
+
+
+unique_ptr
+
+`unique_ptr` 对象始终是关联的原始指针的唯一所有者。 `unique_ptr` 对象无法复制，只能移动。
+
+由于每个`unique_ptr` 对象都是原始指针的唯一所有者，因此在其析构函数中它直接删除关联的指针，不需要任何参考计数。
 
 ```cpp
-//C++14 之前,需要使用 new 来申请
-std::unique_ptr<C> c(new C());
-//C++14, 就不需要使用 new 了
-auto v1 = std::make_unique<C>();
+#include <iostream>
+#include <memory>
+
+class Object {
+public:
+    //构造函数
+    Object(int id) :mId(id) {std::cout << "Object::Constructor" << std::endl;}
+    //析构函数
+    ~Object() {std::cout << "Object::Destructor" << std::endl;}
+    //成员函数
+    void printValue(void) { std::cout << mId << std::endl;}
+
+private:
+    int mId;
+};
+
+int main(int argc, char* argv[])
+{
+    // 通过原始指针创建 unique_ptr 实例, new Object(99) 返回的指针是 智能指针的构造函数的
+    std::unique_ptr<Object> ObjectPtr(new Object(99));
+
+    //通过 unique_ptr 访问类的成员函数
+    ObjectPtr->printValue();
+
+    return 0;
+}
 ```
+
+
+
+make_unique
+
+ make_unique 创建并返回 unique_ptr 至指定类型的对象，这一点从其构造函数能看出来。make_unique 相较于 unique_ptr 则更加安全。
+
+```cpp
+#include <iostream>
+#include <memory>
+
+class Object {
+public:
+    //构造函数
+    Object(int id) :mId(id) {std::cout << "Object::Constructor" << std::endl;}
+    //析构函数
+    ~Object() {std::cout << "Object::Destructor" << std::endl;}
+    //成员函数
+    void printValue(void) { std::cout << mId << std::endl;}
+
+private:
+    int mId;
+};
+
+int main(int argc, char* argv[])
+{
+    // 通过原始指针创建 unique_ptr 实例, 这里就不需要用 new 来申请空间
+    auto ObjectPtr = std::make_unique<Object>(99);
+
+    //通过 unique_ptr 访问类的成员
+    ObjectPtr->printValue();
+
+    return 0;
+}
+
+
+```
+
+
+
+
 
 ## 用途
 
@@ -63,8 +137,6 @@ void UseSmartPointer()
 C++ 智能指针习语类似于 C# 等语言中的对象创建：您创建对象，然后让系统负责在正确的时间删除它。不同之处在于没有单独的垃圾收集器在后台运行；内存通过标准的 C++ 范围规则进行管理，以便运行时环境更快、更高效。
 
 > 总是在单独的代码行上创建智能指针，永远不要在参数列表中，这样就不会由于某些参数列表分配规则而发生微妙的资源泄漏。
-
-
 
 以下示例显示了如何使用`unique_ptr`C++ 标准库中的智能指针类型来封装指向大对象的指针。
 
@@ -151,11 +223,7 @@ shared_ptr
 weak_ptr
 特殊情况下的智能指针，与shared_ptr. weak_ptr提供对一个或多个shared_ptr实例拥有的对象的访问，但不参与引用计数。当您想观察对象但不要求它保持活动状态时使用。在某些情况下需要中断shared_ptr实例之间的循环引用。头文件：<memory>. 有关更多信息，请参阅如何：创建和使用 weak_ptr 实例和weak_ptr 类。
 
-
-
-
-
-
+https://en.cppreference.com/w/cpp/memory
 
 [ Microsoft - Smart pointers (Modern C++)](https://docs.microsoft.com/en-us/cpp/cpp/smart-pointers-modern-cpp?view=msvc-160)
 

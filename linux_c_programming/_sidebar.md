@@ -12,6 +12,7 @@
   - [getsockname](linux_c_programming/functions/getsockname.md)
   - [获取密码信息](linux_c_programming/functions/获取密码信息.md)  
   - [获取用户组信息](linux_c_programming/functions/获取用户组信息.md)
+  - [procps](linux_c_programming/functions/procps.md)
 
 - **进程、线程、携程**
   

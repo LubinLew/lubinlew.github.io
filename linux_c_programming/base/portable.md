@@ -1,7 +1,5 @@
 # 可移植性编程
 
-
-
 | 移植种类  | 描述                |
 | ----- | ----------------- |
 | CPU位数 | 数据类型的长度不同         |
@@ -16,19 +14,13 @@
 
 C99 增加了 `<stdint.h>` 解决数据类型的问题, 详细见 [HERE](linux_c_programming/base/integer_range.md)
 
-
-
 ## 大小端
 
 大小端即字节序。目前平常接触的机器都是小端的。只有一些商业机是大端的。详细见 [HERE](linux_c_programming/base/endian.md)
 
-
-
 ## 操作系统
 
 主要是注意 windows 和  Linux 等系统的区别，很多linux下有函数windows下都没有。
-
-
 
 ## 编码格式
 

@@ -31,3 +31,9 @@
 https://en.cppreference.com/w/
 
 [C++11 -> C++14 -> C++17](https://zhuanlan.zhihu.com/p/365221113)
+
+[C++ 新特性](https://github.com/0voice/cpp_new_features)
+
+[C++17 完全指南](https://github.com/MeouSker77/Cpp17)
+
+[现代C++特性(英文)](https://github.com/AnthonyCalandra/modern-cpp-features)

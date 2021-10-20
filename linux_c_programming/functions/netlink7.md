@@ -37,7 +37,7 @@ Netlink 是一种面向数据报的服务。`SOCK_RAW 和` `SOCK_DGRAM` 都是 `
 | NETLINK_ISCSI          | >= 2.6.15               | Open-iSCSI                                                                                                                                                                                                                           |
 | NETLINK_AUDIT          | >= 2.6.6                | Auditing                                                                                                                                                                                                                             |
 | NETLINK_FIB_LOOKUP     | >= 2.6.13               | Access to FIB lookup from user space                                                                                                                                                                                                 |
-| NETLINK_CONNECTOR      | >= 2.6.14               | Kernel connector.  See Documentation/connector/* in the Linux kernel source tree for further information                                                                                                                             |
+| NETLINK_CONNECTOR      | >= 2.6.14               | Kernel connector.  https://www.kernel.org/doc/Documentation/connector/connector.txt                                                                                                                                                  |
 | NETLINK_NETFILTER      | >= 2.6.14               | Netfilter subsystem                                                                                                                                                                                                                  |
 | NETLINK_SCSITRANSPORT  | >= 2.6.19               | SCSI Transports.                                                                                                                                                                                                                     |
 | NETLINK_RDMA           | >= 3.0                  | Infiniband RDMA                                                                                                                                                                                                                      |
@@ -78,29 +78,27 @@ netlink 系列通常会指定更多的消息类型，请参阅相应的手册页
 
 标准的 `nlmsg_flags` 取值范围
 
-| 标志位取值         | 类型           | 说明                                                                                                                               |
-| ------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
-| NLM_F_REQUEST | 标准           | Must be set on all request messages                                                                                              |
-| NLM_F_MULTI   | 标准           | The  message  is  part  of  a multipart message terminated by NLMSG_DONE.                                                        |
-| NLM_F_ACK     | 标准           | Request for an acknowledgment on success                                                                                         |
-| NLM_F_ECHO    | 标准           | Echo this request                                                                                                                |
-| NLM_F_ROOT    | GET requests | Return the complete table instead of a single entry                                                                              |
-| NLM_F_MATCH   | GET requests | Return all entries matching criteria passed in  message  content.  Not implemented yet                                           |
-| NLM_F_ATOMIC  | GET requests | Return an atomic snapshot of the table.<br>Note that NLM_F_ATOMIC requires the CAP_NET_ADMIN capability or an effective UID of 0 |
-| NLM_F_DUMP    | GET requests | Convenience macro; equivalent to
-(NLM_F_ROOT\|NLM_F_MATCH).                                                                      |
-| NLM_F_REPLACE | NEW requests | Replace existing matching object                                                                                                 |
-| NLM_F_EXCL    | NEW requests | Don't replace if the object already exists                                                                                       |
-| NLM_F_CREATE  | NEW requests | Create object if it doesn't already exist                                                                                        |
-| NLM_F_APPEND  | NEW requests | Add to the end of the object list                                                                                                |
+| 标志位取值                      | 类型           | 说明                                                                                                                               |
+| -------------------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| NLM_F_REQUEST              | 标准           | Must be set on all request messages                                                                                              |
+| NLM_F_MULTI                | 标准           | The  message  is  part  of  a multipart message terminated by NLMSG_DONE.                                                        |
+| NLM_F_ACK                  | 标准           | Request for an acknowledgment on success                                                                                         |
+| NLM_F_ECHO                 | 标准           | Echo this request                                                                                                                |
+| NLM_F_ROOT                 | GET requests | Return the complete table instead of a single entry                                                                              |
+| NLM_F_MATCH                | GET requests | Return all entries matching criteria passed in  message  content.  Not implemented yet                                           |
+| NLM_F_ATOMIC               | GET requests | Return an atomic snapshot of the table.<br>Note that NLM_F_ATOMIC requires the CAP_NET_ADMIN capability or an effective UID of 0 |
+| NLM_F_DUMP                 | GET requests | Convenience macro; equivalent to                                                                                                 |
+| (NLM_F_ROOT\|NLM_F_MATCH). |              |                                                                                                                                  |
+| NLM_F_REPLACE              | NEW requests | Replace existing matching object                                                                                                 |
+| NLM_F_EXCL                 | NEW requests | Don't replace if the object already exists                                                                                       |
+| NLM_F_CREATE               | NEW requests | Create object if it doesn't already exist                                                                                        |
+| NLM_F_APPEND               | NEW requests | Add to the end of the object list                                                                                                |
 
 `nlmsg_seq` 和 `nlmsg_pid` 用于跟踪消息。 `nlmsg_pid` 显示消息的来源。请注意，如果消息源自 netlink 套接字，则 `nlmsg_pid` 和进程的 PID 之间没有 1:1 的关系。有关详细信息，请参阅地址格式部分。`nlmsg_seq` 和 `nlmsg_pid` 都对 netlink 核心不透明的。
 
 Netlink 不是一个可靠的协议。它会尽最大努力将消息传递到其目的地，但可能会在出现内存不足或其他错误时丢弃消息。为了可靠传输，发送方可以通过设置 NLM_F_ACK 标志来请求接收方的确认。确认是错误字段设置为 0 的 `NLMSG_ERROR` 数据包。应用程序必须自己为接收到的消息生成确认。 内核尝试为每个失败的数据包发送 `NLMSG_ERROR` 消息。 用户进程也应该遵循这个约定。
 
 然而，从内核到用户的可靠传输在任何情况下都是不可能的。如果套接字缓冲区已满，内核将无法发送 netlink 消息：该消息将被丢弃，内核和用户空间进程将不再具有相同的内核状态视图。由应用程序检测何时发生这种情况（通过 recvmsg(2) 返回的 ENOBUFS 错误）并重新同步。
-
-
 
 ## 地址格式
 
@@ -118,8 +116,6 @@ struct sockaddr_nl {
 `nl_pid` 是 netlink 套接字的单播地址。 如果目标在内核中，则它始终为 0。 对于用户空间进程，`nl_pid` 通常是拥有目标套接字的进程的 PID。但是，`nl_pid` 标识的是 netlink 套接字，而不是进程。 如果一个进程拥有多个 netlink 套接字，则 `nl_pid` 只能等于最多一个套接字的进程 ID。 有两种方法可以将 `nl_pid` 分配给 netlink 套接字。 如果应用程序在调用 bind(2) 之前设置了 `nl_pid`，则由应用程序来确保 `nl_pid` 是唯一的。 如果应用程序将其设置为 0，则内核会负责分配它。 内核将进程 ID 分配给该进程打开的第一个 netlink 套接字，并为该进程随后创建的每个 netlink 套接字分配一个唯一的 `nl_pid`。
 
 `nl_groups` 是一个位掩码，每一位代表一个 netlink 组号。每个 netlink 系列都有一组 32 个多播组。当在套接字上调用 bind(2) 时，应将 `sockaddr_nl` 中的 `nl_groups` 字段设置为它希望侦听的组的位掩码。此字段的默认值为零，这意味着不会接收多播。套接字可以通过将 `nl_groups` 设置为它在调用 sendmsg(2) 或执行 connect(2) 时希望发送到的组的位掩码来将消息多播到任何多播组。只有有效 UID 为 0 或 `CAP_NET_ADMIN` 功能的进程才能发送或侦听 netlink 多播组。从 Linux 2.6.13 开始，消息不能广播到多个组。对为多播组接收的消息的任何回复都应发送回发送 PID 和多播组。某些 Linux 内核子系统可能还允许其他用户发送和/或接收消息。在 Linux 3.0 中，`NETLINK_KOBJECT_UEVENT`、`NETLINK_GENERIC`、`NETLINK_ROUTE` 和 `NETLINK_SELINUX` 组允许其他用户接收消息。没有组允许其他用户发送消息。
-
-
 
 ## Socket 选项
 

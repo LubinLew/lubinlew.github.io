@@ -108,7 +108,7 @@ typedef struct proc_t {
 // and so on...
         cutime,         // stat            cumulative utime of process and reaped children
         cstime,         // stat            cumulative stime of process and reaped children
-        start_time;     // stat            进程的启动时间 -- 从1970年1月1日0点开始经历的秒数
+        start_time;     // stat            进程的启动时间,这里的数值是系统从开机起经历的时钟嘀嗒数, 具体需要转换见 
 #ifdef SIGNAL_STRING
     char
         // Linux 2.1.7x and up have 64 signals. Allow 64, plus '\0' and padding.

@@ -117,10 +117,36 @@ using uint32_t = unsigned int;
 for (声明  ：范围) {
     语句
 }
+```
 
-//例子
+
+
+
+```cpp
 int arr[] {1,2,3,4,5}
 for (int i : arr) {
+    std::cout << i << std::endl;
+}
+```
+
+i 是当前数组一个元素的副本, 
+- 所以修改 i 的值不影响原数组的数据
+- 副本是一个比较消耗性能的方式
+
+使用引用可以很好的解决上面的问题
+
+```cpp
+int arr[] {1,2,3,4,5}
+for (int& i : arr) {
+    std::cout << i << std::endl;
+}
+```
+
+如果不想修改数组的内容, 那么加上 const 限定
+
+```cpp
+int arr[] {1,2,3,4,5}
+for (const int& i : arr) {
     std::cout << i << std::endl;
 }
 ```

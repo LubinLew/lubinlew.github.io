@@ -108,7 +108,7 @@ typedef struct proc_t {
 // and so on...
         cutime,         // stat            cumulative utime of process and reaped children
         cstime,         // stat            cumulative stime of process and reaped children
-        start_time;     // stat            进程的启动时间,这里的数值是系统从开机起经历的时钟嘀嗒数, 具体需要转换见 
+        start_time;     // stat            进程的启动时间,这里的数值是系统从开机起经历的时钟嘀嗒数 
 #ifdef SIGNAL_STRING
     char
         // Linux 2.1.7x and up have 64 signals. Allow 64, plus '\0' and padding.
@@ -219,6 +219,50 @@ typedef struct proc_t {
         *lxcname;       // n/a             lxc container name
 } proc_t;
 ```
+
+### 
+
+### 进程启动时间
+
+**start_time** : 进程的启动时间
+
+次结构体里的数值是系统从开机起经历的时钟嘀嗒数, 这个嘀嗒数除以 每秒的时钟滴答数`sysconf(_SC_CLK_TCK)` 既可以转换为秒数。
+
+系统的的开机时间从 `/proc/stat` 文件中的 btime 行获取, 这样 btime + 上面的描述, 即得到了 进程启动的unix时间戳。
+
+具体的程序见 [process_start_time](https://github.com/LubinLew/codes/blob/main/linux/process_start_time.md)。
+
+### 进程用户
+
+euser：effective user name，它通常与 Real User 相同，但有时会更改以允许非特权用户访问只能由特权用户（如 root）访问的文件。
+
+ruser：real user name，对于进程，Real User 只是启动它的 User。它定义了这个进程可以访问哪些文件。
+
+suser：saved user name，当一个进程以提升的权限（通常是 root）运行时需要做一些低权限的工作时使用，这可以通过临时切换到非权限帐户来实现。
+
+fuser：filesystem user name
+
+>  **Effective user ID**
+> 
+> The effective UID (`euid`) of a process is used for most access checks. It is also used as the owner for files created by that process. The effective GID (`egid`) of a process also affects access control and may also affect file creation, depending on the semantics of the specific kernel implementation in use and possibly the mount options used. According to BSD Unix semantics, the group ownership given to a newly created file is unconditionally inherited from the group ownership of the directory in which it is created. According to [AT&T](https://en.wikipedia.org/wiki/AT%26T "AT&T") [UNIX System V](https://en.wikipedia.org/wiki/UNIX_System_V "UNIX System V") semantics (also adopted by Linux variants), a newly created file is normally given the group ownership specified by the `egid` of the process that creates the file. Most filesystems implement a method to select whether BSD or AT&T semantics should be used regarding group ownership of a newly created file; BSD semantics are selected for specific directories when the S_ISGID (s-gid) permission is set.[[1]](https://en.wikipedia.org/wiki/User_identifier#cite_note-1)
+> 
+> **File system user ID**
+> 
+> Linux also has a file system user ID (`fsuid`) which is used explicitly for access control to the file system. It matches the `euid` unless explicitly set otherwise. It may be root's user ID only if `ruid`, `suid`, or `euid` is root. Whenever the `euid` is changed, the change is propagated to the `fsuid`.
+> 
+> The intent of `fsuid` is to permit programs (e.g., the [NFS](https://en.wikipedia.org/wiki/Network_File_System "Network File System") server) to limit themselves to the file system rights of some given `uid` without giving that `uid` permission to send them signals. Since kernel 2.0, the existence of `fsuid` is no longer necessary because Linux adheres to [SUSv3](https://en.wikipedia.org/wiki/Single_UNIX_Specification#2001:_Single_UNIX_Specification_version_3,_POSIX:2001 "Single UNIX Specification") rules for sending signals, but `fsuid` remains for compatibility reasons.[[2]](https://en.wikipedia.org/wiki/User_identifier#cite_note-Kerrisk-2)
+> 
+> **Saved user ID**
+> 
+> The saved user ID (`suid`) is used when a program running with elevated privileges needs to do some unprivileged work temporarily; changing `euid` from a privileged value (typically `0`) to some unprivileged value (anything other than the privileged value) causes the privileged value to be stored in `suid`.[[3]](https://en.wikipedia.org/wiki/User_identifier#cite_note-3) Later, a program's `euid` can be set back to the value stored in `suid`, so that elevated privileges can be restored; an unprivileged process may set its `euid` to one of only three values: the value of `ruid`, the value of `suid`, or the value of `euid`.
+> 
+> **Real user ID**
+> 
+> The real UID (`ruid`) and real GID (`rgid`) identify the real owner of the process and affect the permissions for sending signals. A process without superuser privileges may signal another process only if the sender's `ruid` or `euid` matches receiver's `ruid` or `suid`. Because a child process inherits its credentials from its parent, a child and parent may signal each other.
+
+[User identifier - Wikipedia](https://en.wikipedia.org/wiki/User_identifier)
+
+[Real, Effective and Saved UserID in Linux - GeeksforGeeks](https://www.geeksforgeeks.org/real-effective-and-saved-userid-in-linux/#:~:text=Effective%20UserID%20%3A%20It%20is%20normally,a%20privileged%20user%20like%20root.)
 
 ## 安装
 

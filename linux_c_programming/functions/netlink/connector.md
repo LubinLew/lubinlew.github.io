@@ -1,14 +1,14 @@
-# Kernel Connector
-
-
+# Connector
 
 Kernel connector - 基于 netlink 的用户空间与内核空间易于使用的通信模块。
 
-The Connector driver makes it easy to connect various agents using a netlink based network.  One must register a callback and an identifier.
+connector 提供了一种统一的用户态与内核态之间通过 netlink socket 协议层进行通信的标准框架，
 
-连接器驱动程序使使用基于 netlink 的网络连接各种代理变得容易。 必须注册一个回调和一个标识符。When the driver receives a special netlink message with the appropriate identifier, the appropriate callback will be called.
+它实现了一种虚拟设备，通过这种设备内核可以与用户态程序通过 netlink 进行通信，传输固定格式信息的报文。
 
-当驱动程序收到带有适当标识符的特殊 netlink 消息时，将调用适当的回调。
+cn_proc 驱动使用了 connector 驱动，能够将进程事件报告给用户态程序。它会发送诸如进程 fork、exec、id change (uid，gid，suid，etc 等)，以及exit 事件的 netlink 消息。
+
+
 
 从用户空间的角度来看，它非常简单:
 
@@ -52,11 +52,7 @@ struct cn_msg
 };
 ```
 
-
-
 ### Connector interfaces.
-
-
 
 ```c
 int cn_add_callback(struct cb_id *id, char *name, void (*callback) (struct cn_msg *, struct netlink_skb_parms *));
@@ -100,14 +96,9 @@ int cn_netlink_send(struct cn_msg *msg, u32 portid, u32 __groups, int gfp_mask);
  int gfp_mask            - GFP mask.
 ```
 
- Note: When registering new callback user, connector core assigns
- netlink group to the user which is equal to its id.idx.
-
-
+ Note: When registering new callback user, connector core assigns netlink group to the user which is equal to its id.idx.
 
 ### Protocol description.
-
-
 
 The current framework offers a transport layer with fixed headers.  The
 recommended protocol which uses such a header is as following:
@@ -148,11 +139,7 @@ so caller is warned that it must be prepared.  That is why the struct
 cn_msg [main connector's message header] contains u32 seq and u32 ack
 fields.
 
-
-
 ### Userspace usage.
-
-
 
 2.6.14 has a new netlink socket implementation, which by default does not
 allow people to send data to netlink groups other than 1.
@@ -193,16 +180,12 @@ Due to this limitation, group 0xffffffff does not work now, so one can
 not use add/remove connector's group notifications, but as far as I know, 
 only cn_test.c test module used it.
 
-Some work in netlink area is still being done, so things can be changed in
-2.6.15 timeframe, if it will happen, documentation will be updated for that
-kernel.
-
-
-
 ### Code samples
 
+[linux/samples/connector](https://github.com/torvalds/linux/tree/master/samples/connector)
 
 
-Sample code for a connector test module and user space can be found
-in samples/connector/. To build this code, enable CONFIG_CONNECTOR
-and CONFIG_SAMPLES.
+
+## References
+
+https://blog.csdn.net/Longyu_wlz/article/details/108879110

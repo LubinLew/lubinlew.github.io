@@ -365,7 +365,9 @@ alu算术指令执行 寄存器A 和 寄存器X 或 常量 之间的操作，并
 | BPF_MISC \| BPF_TAX | X = A |
 | BPF_MISC \| BPF_TXA | A = X |
 
-如下面例子所示:
+## 例子
+
+### 例子1
 
 ```c
 #include <sys/socket.h>
@@ -419,10 +421,236 @@ if (ret < 0)
 close(sock);
 ```
 
-上面的示例代码为 `PF_PACKET` 套接字附加了一个套接字过滤器，以便让所有具有端口 22 的 IPv4/IPv6 数据包通过。 其余的将为此套接字丢弃。套接字过滤器不仅限于 PF_PACKET 套接字，但也可用于其他 socket 系列。
+上面的示例代码为 `PF_PACKET` 套接字附加了一个套接字过滤器，以便让所有具有端口 22 的 IPv4/IPv6 数据包通过。其余的将为此套接字丢弃。
 
-通常，对数据包套接字进行套接字过滤的大多数用例将由 libpcap 以高级语法涵盖，
-因此作为应用程序开发人员，您应该坚持这一点。 libpcap 将它自己的层包裹在所有这些之上。
+### 
+
+### 例子2
+
+上面的例子是官方文档中例子, 难以理解, 对于 `struct sock_filter` 结构的赋值应该使用上面头文件中定义的 `BPF_STMT` 和 `BPF_JUMP`来编写代码
+
+```c
+/*******************************************************************************************
+** 本程序是 通过 netlink 的 Connector 功能与内核通信, 获取新进程执行的事件
+**
+** 注意 netlink 是不可靠协议, 中间数据有可能丢失
+** 当程序收到 新进程执行命令的时候, 新进程可以已经退出了
+**
+** 下面代码中 #if 0 的部分就是不使用 socket filter 过滤功能时判断的逻辑
+** socket filter 的内容就是 将这些判断逻辑放入到内核中执行, 减少内核态与用户态的交互
+**
+** 参考代码:
+**    https://nick-black.com/dankwiki/index.php/The_Proc_Connector_and_Socket_Filters
+**    https://bewareofgeek.livejournal.com/2945.html
+**    https://gist.github.com/L-P/9487407
+**    https://gist.github.com/arunk-s/c897bb9d75a6c98733d6
+*********************************************************************************************/
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>  //open
+
+#include <arpa/inet.h> //htonl
+#include <sys/socket.h>
+
+#include <stdio.h>
+#include <string.h> // memset
+#include <unistd.h>
+#include <stddef.h> //offsetof
+
+#include <linux/filter.h>
+#include <linux/netlink.h>
+#include <linux/connector.h>
+#include <linux/cn_proc.h>
+
+#define SEND_MESSAGE_LEN (NLMSG_LENGTH(sizeof(struct cn_msg) + \
+                       sizeof(enum proc_cn_mcast_op)))
+#define RECV_MESSAGE_LEN (NLMSG_LENGTH(sizeof(struct cn_msg) + \
+                       sizeof(struct proc_event)))
+
+static char* get_cmdline(int pid, char* cmdline, size_t inlen);
+
+
+int main(void)
+{
+    int sock;
+    struct sockaddr_nl addr;
+    struct iovec iovs[3];
+    char nlmsghdrbuf[NLMSG_LENGTH(0)];
+    struct nlmsghdr *nlmsghdr = (struct nlmsghdr *)nlmsghdrbuf;
+    struct nlmsghdr *recvnlmsg;
+    struct cn_msg cn_msg;
+    struct cn_msg *cn_msg_rcv;
+    enum proc_cn_mcast_op op = PROC_CN_MCAST_LISTEN;
+    struct msghdr msghdr;
+    struct sockaddr_nl res_addr;
+    struct iovec iovr[1];
+    char buf[RECV_MESSAGE_LEN];
+    ssize_t len;
+    char cmdline[1024];
+    struct proc_event *ev;
+    struct sock_fprog bpf;
+    struct sock_filter code[] = {
+        // nlmsg_type == NLMSG_DONE
+        BPF_STMT(BPF_LD|BPF_H|BPF_ABS, offsetof(struct nlmsghdr, nlmsg_type)),
+        BPF_JUMP(BPF_JMP|BPF_JEQ|BPF_K, htons(NLMSG_DONE), 1, 0), //相等则跳过下个指令, 继续执行, 否则继续执行会返回0,即丢弃当前数据
+        BPF_STMT(BPF_RET|BPF_K, 0), //返回0, 意味着丢弃当前数据
+        // cn_msg.cb_id.idx == CN_IDX_PROC
+        BPF_STMT(BPF_LD|BPF_W|BPF_ABS, NLMSG_LENGTH(0) + offsetof(struct cn_msg, id) + offsetof(struct cb_id, idx)),
+        BPF_JUMP(BPF_JMP|BPF_JEQ|BPF_K,  htonl(CN_IDX_PROC), 1, 0),
+        BPF_STMT(BPF_RET|BPF_K, 0),
+        // cn_msg.cb_id.val == CN_VAL_PROC
+        BPF_STMT(BPF_LD|BPF_W|BPF_ABS, NLMSG_LENGTH(0) + offsetof(struct cn_msg, id) + offsetof(struct cb_id, val)),
+        BPF_JUMP(BPF_JMP|BPF_JEQ|BPF_K, htonl(CN_VAL_PROC), 1, 0),
+        BPF_STMT(BPF_RET|BPF_K, 0),
+        // cn_msg.data.what == PROC_EVENT_EXEC
+        BPF_STMT(BPF_LD|BPF_W|BPF_ABS, NLMSG_LENGTH(0) + offsetof(struct cn_msg, data) + offsetof(struct proc_event, what)),
+        BPF_JUMP(BPF_JMP|BPF_JEQ|BPF_K, htonl(PROC_EVENT_EXEC), 1, 0),
+        BPF_STMT(BPF_RET|BPF_K, 0),
+        // return packet length
+        BPF_STMT(BPF_LD | BPF_W | BPF_LEN, 0),
+        BPF_STMT(BPF_RET|BPF_A, 0)
+    };
+
+    /* 1. socket */
+    sock = socket(PF_NETLINK, SOCK_DGRAM | SOCK_CLOEXEC, NETLINK_CONNECTOR);
+    if (sock < 0) {
+        perror("sock failed");
+        return -1;
+    }
+
+    bpf.len = sizeof(code)/sizeof(struct sock_filter);
+    bpf.filter = code;
+
+    if (setsockopt(sock, SOL_SOCKET, SO_ATTACH_FILTER, &bpf, sizeof(bpf)) < 0) {
+        perror("setsockopt failed");
+        return -1;
+    }
+
+    /* 2. bind */
+    addr.nl_family = AF_NETLINK;
+    addr.nl_pid = getpid();
+    addr.nl_groups = CN_IDX_PROC;
+    if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
+        perror("bind failed");
+        return -1;
+    }
+
+    /* netlink msg */ 
+    nlmsghdr->nlmsg_len = SEND_MESSAGE_LEN;
+    nlmsghdr->nlmsg_type = NLMSG_DONE;
+    nlmsghdr->nlmsg_flags = 0;
+    nlmsghdr->nlmsg_seq = 0;
+    nlmsghdr->nlmsg_pid = getpid();
+
+    iovs[0].iov_base = nlmsghdrbuf;
+    iovs[0].iov_len = NLMSG_LENGTH(0);
+
+    /* connector msg */
+    cn_msg.id.idx = CN_IDX_PROC;
+    cn_msg.id.val = CN_VAL_PROC;
+    cn_msg.seq = 0;
+    cn_msg.ack = 0;
+    cn_msg.len = sizeof(enum proc_cn_mcast_op);
+    iovs[1].iov_base = &cn_msg;
+    iovs[1].iov_len = sizeof(struct cn_msg);
+
+    /* cn_proc msg */
+    iovs[2].iov_base = &op;
+    iovs[2].iov_len = sizeof(enum proc_cn_mcast_op);
+
+    /* 3. send, subscribe process info */
+    writev(sock, iovs, 3);
+
+    while (1) {
+         msghdr.msg_name = &res_addr;
+         msghdr.msg_namelen = sizeof(res_addr);
+         msghdr.msg_iov = iovr;
+         msghdr.msg_iovlen = 1;
+         msghdr.msg_control = NULL;
+         msghdr.msg_controllen = 0;
+         msghdr.msg_flags = 0;
+
+         iovr[0].iov_base = buf;
+         iovr[0].iov_len = RECV_MESSAGE_LEN;
+
+         len = recvmsg(sock, &msghdr, 0);
+
+         /* 因为 netlink 允许进程间发送信息, 所以这里需要确认发送者是否是 内核. */
+         if (res_addr.nl_pid != 0) {
+             continue;
+         }
+
+         for (recvnlmsg = (struct nlmsghdr *)buf; NLMSG_OK(recvnlmsg, len); recvnlmsg = NLMSG_NEXT(recvnlmsg, len)) {
+#if 0
+            if ((nlmsghdr->nlmsg_type == NLMSG_ERROR) || (nlmsghdr->nlmsg_type == NLMSG_NOOP)) {
+                continue;
+            }
+#endif
+            cn_msg_rcv = NLMSG_DATA(recvnlmsg);
+
+#if 0
+            if ((cn_msg->id.idx != CN_IDX_PROC) || (cn_msg->id.val != CN_VAL_PROC)) {
+                continue;
+            }
+#endif
+            ev = (struct proc_event *)cn_msg_rcv->data;
+
+#if 0
+            if (PROC_EVENT_EXEC == ev->what) {
+                printf ("EXEC[%d] %d/%d\n", ev->what, ev->event_data.exec.process_pid, ev->event_data.exec.process_tgid);
+            }
+#else
+            printf ("EXEC[%d] pid=%d tgid=%d, cmd=%s\n", ev->what, \
+                ev->event_data.exec.process_pid, \
+                ev->event_data.exec.process_tgid, \
+                get_cmdline(ev->event_data.exec.process_pid, cmdline, 1023));
+#endif
+         }
+    }
+
+    return 0;
+}
+
+static char* get_cmdline(int pid, char* cmdline, size_t inlen)
+{
+    int i, fd;
+    ssize_t r = 0;
+    char filepath[1024];
+    static char err[] = "N/A";
+
+    snprintf(filepath, sizeof(filepath), "/proc/%d/cmdline", pid);
+    fd = open(filepath, O_RDONLY);
+    if (fd < 0) {
+        perror("open() failed,");
+        return err;
+    }
+    memset(cmdline, 0, inlen);
+    r = read(fd, cmdline, inlen);
+    close(fd);
+    if (r < 0) {
+        perror("read() failed,");
+        return err;
+    } else if (r == 0) {
+        printf("read() nothing\n");
+        return err;
+    }
+    for (i = 0; i < r; ++i) {
+       if (cmdline[i] == 0) {
+            cmdline[i] = ' ';
+       }
+    }
+
+    //trim last space
+    cmdline[r-1] = '\0';
+
+    return cmdline;
+}
+```
+
+
+
+通常，对数据包套接字进行套接字过滤的大多数用例将由 libpcap 以高级语法涵盖，因此作为应用程序开发人员，您应该坚持这一点。 libpcap 将它自己的层包裹在所有这些之上。
 
 除非:
 
@@ -431,11 +659,14 @@ close(sock);
 3) 过滤器可能更复杂，并且无法使用 libpcap 编译器很好的地实现;
 4) 特定过滤器代码的优化应与 libpcap 的内部编译器不同;
 
-那么在上面这些情况下，需要手工编写过滤器。例如，xt_bpf 和 cls_bpf 用户的需求可能会导致更复杂的过滤器代码，
-或者无法用 libpcap 表达的需求（例如，不同代码路径的不同返回代码）。 
+那么在上面这些情况下，需要手工编写过滤器。例如，xt_bpf 和 cls_bpf 用户的需求可能会导致更复杂的过滤器代码，或者无法用 libpcap 表达的需求（例如，不同代码路径的不同返回代码）。 
 此外，BPF JIT 实现者可能希望手动编写测试用例，因此也需要对 BPF 代码进行低级访问。
 
-BPF引擎和指令集
+
+
+
+
+
 
 在 tools/bpf/ 下有一个名为 bpf_asm 的辅助工具，它可以用于编写上一节中提到的示例场景的低级过滤器。
 这里提到的类似汇编的语法已经在 bpf_asm 中实现了，后面会用到(不再直接处理可读性较差的操作码）。 

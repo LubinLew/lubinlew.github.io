@@ -1,10 +1,12 @@
 # 网络安全
 
 1. 什么是网络安全
-    https://www.zhihu.com/question/357888357
+
+https://www.zhihu.com/question/357888357
 
 2. 为什么需要网络安全
-    https://www.kaspersky.com.cn/resource-center/definitions/what-is-cyber-security
+
+https://www.kaspersky.com.cn/resource-center/definitions/what-is-cyber-security
 
 3. 国家法令
 
@@ -30,13 +32,18 @@ OWASP TOP10 web 攻击
  - 堡垒机（原理介绍）
  - 网闸（https://www.cnblogs.com/zhoading/p/8831170.html）
  - 加密机（https://zhuanlan.zhihu.com/p/29038992）
- - IDS（NIDS、HIDS（EDR））
- - IPS
+ - IDS - Intrusion Detection System, 入侵检测系统
+    - NIDS - 基于网络的入侵检测
+    - HIDS(EDR) - 基于主机的入侵检测
+ - IPS -  Intrusion Prevention System, 入侵防御系统
  - WAF
- - FW(防火墙)/NGFW(下一代防火墙)
+ - AVG - 防病毒网管
+ - SWG - Web安全网关
+ - FW(防火墙)
+ - NGFW(下一代防火墙)
  - 数据库审计
  - 日志审计
- - 。。。。
+
 
 ### 三、安全厂商
 

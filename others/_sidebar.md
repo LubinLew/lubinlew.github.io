@@ -19,4 +19,3 @@
 - [QR Code 简介](others/qrcode.md)
 - [Pyinstaller](others/pyInstaller.md)
 - [修改器作弊码](others/cheat_code_format.md)
-- [WIX3 - windows msi 生成工具](others/wix3/)

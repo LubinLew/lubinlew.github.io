@@ -114,21 +114,21 @@ BPF 在内核中实际上是一个虚拟机(与java虚拟机的原理一致)，�
 
 下表显示了上面第 2 列中的寻址格式:
 
-| 寻址方式 | 语法          | 描述                                              |
-| ---- | ----------- | ----------------------------------------------- |
-| 0    | x/%x        | 寄存器X 的值                                         |
-| 1    | [k]         | BHW at byte offset k in the packet              |
-| 2    | [x + k]     | BHW at the offset X + k in the packet           |
-| 3    | M[k]        | 寄存器M[k] 的值                                      |
-| 4    | #k          | 参数 k 的值, 例如 `#0x806`                            |
-| 5    | 4*([k]&0xf) | Lower nibble * 4 at byte offset k in the packet |
-| 6    | L           | Jump label L                                    |
-| 7    | #k,Lt,Lf    | Jump to Lt if true, otherwise jump to Lf        |
-| 8    | x/%x,Lt,Lf  | Jump to Lt if true, otherwise jump to Lf        |
-| 9    | #k,Lt       | Jump to Lt if predicate is true                 |
-| 10   | x/%x,Lt     | Jump to Lt if predicate is true                 |
-| 11   | a/%a        | 寄存器A 的值                                         |
-| 12   | extension   | BPF 扩展                                          |
+| 寻址方式 | 语法          | 描述                                                        |
+| ---- | ----------- | --------------------------------------------------------- |
+| 0    | x/%x        | 寄存器X 的值                                                   |
+| 1    | [k]         | BHW at byte offset k in the packet                        |
+| 2    | [x + k]     | BHW at the offset X + k in the packet                     |
+| 3    | M[k]        | 寄存器M[k] 的值                                                |
+| 4    | #k          | 参数 k 的值, 例如 `#0x806`                                      |
+| 5    | 4*([k]&0xf) | Lower nibble * 4 at byte offset k in the packet， 计算IP标头长度 |
+| 6    | L           | Jump label L                                              |
+| 7    | #k,Lt,Lf    | Jump to Lt if true, otherwise jump to Lf                  |
+| 8    | x/%x,Lt,Lf  | Jump to Lt if true, otherwise jump to Lf                  |
+| 9    | #k,Lt       | Jump to Lt if predicate is true                           |
+| 10   | x/%x,Lt     | Jump to Lt if predicate is true                           |
+| 11   | a/%a        | 寄存器A 的值                                                   |
+| 12   | extension   | BPF 扩展                                                    |
 
 Linux 内核还有一些 BPF 扩展，它们通过用负偏移量 + 特定扩展偏移量“重载” k 参数来与加载指令类一起使用。 这种 BPF 扩展的结果被加载到 寄存器A 中.
 
@@ -252,8 +252,9 @@ struct sock_fprog {  /* Required for SO_ATTACH_FILTER. */
 
 ### 代码使用
 
-P[]  means packet data,
-P[i:n] gives the data at byte offset "i" in the packet, interpreted as a word (n=4), unsigned halfword (n=2), or    unsigned byte (n=1)
+下面说明中约定 `P[]` 表示数据包(数组), index 从 0 开始,
+
+`P[i:n]` 表示数据包从最开始向后偏移 `i` 个字节, `n` 的单位为字节，取值范围为 4(表示字 32 bits), 2(半字 16 bits), 1(字节 8 bits), 即取`n`个字节组成一个无符号整型。
 
 #### BPF_LD
 
@@ -648,8 +649,6 @@ static char* get_cmdline(int pid, char* cmdline, size_t inlen)
 }
 ```
 
-
-
 通常，对数据包套接字进行套接字过滤的大多数用例将由 libpcap 以高级语法涵盖，因此作为应用程序开发人员，您应该坚持这一点。 libpcap 将它自己的层包裹在所有这些之上。
 
 除非:
@@ -661,12 +660,6 @@ static char* get_cmdline(int pid, char* cmdline, size_t inlen)
 
 那么在上面这些情况下，需要手工编写过滤器。例如，xt_bpf 和 cls_bpf 用户的需求可能会导致更复杂的过滤器代码，或者无法用 libpcap 表达的需求（例如，不同代码路径的不同返回代码）。 
 此外，BPF JIT 实现者可能希望手动编写测试用例，因此也需要对 BPF 代码进行低级访问。
-
-
-
-
-
-
 
 在 tools/bpf/ 下有一个名为 bpf_asm 的辅助工具，它可以用于编写上一节中提到的示例场景的低级过滤器。
 这里提到的类似汇编的语法已经在 bpf_asm 中实现了，后面会用到(不再直接处理可读性较差的操作码）。 

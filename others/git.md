@@ -54,6 +54,21 @@
 
 ## 基本设置
 
+### git clone 失败
+
+```bash
+fetch-pack: unexpected disconnect while reading sideband packet
+fatal: early EOF
+fatal: fetch-pack: invalid index-pack output
+```
+
+解决方法:
+
+```bash
+git config --global pack.windowMemory = 256m
+```
+
+
 ### 设置用户名称和邮箱
 
 ```bash

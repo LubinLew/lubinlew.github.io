@@ -62,8 +62,6 @@ int main(int argc, char* argv[])
 }
 ```
 
-
-
 make_unique
 
  make_unique 创建并返回 unique_ptr 至指定类型的对象，这一点从其构造函数能看出来。make_unique 相较于 unique_ptr 则更加安全。
@@ -95,13 +93,7 @@ int main(int argc, char* argv[])
 
     return 0;
 }
-
-
 ```
-
-
-
-
 
 ## 用途
 

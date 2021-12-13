@@ -1,3 +1,7 @@
+# 数据类型
+
+  [double 和  long double 的区别](https://stackoverflow.com/questions/14221612/difference-between-long-double-and-double-in-c-and-c)
+
 ## 定义整形变量
 
 定义有以下 4 种方式
@@ -119,9 +123,6 @@ for (声明  ：范围) {
 }
 ```
 
-
-
-
 ```cpp
 int arr[] {1,2,3,4,5}
 for (int i : arr) {
@@ -130,6 +131,7 @@ for (int i : arr) {
 ```
 
 i 是当前数组一个元素的副本, 
+
 - 所以修改 i 的值不影响原数组的数据
 - 副本是一个比较消耗性能的方式
 

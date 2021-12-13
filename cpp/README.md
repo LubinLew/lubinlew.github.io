@@ -1,8 +1,5 @@
 # C++
 
-
-
-
 ## C++ 标准
 
 大的标准可以认为只有三个 C++98，C++11，C++20。
@@ -22,9 +19,18 @@
 > 
 > 地址为 http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/
 
+### 识别C++代码版本
 
+[How to determine the version of the C++ standard used by the compiler? - Stack Overflow](https://stackoverflow.com/questions/2324658/how-to-determine-the-version-of-the-c-standard-used-by-the-compiler)
 
-
+| 版本        | [GCC](https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html) | [Visual Studio](https://docs.microsoft.com/en-us/cpp/build/reference/zc-cplusplus?view=msvc-170) |
+| --------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| pre-C++98 | __cplusplus == 1                                                          | _MSVC_LANG                                                                                       |
+| C++98     | __cplusplus == 199711L                                                    | _MSVC_LANG                                                                                       |
+| C++11     | __cplusplus == 201103L                                                    | _MSVC_LANG                                                                                       |
+| C++14     | __cplusplus == 201402L                                                    | _MSVC_LANG == 201402L                                                                            |
+| C++17     | __cplusplus == 201703L                                                    | _MSVC_LANG ==                                                                                    |
+| C++20     | __cplusplus == 202002L                                                    | _MSVC_LANG                                                                                       |
 
 ## References
 

@@ -67,7 +67,7 @@ str2 = str1;
 
 加号可以连接两个std::string 对象，或者 std::string 对象 和 char型字符串。
 
-但是不可以连接两个 char型字符串。也就是说加号的一个操作数必须是std::string对象。
+但是不可以连接两个 char型字符串。也就是说加号的一个操作数必须是std::string对象(操作符重载)。
 
 ```cpp
 std::string str1 {"hello"};
@@ -78,6 +78,10 @@ std::string str4 { str1 + " " + str2 };
 
 //std::string str5 { "hello" + "world" }; 错误不支持
 ```
+
+也可以使用 `.append()` 函数连接两个字符串.
+
+
 
 ### std::string 与 字面量的转换
 
@@ -116,8 +120,6 @@ std::string str1 {"hello"};
 auto cstr = str1.data();
 ```
 
-
-
 ## 函数
 
 | C 函数      | C++ 替代函数     | 说明    | 备注            |
@@ -126,7 +128,7 @@ auto cstr = str1.data();
 | strchr()  | str.find()   |       |               |
 | strrchr() | str.rfind()  |       |               |
 | strstr()  | str.find()   |       |               |
-|           |              |       |               |
+| strcat()  | str.append() |       |               |
 |           |              |       |               |
 |           |              |       |               |
 |           |              |       |               |

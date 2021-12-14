@@ -27,15 +27,15 @@
 > 
 > https://gist.github.com/ax3l/53db9fa8a4f4c21ecc5c4100c0d93c94
 
-| 版本        | [GCC](https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html) | [Visual Studio](https://docs.microsoft.com/en-us/cpp/build/reference/zc-cplusplus?view=msvc-170) | Clang |
-| --------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ----- |
-| pre-C++98 | __cplusplus == 1                                                          | 不支持                                                                                              |       |
-| C++98     | __cplusplus == 199711L                                                    | 不支持                                                                                              |       |
-| C++03     | __cplusplus == 199711L                                                    | 不支持                                                                                              |       |
-| C++11     | __cplusplus == 201103L                                                    | 不支持                                                                                              |       |
-| C++14     | __cplusplus == 201402L                                                    | _MSVC_LANG == 201402L                                                                            |       |
-| C++17     | __cplusplus == 201703L                                                    | _MSVC_LANG == 201703L                                                                            |       |
-| C++20     | __cplusplus == 202002L                                                    | _MSVC_LANG == 202002L                                                                            |       |
+| 版本        | [GCC](https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html)/[Clang](https://hackingcpp.com/cpp/std/macro_cplusplus.html) | [MSVC](https://docs.microsoft.com/en-us/cpp/build/reference/zc-cplusplus?view=msvc-170) |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| pre-C++98 | __cplusplus == 1                                                                                                                       | 不支持                                                                                     |
+| C++98     | __cplusplus == 199711L                                                                                                                 | 不支持                                                                                     |
+| C++03     | __cplusplus == 199711L                                                                                                                 | 不支持                                                                                     |
+| C++11     | __cplusplus == 201103L                                                                                                                 | 不支持                                                                                     |
+| C++14     | __cplusplus == 201402L                                                                                                                 | _MSVC_LANG == 201402L                                                                   |
+| C++17     | __cplusplus == 201703L                                                                                                                 | _MSVC_LANG == 201703L                                                                   |
+| C++20     | __cplusplus == 202002L                                                                                                                 | _MSVC_LANG == 202002L                                                                   |
 
 > [C++11 之前版本都定义为`199711L`,很多编译器都不区分C++98 和 C++03](https://en.cppreference.com/w/cpp/preprocessor/replace#Predefined_macros)
 > 
@@ -45,7 +45,7 @@
 
 ---
 
-## References
+## 学习资料
 
 https://en.cppreference.com/w/
 

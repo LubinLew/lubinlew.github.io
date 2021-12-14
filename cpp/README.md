@@ -19,18 +19,31 @@
 > 
 > 地址为 http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/
 
-### 识别C++代码版本
+---
 
-[How to determine the version of the C++ standard used by the compiler? - Stack Overflow](https://stackoverflow.com/questions/2324658/how-to-determine-the-version-of-the-c-standard-used-by-the-compiler)
+## 识别C++代码版本
 
-| 版本        | [GCC](https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html) | [Visual Studio](https://docs.microsoft.com/en-us/cpp/build/reference/zc-cplusplus?view=msvc-170) |
-| --------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| pre-C++98 | __cplusplus == 1                                                          | _MSVC_LANG                                                                                       |
-| C++98     | __cplusplus == 199711L                                                    | _MSVC_LANG                                                                                       |
-| C++11     | __cplusplus == 201103L                                                    | _MSVC_LANG                                                                                       |
-| C++14     | __cplusplus == 201402L                                                    | _MSVC_LANG == 201402L                                                                            |
-| C++17     | __cplusplus == 201703L                                                    | _MSVC_LANG ==                                                                                    |
-| C++20     | __cplusplus == 202002L                                                    | _MSVC_LANG                                                                                       |
+> [How to determine the version of the C++ standard used by the compiler? - Stack Overflow](https://stackoverflow.com/questions/2324658/how-to-determine-the-version-of-the-c-standard-used-by-the-compiler)
+> 
+> https://gist.github.com/ax3l/53db9fa8a4f4c21ecc5c4100c0d93c94
+
+| 版本        | [GCC](https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html) | [Visual Studio](https://docs.microsoft.com/en-us/cpp/build/reference/zc-cplusplus?view=msvc-170) | Clang |
+| --------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ----- |
+| pre-C++98 | __cplusplus == 1                                                          | 不支持                                                                                              |       |
+| C++98     | __cplusplus == 199711L                                                    | 不支持                                                                                              |       |
+| C++03     | __cplusplus == 199711L                                                    | 不支持                                                                                              |       |
+| C++11     | __cplusplus == 201103L                                                    | 不支持                                                                                              |       |
+| C++14     | __cplusplus == 201402L                                                    | _MSVC_LANG == 201402L                                                                            |       |
+| C++17     | __cplusplus == 201703L                                                    | _MSVC_LANG == 201703L                                                                            |       |
+| C++20     | __cplusplus == 202002L                                                    | _MSVC_LANG == 202002L                                                                            |       |
+
+> [C++11 之前版本都定义为`199711L`,很多编译器都不区分C++98 和 C++03](https://en.cppreference.com/w/cpp/preprocessor/replace#Predefined_macros)
+> 
+> [MSVC 编译器不支持 C++11, C++03, or C++98 标准选择](https://devblogs.microsoft.com/cppblog/msvc-now-correctly-reports-__cplusplus/)
+> 
+> [MSVC 编译器需要增加开关 `/Zc:__cplusplus` 这样 `__cplusplus` 的值和 `_MSVC_LANG` 相同。](https://devblogs.microsoft.com/cppblog/msvc-now-correctly-reports-__cplusplus/#zc__cplusplus)
+
+---
 
 ## References
 

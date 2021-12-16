@@ -1,4 +1,8 @@
 * [简介](cpp/README.md)
 * [数据类型](cpp/data_type.md)
 * [字符串](cpp/string/README.md)
+   * [字符串字面量](cpp/string/literal.md)
+   * [std::basic_string](cpp/string/basic_string/README.md)
+      * [std::string](cpp/string/basic_string/string.md)
+      * [字符串国际化](cpp/string/basic_string/wstring.md)
 * [智能指针](cpp/smart_pointers.md)

@@ -165,7 +165,7 @@ std::string 对象可以同 char型数组一样可以使用`[]`方括号来访�
 std::string str1{ "hello" };
 
 for (size_t i{}; i < str1.length(); i++) {
-	str1[i] = std::toupper(str1[i]);  //修改为大写
+    str1[i] = std::toupper(str1[i]);  //修改为大写
 }
 
 std::cout << str1 << std::endl; //HELLO
@@ -177,7 +177,7 @@ std::string 对象是一个范围,可以使用基于范围的 for 循环模式
 std::string str1{ "hello" };
 
 for (auto &ch : str1) {
-	ch = std::toupper(ch);
+    ch = std::toupper(ch);
 }
 
 std::cout << str1 << std::endl; //HELLO
@@ -201,37 +201,35 @@ std::string对象可以与另一个std::string对象或字面量使用 `>`、`>=
 > 注意:除了 `==` 操作符,其他操作符重载在 C++20中已经移除, 在C++17及以下才能使用。
 
 ```cpp
-std::string str1{ "hello" };	
+std::string str1{ "hello" };    
 std::string str2{ "world" };
 auto str3{ "hello" }; //const char*
 
 if (str1 != str2) {
-	std::cout << "str1 != str2" << std::endl;
+    std::cout << "str1 != str2" << std::endl;
 }
 
 if (str1 == str3) {
-	std::cout << "str1 == str3" << std::endl;
+    std::cout << "str1 == str3" << std::endl;
 }
 ```
 
 也可以使用 `.compare()` 函数进行比较, 注意:两个字符串相同的时候函数返回值为0。
 
 ```cpp
-std::string str1{ "hello" };	
+std::string str1{ "hello" };    
 std::string str2{ "world" };
 
 auto str3{ "hello" }; //const char*
 
 if (str1.compare(str2) != 0) {
-	std::cout << "str1 != str2" << std::endl;
+    std::cout << "str1 != str2" << std::endl;
 }
 
 if (str1.compare(str3) == 0) {
-	std::cout << "str1 == str3" << std::endl;
+    std::cout << "str1 == str3" << std::endl;
 }
 ```
-
-
 
 ---
 

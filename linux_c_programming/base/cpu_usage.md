@@ -1,6 +1,6 @@
 # CPU使用率计算
 
-
+解析文件 **/proc/stat** 来获取CPU的信息, 之后计算
 
 ```bash
 [user]# cat /proc/stat 
@@ -20,8 +20,31 @@ processes 11217
 procs_running 1
 procs_blocked 0
 softirq 108317383 2 48767867 4 11157861 161058 0 32 32906980 0 15323579
-
-
 ```
+
+| 顺序  | 名称         | 说明                                                            | top对应 |
+| --- | ---------- | ------------------------------------------------------------- | ----- |
+| 1   | user       | 从系统启动开始累计到当前时刻，处于用户态的运行时间，不包含 nice 值为负的进程                     | us    |
+| 2   | nice       | 从系统启动开始累计到当前时刻，nice值为负的进程所占用的CPU时间                            | ni    |
+| 3   | system     | 从系统启动开始累计到当前时刻，处于内核态的运行时间                                     | sy    |
+| 4   | idle       | 从系统启动开始累计到当前时刻，除IO等待时间以外的其它等待时间                               | id    |
+| 5   | iowait     | 从系统启动开始累计到当前时刻，IO等待时间                                         | wa    |
+| 6   | irq        | 从系统启动开始累计到当前时刻，硬中断处理时间                                        | hi    |
+| 7   | softirq    | 从系统启动开始累计到当前时刻，软中断处理时间                                        | si    |
+| 8   | steal      | 丢失时间,被强制等待（involuntary wait）虚拟CPU的时间，此时hypervisor在为另一个虚拟处理器服务 | st    |
+| 9   | guest      | 为在 Linux 内核控制下的客户操作系统运行虚拟 CPU 所花费的时间                          | -     |
+| 10  | guest_nice | 运行 niced guest（Linux 内核控制下的guest操作系统的虚拟CPU）所花费的时间             | -     |
+
+## References
+
+[Linux中计算特定CPU使用率_ibless的博客-CSDN博客_cpu使用率](https://blog.csdn.net/ibless/article/details/85177175)
+
+[Linux CPU利用率计算原理及内核实现 - Q_Quan - 博客园](https://www.cnblogs.com/qquan/articles/4686422.html)
+
+[LINUX CPU利用率计算_浮白-CSDN博客_linux计算cpu使用率](https://blog.csdn.net/turkeyzhou/article/details/6709953)
+
+[Accurate calculation of CPU usage given in percentage in Linux? - Stack Overflow](https://stackoverflow.com/questions/23367857/accurate-calculation-of-cpu-usage-given-in-percentage-in-linux)
+
+[Get Overall CPU Usage on Linux | Baeldung on Linux](https://www.baeldung.com/linux/get-cpu-usage)
 
 

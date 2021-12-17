@@ -6,49 +6,70 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/prismjs@1/themes/prism.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/prismjs/themes/prism.css">
 </head>
 <body>
   <div id="app"></div>
   <script>
     window.$docsify = {
-      name: '<b>学习笔记</b>',
-      repo: 'https://github.com/LubinLew',
-      loadSidebar: true,
-      subMaxLevel: 0,
-      auto2top: true,
-      search: {
-        noData: {
-          '/': '没有结果!'
-        },
-        paths: 'auto',
-        placeholder: {
-          '/': '搜索'
-        },
-        pathNamespaces: ['/']
-      }
+        name: '<b>学习笔记</b>',
+        repo: 'https://github.com/LubinLew',
+        loadSidebar: true,
+        subMaxLevel: 0,
+        auto2top: true,
+        search: {
+          noData: {
+            '/': '没有结果!'
+          },
+          paths: 'auto',
+          placeholder: {
+            '/': '搜索'
+          },
+          pathNamespaces: ['/']
+        } /* 
+        plugins:[
+            function (hook,vm) {
+                hook.beforeEach(function (html) {
+                    var md = window.markdownit();
+                    md.use(markdownItAttrs, {
+                        // optional, these are default options
+                        leftDelimiter: '{',
+                        rightDelimiter: '}',
+                        allowedAttributes: []  // empty array = all attributes are allowed
+                    }).use(markdownItTaskList.default);
+                    return md.render(html);
+                });
+            }
+        ]*/
     }
   </script>
   <!-- Docsify v4 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/emoji.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/zoom-image.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/front-matter.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/external-script.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/front-matter.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/external-script.min.js"></script>
+
+  <!-- markdown-it 
+  <script src="//cdn.jsdelivr.net/npm/markdown-it"></script>
+  <script src="//cdn.jsdelivr.net/npm/markdown-it-attrs"></script>
+  <script src="//cdn.jsdelivr.net/npm/markdown-it-task-list"></script>
+   -->
+
   <!-- prismjs -->
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-c.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-lua.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-ini.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-sql.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-cpp.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-yaml.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-http.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-nginx.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-xml-doc.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-c.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-lua.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-ini.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-sql.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-cpp.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-yaml.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-http.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-nginx.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-xml-doc.min.js"></script>
 </body>
 </html>

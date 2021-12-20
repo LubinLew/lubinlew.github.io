@@ -17,7 +17,13 @@ lrwx------ 1 root root 64 Dec 10 12:52 3 -> anon_inode:[timerfd]
 .....
 ```
 
-111
+/proc/net/tcp
+
+/proc/net/tcp6
+
+/proc/net/udp
+
+/proc/net/udp6
 
 ```txt
    46: 010310AC:9C4C 030310AC:1770 01
@@ -62,6 +68,11 @@ timer_active:
   4  持续定时器, zero window probe timer is pending
 ```
 
-> windows下获取**进程启动时间** 使用API [GetProcessTimes](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getprocesstimes) ，windows 下时间是从 January 1, 1601 (UTC) 开始计算区别于 Linux 的 Epoch（1 January 1970），  
-> 
-> 两者的转化可以参考 https://www.frenk.com/2009/12/convert-filetime-to-unix-timestamp/
+
+##　参考链接
+
+https://www.kernel.org/doc/Documentation/networking/proc_net_tcp.rst
+
+https://blog.csdn.net/whatday/article/details/100693051
+
+https://linux.die.net/man/5/proc

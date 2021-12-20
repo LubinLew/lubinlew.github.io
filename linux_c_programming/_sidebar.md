@@ -7,6 +7,8 @@
   - [锁](linux_c_programming/base/lock.md)
   - [CPU使用率计算](linux_c_programming/base/cpu_usage.md)
   - [内存使用率计算](linux_c_programming/base/mem_usage.md)
+  - [网络链接/监听端口统计](linux_c_programming/base/net.md)
+
 
 - **常用函数**
   

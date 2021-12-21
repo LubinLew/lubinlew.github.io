@@ -5,11 +5,14 @@
   - [整形数据](linux_c_programming/base/integer_range.md)
   - [内存对齐](linux_c_programming/base/memory_alignment.md)
   - [锁](linux_c_programming/base/lock.md)
-  - [CPU使用率计算](linux_c_programming/base/cpu_usage.md)
-  - [内存使用率计算](linux_c_programming/base/mem_usage.md)
-  - [网络链接/监听端口统计](linux_c_programming/base/net.md)
-  - [磁盘IO统计](linux_c_programming/base/diskstat.md)
+  
+- **性能监控**
 
+  - [CPU使用率计算](linux_c_programming/statistics/cpu_usage.md)
+  - [内存使用率计算](linux_c_programming/statistics/mem_usage.md)
+  - [网络链接统计](linux_c_programming/statistics/network_connection.md)
+  - [网络I/O统计](linux_c_programming/statistics/network_traffic.md)
+  - [磁盘I/O统计](linux_c_programming/statistics/diskstat.md)
 
 - **常用函数**
   

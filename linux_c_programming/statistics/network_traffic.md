@@ -1,4 +1,4 @@
-# 网卡收发数据统计
+# 网络I/O统计
 
 查看网卡接收发送数据的记录可以使用下面的命令:
 
@@ -10,7 +10,7 @@ netstat -i
 ip -s link
 ```
 
-这些命令中信息都是从 `/proc/net/dev` 文件中读取的。 
+这些命令中信息都是从 `/proc/net/dev` 文件中读取的。
 
 ```bash
 $ cat /proc/net/dev

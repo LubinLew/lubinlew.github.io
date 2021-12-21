@@ -1,6 +1,16 @@
 # 磁盘I/O
 
+## 简介
+
 > https://www.kernel.org/doc/Documentation/iostats.txt
+> 
+> https://www.kernel.org/doc/Documentation/admin-guide/iostats.rst
+> 
+> https://www.kernel.org/doc/Documentation/ABI/testing/procfs-diskstats
+> 
+> https://www.kernel.org/doc/Documentation/block/stat.txt
+> 
+> https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-block
 
 从2.4.20 和 2.5.45版本开始,引入了更多的磁盘统计信息来帮助我们检测磁盘的活动。一些工具如 `sar` 和 `iostat`等都是使用这些信息完成其功能。
 
@@ -23,6 +33,9 @@
 
    4.18+ diskstats:
       3    0   hda 446216 784926 9550688 4382310 424847 312726 5922052 19310380 0 3376340 23705160 0 0 0 0
+
+   5.5+ diskstats:
+      3    0   hda 446216 784926 9550688 4382310 424847 312726 5922052 19310380 0 3376340 23705160 0 0 0 0 0 0
 ```
 
 上面例子中, 2.4 版本的统计信息在设备名后,第一个的字段是 446216, 相比之下 2.6+ 的 `sysfs` 直接展示11个统计字段，`/proc/diskstats` 展示了主设备号、次设备号、设备名 之后才是 11个统计字段。每种格式都是11个统计字段，并且意义相同。4.18+ 又在后面增加了4个字段。
@@ -31,26 +44,36 @@
 
 每组统计信息仅适用于指定的设备；如果你想系统范围的统计信息，您必须找到所有设备并将它们汇总起来。
 
-| 字段        |                                           |     |
-| --------- | ----------------------------------------- | --- |
-| Field  1  | reads completed                           |     |
-| Field  2  | reads merged                              |     |
-| Field  3  | sectors read                              |     |
-| Field  4  | milliseconds spent reading                |     |
-| Field  5  | writes completed                          |     |
-| Field  6  | writes merged                             |     |
-| Field  7  | sectors written                           |     |
-| Field  8  | milliseconds spent writing                |     |
-| Field  9  | I/Os currently in progress                |     |
-| Field  10 | milliseconds spent doing I/Os             |     |
-| Field  11 | weighted of milliseconds spent doing I/Os |     |
-| Field  12 | discards completed                        |     |
-| Field  13 | discards merged                           |     |
-| Field 14  | sectors discarded                         |     |
-| Field 15  | milliseconds spent discarding             |     |
+| 字段        | 说明              | 详细说明                                                                                             |
+| --------- | --------------- | ------------------------------------------------------------------------------------------------ |
+| Field  1  | 已完成的读取数         | 成功完成的读取总数                                                                                        |
+| Field  2  | 合并的读取数          | 可以合并彼此相邻的读取和写入以提高效率。 例如，两次 4K 读取在最终传递到磁盘之前可能会变成一次 8K 读取，因此它将仅作为一次 I/O 计算（并排队）。 此字段可让您了解执行此操作的频率。 |
+| Field  3  | 读取的扇区数          | 成功读取的扇区总数                                                                                        |
+| Field  4  | 读取花费的毫秒数        | 这是所有读取花费的总毫秒数（从 `__make_request()` 到 `end_that_request_last()` 来测量）。                             |
+| Field  5  | 已完成的写入次数        | 这是成功完成的写入总数                                                                                      |
+| Field  6  | 合并的写入数          | 见 Field 2 描述                                                                                     |
+| Field  7  | 写入的扇区数          | 成功写入的扇区总数                                                                                        |
+| Field  8  | 写入花费的毫秒数        | 这是所有写入花费的总毫秒数（从 `__make_request()` 到 `end_that_request_last()` 来测量）。                             |
+| Field  9  | 当前正在进行的 I/O 数量  | 唯一应该归零的字段。 当请求被提供给适当的结构请求队列时递增，并在它们完成时递减。                                                        |
+| Field  10 | 花费在 I/O 上的毫秒数   | 只要字段 9 不为零，该字段就会增加。                                                                              |
+| Field  11 | 加权花费在 I/O 上的毫秒数 | weighted of milliseconds spent doing I/Os                                                        |
+| Field  12 | 已完成的丢弃数量        | 这是成功完成的丢弃总数                                                                                      |
+| Field  13 | 合并的丢弃数量         | 见 Field 2 描述                                                                                     |
+| Field 14  | 丢弃的扇区数          | 成功丢弃的扇区总数                                                                                        |
+| Field 15  | 丢弃花费的毫秒数        | 这是所有丢弃花费的总毫秒数（从 `__make_request()` 到 `end_that_request_last()` 来测量）。                             |
+| Field 16  | flush请求完成数      | 块层结合刷新请求，一次最多执行一个。 这会计算磁盘执行的刷新请求。 不跟踪分区。                                                         |
+| Field 17  | 花费在flush上毫秒数    | -                                                                                                |
 
-为了避免引入性能瓶颈，修改这些计数器时不会加锁。这意味着当更改发生冲突时可能会引入轻微的不准确，因此（例如）将每个分区发出的所有读取 I/O 相加应该等于对磁盘所做的那些......但由于缺乏锁定，它可能只是非常接近。
+为了避免引入性能瓶颈，修改这些计数器时不会加锁。这意味着当更改发生冲突时可能会引入轻微的不准确，因此将每个分区发出的所有读取 I/O 相加应该等于对磁盘所做的那些......但由于缺乏锁定，它可能只是非常接近。
 
 在 2.6+ 每个CPU都有计数器，这使不加锁几乎不成问题了。读取统计信息时，对每个 CPU 的计数器求和（可能溢出它们求和的 unsigned long 变量）并将结果提供给用户。 没有方便的用户界面来访问每个 CPU 的计数器本身。
 
+从4.19开始请求时间以纳秒精度来统计,显示的时候转化为毫秒。
 
+---
+
+## 编码
+
+参考 `iostat` 的源码 https://github.com/sysstat/sysstat/blob/master/iostat.c 。
+
+`iostat` 主要使用 `sysfs` 来读取信息， 只有在 `iostat -p ALL` 时才读取 `/proc/diskstats` 文件。

@@ -5,7 +5,11 @@
   - [整形数据](linux_c_programming/base/integer_range.md)
   - [内存对齐](linux_c_programming/base/memory_alignment.md)
   - [锁](linux_c_programming/base/lock.md)
-  
+
+- **Linux 知识**
+  - [Linux 设备](linux_c_programming/info/devices.md)
+  - [Device Mapper](linux_c_programming/info/device_mapper.md)
+
 - **性能监控**
 
   - [CPU使用率计算](linux_c_programming/statistics/cpu_usage.md)

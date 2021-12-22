@@ -16,7 +16,8 @@
   - [内存使用率计算](linux_c_programming/statistics/mem_usage.md)
   - [网络链接统计](linux_c_programming/statistics/network_connection.md)
   - [网络I/O统计](linux_c_programming/statistics/network_traffic.md)
-  - [磁盘I/O统计](linux_c_programming/statistics/diskstat.md)
+  - [磁盘I/O统计](linux_c_programming/statistics/disk_io.md)
+  - [磁盘使用率计算](linux_c_programming/statistics/disk_usage.md)
 
 - **常用函数**
   

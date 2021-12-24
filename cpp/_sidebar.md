@@ -6,3 +6,4 @@
       * [std::string](cpp/string/basic_string/string.md)
       * [字符串国际化](cpp/string/basic_string/wstring.md)
 * [智能指针](cpp/smart_pointers.md)
+* [函数](cpp/function.md)

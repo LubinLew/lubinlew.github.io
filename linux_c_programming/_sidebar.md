@@ -26,6 +26,7 @@
   - [获取密码信息](linux_c_programming/functions/获取密码信息.md)  
   - [获取用户组信息](linux_c_programming/functions/获取用户组信息.md)
   - [procps](linux_c_programming/functions/procps.md)
+  - [I/O多路复用](linux_c_programming/functions/multiplexing/)
   - [netlink](linux_c_programming/functions/netlink/README.md)
      - [netlink 3](linux_c_programming/functions/netlink/netlink3.md)
      - [netlink 7](linux_c_programming/functions/netlink/netlink7.md)

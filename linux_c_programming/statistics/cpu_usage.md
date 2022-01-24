@@ -198,6 +198,8 @@ CPU的使用率 = 1 - CPU的空闲率
 
 ## References
 
+[Linux下计算进程的CPU占用和内存占用的编程方法](https://www.cnblogs.com/cxjchen/archive/2013/03/30/2990548.html)
+
 [Linux中计算特定CPU使用率_ibless的博客-CSDN博客_cpu使用率](https://blog.csdn.net/ibless/article/details/85177175)
 
 [Linux CPU利用率计算原理及内核实现 - Q_Quan - 博客园](https://www.cnblogs.com/qquan/articles/4686422.html)

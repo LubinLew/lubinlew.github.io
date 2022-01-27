@@ -3,6 +3,7 @@
 
 - [HIDS](network_security/device/hids/README.md)
   - [Wazuh](network_security/device/hids/wazuh/)
+  - [Elkeid](network_security/device/hids/elkeid/)
   - [osquery](network_security/device/hids/osquery/)
   - [OpenSCAP](network_security/device/hids/openscap/)
   - [SCA](network_security/device/hids/sca/)

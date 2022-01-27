@@ -13,6 +13,10 @@ HIDS全称是Host-based Intrusion Detection System，即基于主机的入侵检
 
 此外，OSSEC HIDS还提供集中式系统日志服务器和无代理配置监控系统，可提供对无代理设备（如防火墙，交换机，路由器，接入点，网络设备等）上的事件和更改的安全洞察。
 
+### Elkeid
+
+字节跳动开源的HIDS, https://github.com/bytedance/Elkeid
+
 ### OpenSCAP
 
 [OpenSCAP](https://github.com/OpenSCAP/openscap) 是一种OVAL（开放漏洞评估语言）和XCCDF（可扩展配置清单描述格式）解释器，用于检查系统配置和检测易受攻击的应用程序。

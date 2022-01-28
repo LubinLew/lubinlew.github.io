@@ -104,4 +104,7 @@ x86_64-w64-mingw32-dlltool           x86_64-w64-mingw32-gcc-nm-win32      x86_64
 x86_64-w64-mingw32-dllwrap           x86_64-w64-mingw32-gcc-posix         x86_64-w64-mingw32-gprof             x86_64-w64-mingw32-windres
 ```
 
+## 编译的exe增加图标的方法
+
+https://stackoverflow.com/questions/708238/how-do-i-add-an-icon-to-a-mingw-gcc-compiled-executable
 

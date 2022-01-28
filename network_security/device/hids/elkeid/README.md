@@ -63,4 +63,7 @@ export KAFKA_OPTS=" -Djava.security.auth.login.config=/root/kafka-client.jaas.co
 --topic hids_svr
 ```
 
+
+
+
 [Elkeid/raw_data_usage_tutorial.md at main · bytedance/Elkeid · GitHub](https://github.com/bytedance/Elkeid/blob/main/elkeidup/raw_data_usage_tutorial.md)

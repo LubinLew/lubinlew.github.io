@@ -12,6 +12,7 @@
 - [DNS记录的类型](others/dns_record.md)
 - [项目发布的类型](others/release.md)
 - [云原生](others/cloud-native.md)
+- [MingW64](others/mingw.md)
 - [CentOS-7上安装 MariaDB](others/mariadb_centos7.md)
 - [CentOS-7上安装 MySQL8](others/mysql_centos7.md)
 - [CentOS-7上安装 PostgreSQL](others/postgresql.md)

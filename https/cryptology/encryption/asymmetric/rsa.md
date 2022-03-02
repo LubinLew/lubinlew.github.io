@@ -4,9 +4,13 @@
 
 从那时直到现在，RSA算法一直是最广为使用的"非对称加密算法"。
 
-这种算法非常可靠，密钥越长，它就越难破解。随着计算机算力提升，目前普遍认为 2048位的密钥是安全的。
+这种算法非常可靠，密钥越长，它就越难破解。随着计算机算力提升，目前普遍认为 2048 位的密钥是安全的。
 
-RSA 算法对应标准的是[RFC8017](https://datatracker.ietf.org/doc/html/rfc8017), 即 PKCS #1: RSA Cryptography Specifications Version 2.2。
+RSA 算法使用密钥长度可以是 1024、2048、4096、...、16384位的。
+
+RSA 还支持更长的密钥（例如 65536 位），但因为性能太差而无法在现实生活中使用（某些操作可能需要几分钟甚至几小时）。
+
+RSA 算法对应标准的是 [RFC8017](https://datatracker.ietf.org/doc/html/rfc8017), 即 PKCS #1: RSA Cryptography Specifications Version 2.2。
 
 #### 常用术语
 
@@ -30,18 +34,72 @@ RSA 算法对应标准的是[RFC8017](https://datatracker.ietf.org/doc/html/rfc8
 
 ### 原理
 
-基本原理：对于两个质数相乘容易， 而将其乘积分解很难，即 `n = p1 * P2`, 已知 p1 和 p2 求 n 简单, 但是已知 n 求 p1 和 p2 很难。
+> **基础知识**
+> 
+> 1.取模运算**模数**(mod)
+> 
+>   又称模除、取模操作、取模运算等，英语：modulo 有时也称作 modulus, 得到的是一个数除以另一个数的余数。
+> 
+>   给定两个正整数：被除数 *a* 和除数 *n*，*a* modulo *n* (缩写为 *a* mod *n*), 
+> 
+>   举个例子：计算表达式 "5 mod 2" 得到 1，因为 5÷2=2...1（5 除以 2 商 2 余1）
+> 
+> 2.**同余**
+> 
+>   当两个整数除以同一个正整数，若得相同余数，则二整数同余。符号表示为 `≡` 。
+> 
+>   两个整数 a, b ,若他们除以正整数 m 所得的余数相等, 则称 a,b 对于模 m 同余, 记做 a ≡ b (mod m)
+> 
+> 3.**欧拉函数**：
+> 
+>   对于一个正整数 x，小于 x 且和 x 互质的正整数（包括1）的个数，记作φ(x). 例如 φ(8)=4，因为1,3,5,7均和8互质。
+> 4.**欧拉函数是积性函数**
+> 
+>   若 p, q 互质, 则 φ(p * q) = φ(p) * φ(q)
+> 
+> 5.****费马小定理****
+> 
+>   假如 a 是一个整数，p 是一个质数，那么 a<sup>p</sup> -a 是 p 的倍数, 即 a<sup>p</sup> ≡ a (mod p)
+> 
+>   如果 a 不是 p 的倍数，这个定理也可以写成更加常用的一种形式 a<sup>p-1</sup> ≡ 1 (mod p)
+> 
+> 6.**欧拉降幂**
 
-RSA加密的原理：<mark>c = m<sup>e</sup> mod n</mark>  ，c 表示密文，m 表示明文，e 和 n 为公钥。已知 m、e 、n 求 c 简单，但是 已知 e、n、c 求 m 很难。
+标记说明:
 
-RSA解密的原理：<mark>m = c<sup>d </sup>mod n</mark>  ，解密需要 私钥 d 
+| 标记      | 说明                           |
+| ------- | ---------------------------- |
+| `p`,`q` | 两个互质的整数                      |
+| `n`     | p,q 的乘积, 用二进制表示时的位数即密钥长度     |
+| `e`     | 满足 1< e < φ(n)，且 e 与 φ(n) 互质 |
+| `d`     | 满足 e * d ≡ 1 (mod φ(n))      |
+| `m`     | 明文,整数                        |
+| `c`     | 密码,证书                        |
+| `h`     | hash 结果                      |
+| `s`     | 签名                           |
 
-> n 为随机选取的两个质数p1 和  p2的乘积, e为一个随机整数但是要与 φ(n) (欧拉公式)互为质数.
+基本原理：对于两个不同的质数相乘容易，而将其乘积进行分解会很难，即 `n = p * q`, 已知 p 和 q 求 n 简单, 但是已知 n 求 p1 和 p2 很难。
+
+随机选择一个整数 e，满足 1< e < φ(n)，且 e 与φ(n) 互质。找到一个整数 d，满足 <mark>e * d ≡ 1 (mod φ(n))</mark>。
+
+RSA秘钥对包含下面两个部分:
+
+- 公钥 {***n***, ***e***}
+
+- 私钥 {***n***, ***d***}
+
+> 其中 n 为两个质数的乘积, 
+> 
+> e 也是整数, 当 e 取值较小的时候典型值为 65537
+
+RSA加密的原理：<mark>c ≡ m<sup>e</sup> mod n</mark>  ，c 表示密文，m 表示明文，e 和 n 为公钥。已知 m、e 、n 求 c 简单，但是 已知 e、n、c 求 m 很难。
+
+RSA解密的原理：<mark>m ≡ c<sup>d </sup>mod n</mark>  ，解密需要 整数 d
 
 > - 使用 OpenSSL 命令 从公钥中提取 n 和 e 
 > 
 > ```bash
-> openssl rsa -in publickey.pem -pubin -noout -text
+> $ openssl rsa -in publickey.pem -pubin -noout -text
 > Public-Key: (2048 bit)
 > Modulus:
 >     00:aa:9b:d4:cb:f7:b8:ee:65:f7:9d:f1:9e:4b:db:
@@ -111,9 +169,35 @@ RSA operation error
 
  公钥加密，私钥解密时，因为加入随机数，每次得到的加密信息不固定。私钥加密，公钥解密时，得到的加密信息固定。 `openssl rsautl` 只支持公钥加密私钥解密;不支持私钥加密公钥解密, 因为这种方式是不安全的。
 
+---
+
+## RSA签名和验签
+
+### RSA签名
+
+1.Calculate the message hash: ***h*** = hash(***m***)
+
+2.Encrypt ***h*** to calculate the signature: s = h<sup>d</sup> (mod n)
+
+The hash ***h*** should be in the range [0...***n***). The obtained **signature** ***s*** is an integer in the range [0...***n***).
+
+### RSA验签
+
+1.Calculate the message hash: ***h*** = hash(***m***)
+
+2.Decrypt the signature: h′ = s<sup>e</sup> (mod n)
+
+3.Compare ***h*** with ***h'*** to find whether the signature is valid or not
+
+If the signature is correct, then the following will be true: h′=s<sup>e</sup> (mod n) = (h<sup>d</sup>)<sup>e</sup>(mod n) = h
+
+---
+
 ### References
 
 https://en.wikipedia.org/wiki/RSA_(cryptosystem)
+
+[RSA Signatures - Practical Cryptography for Developers](https://cryptobook.nakov.com/digital-signatures/rsa-signatures)
 
 https://tls.mbed.org/kb/cryptography/rsa-encryption-maximum-data-size
 

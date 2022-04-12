@@ -5,7 +5,8 @@
 - [**常用功能**](python/functions/README.md)
   
   - [文件读写](python/functions/file.md)
-  - [json数组排序](python/functions/json_array_sort.md.md)
+  - [json数组排序](python/functions/json_array_sort.md)
+  - [文件夹遍历](python/functions/oswalk.md)
   - [打印正则表达式](python/functions/re_string_proc.md)
   - [打印TraceBack](python/functions/traceback.md)
   - [打包发布Python项目](python/functions/release.md)

@@ -29,26 +29,6 @@
     - [同步fork项目](#同步fork项目)
     - [gitlab 同步 github 项目](#gitlab-同步-github-项目)
 
-<!-- /TOC -->
-
-* [基本设置](#基本设置)
-  - [设置用户名称和邮箱](#设置用户名称和邮箱)
-  - [保存仓库的账号密码](#保存仓库的账号密码)
-  - [颜色显示设置](#颜色显示设置)
-* [基本操作](#基本操作)
-  - [Branch操作](#Branch操作)
-    * [查看branch](#查看branch)
-    * [切换Branch](#切换branch)
-    * [新建Branch](#新建branch)
-    * [删除Branch](#删除Branch)
-  - [TAG操作](#TAG操作)
-    * [查看tag](#查看tag)
-    * [删除tag](#删除tag)
-    * [新建tag](#新建tag)
-* [进阶操作](#进阶操作)
-  - [删除所有提交记录](#删除所有提交记录)
-  - [同步fork项目](#同步fork项目)
-  - [gitlab 同步 github 项目](#gitlab-同步-github-项目)
 
 ---
 
@@ -65,6 +45,7 @@ fatal: fetch-pack: invalid index-pack output
 解决方法:
 
 ```bash
+git config --global core.compression "0"
 git config --global pack.threads "1"
 git config --global pack.windowMemory   "100m"
 git config --global pack.packSizeLimit  "100m"

@@ -2,7 +2,10 @@
 
 ## 对称加密算法类型
 
-对称加密算法有两种类型，分别是`块密码算法`(block ciphers)和`流密码算法`(stream ciphers)。
+在现代密码学中,对称加密算法有两种类型，分别是:
+
+- `块密码算法`(block ciphers)
+- `流密码算法`(stream ciphers)
 
 ### 流密码算法
 
@@ -15,6 +18,15 @@
 
 ### 块密码算法
 
+| 名称       | 密钥长度(key length) | 块大小(block size) | 安全性 | 说明             |
+| -------- | ---------------- | --------------- | --- | -------------- |
+| DES      | 56 bits          | 64 bits         | 不安全 | 不建议使用          |
+| 3DES     | 112/168 bits     | 64 bits         | 不安全 | 在一个数据块上进行3次DES |
+| AES      | 128/192/256 bits | 128 bits        |     |                |
+| Blowfish |                  |                 |     |                |
+| Twofish  |                  |                 |     |                |
+| Serpent  |                  |                 |     |                |
+
 #### 分组模式
 
 ##### ECB(Electronic codebook)
@@ -26,7 +38,6 @@
 另一方面由于所有分组的加密方式一致，明文中的重复内容会在密文中有所体现，因此难以抵抗<mark>统计分析</mark>攻击。因此，ECB模式一般只适用于小数据量的字符信息的安全性保护。
 
 ![ECB_S](_resources/ECB_security.png)
-
 
 ##### CBC(Cipher block chaining)
 
@@ -41,4 +52,3 @@
 ![CTR_E](_resources/GCM-Galois_Counter_Mode_with_IV.svg)
 
 ##### CCM(Counter with cipher block chaining message authentication code)
-

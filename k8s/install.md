@@ -1,14 +1,16 @@
-# K8S的安装
+# K8S的安装(CentOS-7)
+
+
 ```bash
 #!/usr/bin/bash
 ########################################################
 # 部署单节点K8S(如果是集群,请注释掉步骤3.3.3)
 ########################################################
 
-K8SVER=1.19.2
-MASTER_NODE=10.130.12.127
+K8SVER=1.24.2
+MASTER_NODE=10.130.12.173
 # 主机名(名称不能带下划线等特殊字符)
-MASTER_NAME=k8s-master
+MASTER_NAME=lubin-k8s
 
 #default setting
 POD_CIDR=10.244.0.0/16
@@ -25,7 +27,7 @@ setenforce 0
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 
 ### 1.3 开启桥转发
-cat > /etc/sysctl.d/bridge.conf <<EOF
+cat > /etc/sysctl.d/k8s.conf <<EOF
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 net.ipv4.ip_forward = 1
@@ -39,30 +41,23 @@ sed -E -i 's/^\/dev\/mapper\/centos-swap.+$//g' /etc/fstab
 ### 1.5 设置主机名(名称不能带下划线等特殊字符)
 hostnamectl set-hostname ${MASTER_NAME}
 
+cat >> /etc/hosts << EOF
+${MASTER_NODE}  ${MASTER_NAME}
+EOF
+
 ################## 2.安装设置Docker ##################
 ### 2.1 安装Docker
-# https://docs.docker.com/install/linux/docker-ce/centos/
-yum install -y yum-utils device-mapper-persistent-data lvm2
+# https://docs.docker.com/engine/install/centos/
+yum install -y yum-utils
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-yum install -y docker-ce docker-ce-cli containerd.io
+yum install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 ### 2.2 配置docker选项
+#### docker 默认使用 cgroupfs 而 k8s 默认使用 systemd, 也可以使用 --cgroup-driver=cgroupfs 在k8s中设置
 mkdir -p /etc/docker
-mkdir -p /etc/systemd/system/docker.service.d
 cat > /etc/docker/daemon.json <<EOF
 {
-  "bip": "192.168.254.0/24",
-  "exec-opts": ["native.cgroupdriver=systemd"],
-  "log-level": "error",
-  "log-driver": "json-file",
-  "log-opts": {
-    "max-size": "10m"
-  },
-  "storage-driver": "overlay2",
-  "storage-opts": [
-	"overlay2.override_kernel_check=true"
-  ],
-  "registry-mirrors":["https://registry.docker-cn.com"]
+  "exec-opts": ["native.cgroupdriver=systemd"]
 }
 EOF
 
@@ -92,8 +87,8 @@ systemctl start kubelet
 
 ### 3.3 安装 Master 节点
 ## 3.3.1 初始化master节点
-kubeadm init --kubernetes-version=${K8SVER} \
-  --apiserver-advertise-address= ${MASTER_NODE} \
+kubeadm init --kubernetes-version=${K8SVER}    \
+  --apiserver-advertise-address=${MASTER_NODE} \
   --pod-network-cidr=${POD_CIDR} \
   --service-cidr=${SERVICE_CIDR} \
   --image-repository registry.aliyuncs.com/google_containers

@@ -1,0 +1,2 @@
+- [KMS服务搭建](windows/kms.md)
+- [账户信息收集](windows/account.md)

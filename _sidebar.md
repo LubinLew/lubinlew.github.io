@@ -17,4 +17,5 @@
 * [GeoIP2](geoip/)
 * [数据库](database/)
 * [ELK](ELK/)
+* [Windows](windows/)
 * [其他](others/)

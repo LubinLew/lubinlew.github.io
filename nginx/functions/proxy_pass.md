@@ -119,12 +119,16 @@ server {
         proxy_pass http://127.0.0.1;
     }
 
-    location /name3/ {
-        rewrite    /name3/([^/]+) /users?name=$1 break;
-        proxy_pass http://127.0.0.1;
+    location /some/name3/ {
+        proxy_pass http://127.0.0.1/;
     }
 
     location /name4/ {
+        rewrite    /name4/([^/]+) /users?name=$1 break;
+        proxy_pass http://127.0.0.1;
+    }
+
+    location /name5/ {
        proxy_pass http://127.0.0.1$request_uri;
     }
 }
@@ -153,11 +157,14 @@ $ curl localhost:8080/name1/
 $ curl localhost:8080/some/name2/
 127.0.0.1/some/name2/
 
-$ curl localhost:8080/name3/tom
-127.0.0.1/users?name=tom
+$ curl localhost:8080/some/name3/hello
+127.0.0.1/hello
 
 $ curl localhost:8080/name4/tom
-127.0.0.1/name4/tom
+127.0.0.1/users?name=tom
+
+$ curl localhost:8080/name5/tom
+127.0.0.1/name5/tom
 ```
 
 

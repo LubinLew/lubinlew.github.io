@@ -20,5 +20,3 @@ $ helm repo update
 # search
 $ helm search repo stable
 ```
-
-

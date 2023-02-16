@@ -1,2 +1,3 @@
 - [前言](k8s/README.md)
-- [安装](k8s/install.md)
+- [安装1.24](k8s/install.md)
+- [安装1.26](k8s/k8s_1.26.md)

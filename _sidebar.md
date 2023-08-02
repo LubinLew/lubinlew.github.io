@@ -17,6 +17,7 @@
 * [GeoIP2](geoip/)
 * [数据库](database/)
 * [数据结构](data_structure/)
+* [算法](algorithm/)
 * [ELK](ELK/)
 * [Windows](windows/)
 * [TCP](ip/tcp/)

@@ -7,3 +7,4 @@
       * [字符串国际化](cpp/string/basic_string/wstring.md)
 * [智能指针](cpp/smart_pointers.md)
 * [函数](cpp/function.md)
+* [命名空间](cpp/namespace.md)

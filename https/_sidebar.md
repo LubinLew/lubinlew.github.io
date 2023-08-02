@@ -33,3 +33,4 @@
   - [四、OpenSSL](https/openssl/README.md)
      - [证书的校验](https/openssl/cert_verify.md)
      - [数字签名](https/openssl/digital_signature.md)
+     - [会话复用](https/openssl/session_resumption.md)

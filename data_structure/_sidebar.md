@@ -1,3 +1,3 @@
 - [简介](data_structure/README.md)
-
+- [二叉树](data_structure/tree.md)
 - [红黑树](data_structure/red_black_tree.md)

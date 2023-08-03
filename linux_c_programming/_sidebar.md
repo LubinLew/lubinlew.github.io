@@ -5,6 +5,8 @@
   - [整形数据](linux_c_programming/base/integer_range.md)
   - [内存对齐](linux_c_programming/base/memory_alignment.md)
   - [锁](linux_c_programming/base/lock.md)
+  - [进程与线程](linux_c_programming/base/process_and_thread.md)
+  - [进程间通信](linux_c_programming/base/ipc.md)
 
 - **Linux 知识**
   - [Linux 设备](linux_c_programming/info/devices.md)

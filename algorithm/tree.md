@@ -1,7 +1,5 @@
 # 二叉树
 
-
-
 ## 时间复杂度
 
 | 操作  | 二叉树               | 平衡二叉树   | 红黑树    |
@@ -17,8 +15,6 @@
 理论上来说，增加，删除，修改的时间复杂度都是O(log(N))。
 
 但是它存在一个致命的问题。退化成链表时，增加，删除，修改的时间复杂度退化为O(N) 
-
-
 
 ## 平衡二叉搜索树(AVL)
 
@@ -248,7 +244,8 @@ enum nodeColor {
 };
 
 struct rbNode {
-  int data, color;
+  int data;
+  nodeColor color;
   struct rbNode *link[2];
 };
 
@@ -589,19 +586,92 @@ int main() {
 }
 ```
 
-
-
 ## 二叉树的遍历
 
 - 前序遍历(Pre-order)    <mark>根</mark>-左-右
 
-- 中序遍历(In-order)      左-<mark>根</mark>-右
+- 中序遍历(In-order)     左-<mark>根</mark>-右
 
-- 后续遍历(Post-order)  左-右-<mark>根</mark>
+- 后续遍历(Post-order)   左-右-<mark>根</mark>
+
+```c
+#include <stdio.h>
+#include <stdlib.h> //malloc
+
+typedef struct _BinaryTreeNode {
+    struct _BinaryTreeNode* left;
+    struct _BinaryTreeNode* right;
+    char data;
+} BTNode_t;
 
 
+//前序遍历
+void pre_order_traverse(BTNode_t* root)
+{
+    if (NULL == root) {
+        return;
+    }
 
+    printf("%c ", root->data);
+    pre_order_traverse(root->left);
+    pre_order_traverse(root->right);
+}
 
+//中序遍历
+void in_order_traverse(BTNode_t* root)
+{
+    if (NULL == root) {
+        return;
+    }
+
+    in_order_traverse(root->left);
+    printf("%c ", root->data);
+    in_order_traverse(root->right);
+}
+
+//后序遍历
+void post_order_traverse(BTNode_t* root)
+{
+    if (NULL == root) {
+        return;
+    }
+
+    post_order_traverse(root->left);
+    post_order_traverse(root->right);
+    printf("%c ", root->data);
+}
+
+BTNode_t* new_node(char data)
+{
+    BTNode_t* node = calloc(sizeof(BTNode_t), 1);
+    node->data = data;
+
+    return node;
+}
+
+int main(void)
+{
+    //https://blog.csdn.net/m0_52226803/article/details/117423431
+    BTNode_t* root = new_node('F');
+    root->left = new_node('C');
+    root->left->left = new_node('A');
+    root->left->right = new_node('D');
+    root->left->right->left = new_node('B');
+    root->right = new_node('E');
+    root->right->left = new_node('H');
+    root->right->right = new_node('G');
+    root->right->right->left = new_node('M');
+
+    printf("[pre-order]  ");
+    pre_order_traverse(root);  printf("\n");
+    printf("[in-order]   ");
+    in_order_traverse(root); printf("\n");
+    printf("[post-order] ");
+    post_order_traverse(root); printf("\n");
+
+    return 0;
+}
+```
 
 ## AVL树与红黑树对比
 
@@ -614,3 +684,102 @@ int main() {
 - 红黑树多用于高级语言的 map/set 等功能实现，AVL树更多用于数据库(快速读取数据)
 
 > 红黑树还用于 linux epoll / nginx timer / linux malloc
+
+## 判断一颗二叉树是否为平衡二叉树
+
+可以使用前序遍历(慢) 或者 后序遍历(快) 的方法
+
+```c
+#include <stdio.h>
+#include <stdlib.h> //malloc
+
+
+typedef struct _BinaryTreeNode {
+    struct _BinaryTreeNode* left;
+    struct _BinaryTreeNode* right;
+    char data;
+} BTNode_t;
+
+#define MAX(_a, _b)     ((_a) > (_b) ? (_a) : (_b))
+#define SUB_ABS(_a, _b) ((_a) > (_b) ? (_a) - (_b) : (_b) - (_a))
+
+/* 二叉树的最大深度 */
+int maxDepth(BTNode_t* root)
+{
+    if (NULL == root) {
+        return 0;
+    }
+
+    int LeftDepth  = maxDepth(root->left);
+    int RightDepth = maxDepth(root->right);
+
+    return MAX(LeftDepth, RightDepth) + 1;
+}
+
+
+/* 判断是否为平衡二叉树,  前序遍历(慢)*/
+int isBalanced(BTNode_t* root)
+{
+    if (root == NULL) {//空树是平衡树
+        return 1;
+    }
+
+    int LeftDepth  = maxDepth(root->left);
+    int RightDepth = maxDepth(root->right);
+    return (SUB_ABS(LeftDepth, RightDepth) <= 1) && \
+        isBalanced(root->left) && \
+        isBalanced(root->right);
+}
+
+
+/* 判断是否为平衡二叉树,  后序遍历(快)*/
+int isBalanced_op(BTNode_t* root, int *pdepth)
+{
+    if (NULL == root) {
+        *pdepth = 0;
+        return 1;
+    }
+
+    //按照后序遍历去判断,先判断左右子树，然后记录以当前结点为根树的深度
+    int left, right;
+    if (isBalanced_op(root->left, &left) && isBalanced_op(root->right, &right)) {
+        int gap = SUB_ABS(right, left);
+        if (gap <= 1) {
+            *pdepth = MAX(left, right) + 1;
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+BTNode_t* new_node(char data)
+{
+    BTNode_t* node = calloc(sizeof(BTNode_t), 1);
+    node->data = data;
+
+    return node;
+}
+
+
+int main(void)
+{
+    BTNode_t* root = new_node('F');
+    root->left = new_node('C');
+    root->left->left = new_node('A');
+    root->left->right = new_node('D');
+    root->left->right->left = new_node('B');
+    root->right = new_node('E');
+    root->right->left = new_node('H');
+    root->right->right = new_node('G');
+    root->right->right->left = new_node('M');
+
+    printf("isBalanced: %d\n", isBalanced(root));
+    int depth = 0;
+    printf("isBalanced_op: %d\n", isBalanced_op(root, &depth));
+
+    return 0;
+}
+```
+
+https://blog.csdn.net/hansionz/article/details/82745625

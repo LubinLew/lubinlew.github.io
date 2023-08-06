@@ -1,0 +1,46 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="748" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 748 246" height="246">
+    <defs/>
+    <g transform="translate(-115.22,-198.69)">
+        <path fill="#ffffff" stroke="#101843" fill-rule="nonzero" transform="translate(495.12,259.84)" id="shape1" d="M.0,92.1C.0,41.2,53.3,.0,119.1,.0C184.8,.0,238.1,41.2,238.1,92.1C238.1,143.0,184.8,184.3,119.1,184.3C53.3,184.3,.0,143.0,.0,92.1z"/>
+        <g transform="translate(613.17,259.85)" id="shape2">
+            <path fill="none" stroke="#191919" d="M.0,.0L-462.0,.0"/>
+            <path fill="#191919" stroke-width="1" stroke="#191919" stroke-linecap="round" d="M6.0,.0C6.0,3.3,3.3,6.0,.0,6.0C-3.3,6.0,-6.0,3.3,-6.0,.0C-6.0,-3.3,-3.3,-6.0,.0,-6.0C3.3,-6.0,6.0,-3.3,6.0,.0"/>
+            <path fill="#191919" stroke-width="1" stroke="#191919" stroke-linecap="round" d="M-468.0,.0C-468.0,-3.3,-465.3,-6.0,-462.0,-6.0C-458.7,-6.0,-456.0,-3.3,-456.0,.0C-456.0,3.3,-458.7,6.0,-462.0,6.0C-465.3,6.0,-468.0,3.3,-468.0,.0"/>
+        </g>
+        <g transform="translate(554.17,311.97)" id="shape3">
+            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:9.75pt" xml:space="preserve">
+                <tspan y="46.0" x="21.4">环的长度为 n</tspan>
+            </text>
+        </g>
+        <g transform="translate(694.49,245.67)" id="shape4">
+            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:9.75pt" xml:space="preserve">
+                <tspan y="46.0" x="16.9">环起点到相遇点 距离 p</tspan>
+            </text>
+        </g>
+        <g transform="translate(207.87,222.05)" id="shape5">
+            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:9.75pt" xml:space="preserve">
+                <tspan y="23.6" x="28.9">链表起点 到 环起点 距离 m</tspan>
+            </text>
+        </g>
+        <g transform="translate(554.17,199.69)" id="shape6">
+            <text style="fill:#ff7e79;font-family:Microsoft YaHei;font-size:9.75pt" xml:space="preserve">
+                <tspan y="46.5" x="40.5">环起点</tspan>
+            </text>
+        </g>
+        <g transform="translate(116.22,245.67)" id="shape7">
+            <text style="fill:#ff7e79;font-family:Microsoft YaHei;font-size:9.75pt" xml:space="preserve">
+                <tspan y="46.0" x="34.0">链表起点</tspan>
+            </text>
+        </g>
+        <g transform="translate(733.19,355.30)" id="shape8">
+            <path fill="none" stroke="#191919" d="M.0,.0L.0,-2.3"/>
+            <path fill="#191919" stroke-width="1" stroke="#191919" stroke-linecap="round" d="M.0,6.0C-3.3,6.0,-6.0,3.3,-6.0,.0C-6.0,-3.3,-3.3,-6.0,.0,-6.0C3.3,-6.0,6.0,-3.3,6.0,.0C6.0,3.3,3.3,6.0,.0,6.0"/>
+            <path fill="#191919" stroke-width="1" stroke="#191919" stroke-linecap="round" d="M.0,-8.3C3.3,-8.3,6.0,-5.6,6.0,-2.3C6.0,1.0,3.3,3.7,.0,3.7C-3.3,3.7,-6.0,1.0,-6.0,-2.3C-6.0,-5.6,-3.3,-8.3,.0,-8.3"/>
+        </g>
+        <g transform="translate(703.94,311.97)" id="shape9">
+            <text style="fill:#ff7e79;font-family:Microsoft YaHei;font-size:9.75pt" xml:space="preserve">
+                <tspan y="46.0" x="40.5">相遇点</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

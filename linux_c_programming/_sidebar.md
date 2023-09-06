@@ -80,3 +80,8 @@
   
   - [简介](linux_c_programming/cmds/)
   - [paste](linux_c_programming/cmds/paste.md)
+
+- **排错**
+
+  - [traps](linux_c_programming/error/traps.md)
+

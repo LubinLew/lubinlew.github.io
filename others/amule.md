@@ -5,7 +5,7 @@
 ## 安装 amule
 
 ```bash
-apt install amule amule-daemon
+apt install amule amule-utils amule-daemon
 ```
 
 ## 配置 amule
@@ -25,6 +25,9 @@ echo -n '<password>' | md5sum | cut -d ' ' -f 1
 
 ECPassword=<PASSWOD HASH>
 ```
+
+> 还可以配置 `TempDir` 和 `IncomingDir` 来设置下载路径
+
 
 4.启动 amule 服务
 
@@ -63,5 +66,6 @@ $ add <ed2k_link>
 $ show DL
 ```
 
+文件默认下载位置 `~/.aMule/Incoming`
 
 

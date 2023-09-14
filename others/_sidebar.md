@@ -20,3 +20,4 @@
 - [QR Code 简介](others/qrcode.md)
 - [Pyinstaller](others/pyInstaller.md)
 - [修改器作弊码](others/cheat_code_format.md)
+- [amule下载ed2k链接](others/amule.md)

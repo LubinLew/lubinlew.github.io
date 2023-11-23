@@ -14,6 +14,10 @@ qemu-img resize some.qcow2 +40G
 
 ```bash
 growpart  /dev/vda 1
-resize2fs /dev/vda1
+
+# maybe
+# resize2fs /dev/vda1
+
+xfs_growfs -d /dev/vda1
 ```
 

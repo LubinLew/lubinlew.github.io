@@ -10,6 +10,12 @@
 | Ubuntu  | `/var/lib/dpkg/status`      | 这是一个文本文件,格式清晰明了                                                                                 | 按照格式读取                                                                     |
 | windows | 从注册表读取(32位/64位/用户安装/hotfix) | -                                                                                               | -                                                                          |
 
+
+```bash
+rpm --querytags
+rpm -qa --qf '%{name}\t%{arch}\t%{summary}\t%{size}\t%{epoch}\t%{release}\t%{version}\t%{vendor}\t%{installtime:date}\t%{group}\t\n'
+```
+
 ## OVAL数据对比
 
 oval 数据各大Linux 发行商都有提供数据

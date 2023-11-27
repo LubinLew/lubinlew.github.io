@@ -80,6 +80,11 @@
   
   - [简介](linux_c_programming/cmds/)
   - [paste](linux_c_programming/cmds/paste.md)
+  - [command](linux_c_programming/cmds/command.md)
+  - [rpm](linux_c_programming/cmds/rpm.md)
+  - [systemd](linux_c_programming/cmds/systemd.md)
+  - [uname](linux_c_programming/cmds/uname.md)
+  - [rsync](linux_c_programming/cmds/rsync.md)
 
 - **排错**
 

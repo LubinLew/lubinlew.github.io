@@ -1,3 +1,5 @@
 - [简介](network_security/README.md)
 - [常用网络安全设备与软件](network_security/device/)
 - [安全功能原理及设计](network_security/design/)
+- [病毒库](network_security/virus/)
+- [安全基线](network_security/baseline/)
